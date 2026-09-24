@@ -1,0 +1,24 @@
+# Dependencies and generated output
+node_modules/
+dist/
+coverage/
+
+# Local logs and editor/OS files
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local environment files (keep the example file)
+.env
+.env.*
+!.env.example
+
+# Agent and planning material (not part of the website)
+.github/agents/
+.github/prompts/
+.github/skills/
+**/AGENTS.md
+**/*.agent.md
+100Notes/

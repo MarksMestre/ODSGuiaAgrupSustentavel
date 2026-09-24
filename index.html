@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-PT" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Guia interativo de sustentabilidade para agrupamentos escutistas, com 30 jogos e worksheets e ferramentas práticas." />
+    <meta name="theme-color" content="#174c3a" />
+    <title>Kit Agrupamento Sustentável</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+    <header class="site-header">
+      <button class="menu-button" id="menu-button" type="button" aria-expanded="false" aria-controls="navigation-panel">
+        <span aria-hidden="true">☰</span>
+        <span>Menu</span>
+      </button>
+
+      <a class="brand" href="#/inicio" aria-label="Kit Agrupamento Sustentável — página inicial">
+        <span class="brand-mark" aria-hidden="true"><span>+</span></span>
+        <span class="brand-copy">
+          <strong>Kit Agrupamento Sustentável</strong>
+          <small>Guia digital · CNE · 2021</small>
+        </span>
+      </a>
+
+      <div class="header-actions">
+        <div class="search" role="search">
+          <label class="visually-hidden" for="document-search">Procurar no guia</label>
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input
+            id="document-search"
+            type="search"
+            inputmode="search"
+            autocomplete="off"
+            placeholder="Procurar no guia"
+            aria-controls="search-results"
+            aria-expanded="false"
+          />
+          <kbd aria-hidden="true">/</kbd>
+          <div class="search-results" id="search-results" role="listbox" hidden></div>
+        </div>
+        <button class="icon-button" id="theme-button" type="button" aria-label="Ativar tema escuro" aria-pressed="false">
+          <span aria-hidden="true">☾</span>
+        </button>
+        <button class="icon-button" id="print-button" type="button" aria-label="Imprimir ou guardar em PDF">
+          <span aria-hidden="true">⎙</span>
+        </button>
+      </div>
+      <div class="reading-progress" aria-hidden="true"><span id="reading-progress-bar"></span></div>
+    </header>
+
+    <div class="app-layout">
+      <div class="navigation-backdrop" id="navigation-backdrop" hidden></div>
+      <aside class="navigation-panel" id="navigation-panel" aria-label="Navegação do guia">
+        <div class="navigation-heading">
+          <p>Explore o guia</p>
+          <button class="navigation-close" id="navigation-close" type="button" aria-label="Fechar menu">×</button>
+        </div>
+        <nav id="primary-navigation" aria-label="Capítulos"></nav>
+        <div class="navigation-note">
+          <span aria-hidden="true">♻</span>
+          <p>Recursos para aprender, agir e promover a sustentabilidade.</p>
+        </div>
+      </aside>
+
+      <main id="conteudo" tabindex="-1">
+        <div id="app-content" aria-busy="true">
+          <p class="loading-state">A preparar o guia…</p>
+        </div>
+      </main>
+    </div>
+
+    <footer class="site-footer">
+      <p>Kit Agrupamento Sustentável · Compromisso 2030</p>
+      <p>Conteúdo original de abril de 2021.</p>
+    </footer>
+
+    <div class="visually-hidden" id="live-region" role="status" aria-live="polite" aria-atomic="true"></div>
+    <div class="visually-hidden" id="filter-status" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <noscript>
+      <div class="noscript-message">
+        <h1>Kit Agrupamento Sustentável</h1>
+        <p>Esta edição interativa precisa de JavaScript. O documento integral original continua disponível em <a href="./file.md">file.md</a>.</p>
+      </div>
+    </noscript>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
