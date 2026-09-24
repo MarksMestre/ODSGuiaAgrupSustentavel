@@ -1,0 +1,2 @@
+# Manter o ficheiro editorial com quebras CRLF em Windows e Linux.
+file.md text eol=crlf
