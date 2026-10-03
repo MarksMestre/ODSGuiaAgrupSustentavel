@@ -1,0 +1,14 @@
+# 04Game
+
+*Área das Pessoas · jogo 4*
+
+**Título:** Muda os Teus Óculos
+
+| Campo | Valor |
+| --- | --- |
+| Nome do Jogo | Muda os Teus Óculos |
+| Objetivos de Desenvolvimento Sustentável (ODS) | **ODS 10** (Reduzir as Desigualdades) |
+| Objetivos | Os escuteiros colocam os óculos e realizam um percurso exterior encarnando a perspetiva de um cidadão marginalizado (ex: pessoa em cadeira de rodas, sem-abrigo, migrante sem domínio da língua). Fotografam as barreiras urbanas e atitudinais que encontrariam e expõem a galeria para reflexão coletiva. |
+| Duração e Participantes | **Formato:** Presencial **Participantes:** Variável **Duração:** 90 minutos |
+| Material | Armações de óculos velhos, câmara fotográfica/smartphone, impressora e papel |
+| Instruções | 1. Com a secção, deve-se refletir sobre as pessoas desfavorecidas ou que vivem marginalizadas, como por exemplo uma pessoa com deficiência ou uma pessoa em situação de sem-abrigo.<br>2. Pede-se a cada escuteiro que escolha uma situação de desvantagem que lhe desperte a curiosidade. Explica-se que cada um irá explorar essa situação através dos olhos da própria pessoa nessa situação.<br>3. Distribui-se os óculos por todos e diz-se que cada um deve tirar fotografias para documentar o seu passeio. Neste passeio, o objetivo é ver com os olhos desta pessoa, sem dramatizar a situação, mas antes sair e imaginar o que seria ser essa pessoa. O que será estar na pele dessa pessoa? Por exemplo, será que consegue gozar de todos os serviços? Onde compra o pão (se o puder pagar)? Onde vive?<br>4. Quando os escuteiros voltarem, pede-se a todos que se transfiram as fotografias para o computador e que se escolham algumas para imprimir, montando-as todas numa grande folha de papel na parede. As fotografias não devem ter títulos nem legendas.<br>5. Quando todas as fotografias estiverem expostas, pede-se à secção que tente perceber, através das fotografias, que situações estão identificadas, ou seja, que<br>6. pessoa eram os participantes com aqueles óculos. De seguida, convida-se os escuteiros a apresentar as suas fotografias e a explicar porque tinham particular curiosidade sobre aquela situação.<br>7. Deve-se olhar para a exposição e perguntar, à vez, o que viveram e o que viram. O que aconteceu durante este exercício? Gostaram da atividade? Porquê? Qual foi a coisa mais surpreendente que descobriram? Porque escolheram o exemplo que escolheram? Que ideias preconcebidas ou que estereótipos tinham em relação à pessoa que escolheram? Que influência tiveram essas ideias ou esses preconceitos na atividade e no que escolheram ver? O exercício facilitou a empatia, em algum modo, com a pessoa marginalizada? Porquê? Porquê não? O que aprenderam sobre vocês? |

@@ -9,8 +9,16 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
+    "smoke": "node scripts/smoke.mjs",
     "check:content": "node scripts/check-content.mjs",
-    "validate": "npm run check:content && npm test && npm run build"
+    "content:build": "python scripts/build_content.py",
+    "content:check": "python scripts/build_content.py --check",
+    "content:report": "python scripts/build_content.py --report-only",
+    "progress:refresh": "node scripts/progress/build-progress.mjs --refresh",
+    "progress:check": "node scripts/progress/build-progress.mjs",
+    "progress:keys": "node scripts/progress/build-progress.mjs --keys",
+    "progress:degrade": "python scripts/progress/degrade-check.py",
+    "validate": "npm run check:content && npm test && npm run build && npm run smoke"
   },
   "dependencies": {
     "dompurify": "3.4.16",
@@ -23,6 +31,7 @@
     "vitest": "5.0.1"
   },
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=22.12.0",
+    "python": ">=3.11"
   }
 }

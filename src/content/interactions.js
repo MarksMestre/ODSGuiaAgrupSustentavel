@@ -1,4 +1,7 @@
 import { ROUTES } from './source-map.js';
+import { element, renderProgressSection } from './renderer.js';
+import { gamePrintUrl, gameRoute, getGame } from './games.js';
+import { loadProgress, progressForGame } from './progress.js';
 
 const THEME_STORAGE_KEY = 'kit-agrupamento-tema';
 const scheduleFrame = window.requestAnimationFrame?.bind(window) ?? ((callback) => window.setTimeout(callback, 0));
@@ -76,8 +79,123 @@ function parseLocationHash(hash = window.location.hash) {
   };
 }
 
+/**
+ * Rota de um jogo individual, `#/jogo/{n}`.
+ *
+ * Não faz parte de `ROUTES` porque não é uma secção do guia: é uma página de
+ * detalhe dentro do Capítulo 7. Devolve `null` quando o endereço não é uma rota
+ * de jogo, e `{ missing: true }` quando o número não corresponde a nenhum jogo —
+ * caso em que o site mostra uma página de erro em vez de falhar.
+ */
+function parseGameRoute(routeHash) {
+  const match = /^#\/jogo\/(\d{1,2})$/u.exec(routeHash ?? '');
+  if (!match) return null;
+  const number = Number(match[1]);
+  const game = getGame(number);
+  return game ? { missing: false, game } : { missing: true, number };
+}
+
 function routeLabel(routeId) {
   return routeById.get(routeId)?.label ?? 'Guia';
+}
+
+/** Página de um jogo individual, montada a partir da ficha gerada. */
+export function renderGamePage(game) {
+  const section = element('section', {
+    class: 'route-section route-section--game',
+    id: `jogo-${game.number}`,
+    dataset: { route: 'jogo', game: String(game.number) },
+    'aria-labelledby': `jogo-${game.number}-titulo`,
+  });
+
+  const back = element('a', {
+    class: 'game-back',
+    href: routeById.get('capitulo-7')?.hash ?? '#/capitulo/7',
+    text: 'Voltar aos jogos e workshops',
+  });
+  section.append(back);
+
+  section.append(element('h1', {
+    id: `jogo-${game.number}-titulo`,
+    class: 'route-title',
+    tabindex: '-1',
+    text: game.title,
+  }));
+  section.append(element('p', { class: 'game-area-label', text: game.area }));
+
+  const metadata = element('dl', { class: 'game-meta' });
+  for (const [label, value] of [
+    ['ODS', game.ods.length === 17 ? 'Todos os ODS' : game.ods.map((code) => `ODS ${code}`).join(', ')],
+    ['Formato:', game.format],
+    ['Participantes:', game.participants],
+    ['Duração:', game.duration],
+  ]) {
+    if (!value) continue;
+    metadata.append(element('dt', { text: label }));
+    metadata.append(element('dd', { text: value }));
+  }
+  section.append(metadata);
+
+  // O cartão do Capítulo 7 é clonado para a página do jogo: é a mesma ficha, o
+// que evita duplicar o markup e mantém a edição num só sítio. O clone perde o
+// `id` (que pertence ao Capítulo 7) e a entrada de pesquisa.
+  const article = document.querySelector(`.activity-card[id$="-${game.slug}"]`);
+  if (article) {
+    const clone = article.cloneNode(true);
+    clone.removeAttribute('id');
+    clone.removeAttribute('aria-labelledby');
+    clone.removeAttribute('data-search-entry');
+    clone.classList.add('game-detail');
+    // O Progresso Pessoal é montado à parte, mais abaixo, com a hierarquia
+    // completa; a «Imprimir ficha» só faz sentido no Capítulo 7.
+    clone.querySelector('.progress-block')?.remove();
+    clone.querySelector('.activity-actions')?.remove();
+    section.append(clone);
+  }
+
+  section.append(renderGameProgress(game));
+
+  const print = element('p', { class: 'activity-actions' }, [
+    element('a', {
+      class: 'activity-action activity-action--print',
+      href: gamePrintUrl(game.number),
+      target: '_blank',
+      rel: 'noopener noreferrer',
+      text: 'Imprimir ficha',
+    }),
+  ]);
+  section.append(print);
+  return section;
+}
+
+/** Bloco de Progresso Pessoal na página do jogo, com descritores completos. */
+function renderGameProgress(game) {
+  const fragment = document.createDocumentFragment();
+  const groups = progressForGame(loadProgress(), game.number);
+  if (!groups.length) return fragment;
+
+  const blockId = `jogo-${game.number}-progresso`;
+  const block = element('section', {
+    class: 'progress-block progress-block--standalone',
+    id: blockId,
+    'aria-labelledby': `${blockId}-titulo`,
+    dataset: { gameProgress: String(game.number) },
+  });
+  block.append(element('h2', { id: `${blockId}-titulo`, text: 'Progresso Pessoal' }));
+  block.append(element('p', {
+    class: 'progress-hint',
+    text: 'Trilhos que este jogo pode contribuir para. Adapte à sua secção.',
+  }));
+
+  // Só as Secções com trilhos mapeados entram na lista, pelo que `areas` também
+  // só reflecte as que existem.
+  const list = element('ul', { class: 'progress-sections' });
+  groups.forEach((group, index) => {
+    list.append(renderProgressSection(group, game.number, { open: index === 0, standalone: true }));
+  });
+  block.append(list);
+  fragment.append(block);
+  return fragment;
 }
 
 function createExcerpt(text, query, radius = 72) {
@@ -153,6 +271,90 @@ export function initInteractions(model, rendered, elements) {
   let lastDrawerFocus = null;
   let printState = null;
 
+  let gamePage = null;
+
+  function hideGamePage() {
+    if (!gamePage) return;
+    gamePage.remove();
+    gamePage = null;
+    markGameNav(null);
+  }
+
+  /** Realça o jogo na lista da navegação; `null` limpa o realce. */
+  function markGameNav(number) {
+    for (const link of navigationRoot.querySelectorAll('[data-game-nav]')) {
+      const active = number !== null && link.dataset.gameNav === String(number);
+      link.classList.toggle('is-active', active);
+      if (active) link.setAttribute('aria-current', 'true');
+      else link.removeAttribute('aria-current');
+    }
+    // A lista de jogos fica aberta para que o jogo activo seja visível.
+    const container = navigationRoot.querySelector('#nav-games');
+    if (container && number !== null) container.open = true;
+  }
+
+  /** Mostra `#/jogo/{n}` mantendo o Capítulo 7 ativo na navegação. */
+  function showGamePage(game, focus = true) {
+    hideGamePage();
+    sections.forEach((section) => { section.hidden = true; });
+    navLinks.forEach((link) => link.removeAttribute('aria-current'));
+    navLinks.get('capitulo-7')?.setAttribute('aria-current', 'page');
+
+    gamePage = renderGamePage(game);
+    contentRoot.append(gamePage);
+    document.title = `${game.title} · Kit Agrupamento Sustentável`;
+    markGameNav(game.number);
+
+    const progressBlock = gamePage.querySelector('.progress-block');
+    if (progressBlock) {
+      // `#/jogo/12#progresso` abre o bloco já expandido.
+      progressBlock.querySelectorAll('details[open]').forEach((node) => {
+        node.dataset.autoOpened = 'true';
+      });
+    }
+
+    announce(`${game.title}. ${game.area}.`);
+    if (focus) {
+      const title = gamePage.querySelector('h1');
+      scheduleFrame(() => focusTarget(title));
+    }
+  }
+
+  /** `n` inexistente: página de erro com saída, não uma falha. */
+  function showMissingGame(number) {
+    hideGamePage();
+    sections.forEach((section) => { section.hidden = true; });
+    navLinks.forEach((link) => link.removeAttribute('aria-current'));
+    navLinks.get('capitulo-7')?.setAttribute('aria-current', 'page');
+
+    gamePage = element('section', {
+      class: 'route-section route-section--missing-game',
+      dataset: { route: 'jogo' },
+    });
+    gamePage.append(element('h1', {
+      class: 'route-title',
+      tabindex: '-1',
+      id: 'jogo-nao-encontrado-titulo',
+      text: 'Jogo não encontrado',
+    }));
+    gamePage.append(element('p', {
+      text: `Não existe nenhuma ficha com o número ${number}. `
+        + 'Podem existir 30 jogos, numerados de 1 a 30.',
+    }));
+    gamePage.append(element('a', {
+      class: 'game-back',
+      href: routeById.get('capitulo-7')?.hash ?? '#/capitulo/7',
+      text: 'Ver os 30 jogos e workshops',
+    }));
+    contentRoot.append(gamePage);
+    document.title = 'Jogo não encontrado · Kit Agrupamento Sustentável';
+    announce(`Jogo ${number} não encontrado.`);
+    // O foco é movido no frame seguinte; se o utilizador já tiver navegado
+    // entretanto, `gamePage` pode já ter sido removido e o título não existe.
+    const heading = gamePage.querySelector('h1');
+    scheduleFrame(() => focusTarget(heading));
+  }
+
   function announce(message) {
     if (!liveRegion) return;
     liveRegion.textContent = '';
@@ -173,6 +375,20 @@ export function initInteractions(model, rendered, elements) {
     let route = locationState.route;
     let anchor = locationState.anchor;
 
+    // `#/jogo/{n}` não é uma secção do guia: abre o jogo dentro do Capítulo 7,
+    // para que o Capítulo 7 se mantenha highlighted na navegação.
+    const gameState = route ? null : parseGameRoute(locationState.routeHash);
+
+    if (gameState && !gameState.missing) {
+      showGamePage(gameState.game, focus);
+      return;
+    }
+
+    if (gameState?.missing) {
+      showMissingGame(gameState.number);
+      return;
+    }
+
     if (!route) {
       route = routeById.get('inicio');
       anchor = null;
@@ -180,6 +396,7 @@ export function initInteractions(model, rendered, elements) {
       announce('Endereço não reconhecido. Foi aberto o início do guia.');
     }
 
+    hideGamePage();
     sections.forEach((section, id) => {
       const active = id === route.id;
       section.hidden = !active;
@@ -324,14 +541,20 @@ export function initInteractions(model, rendered, elements) {
       const option = document.createElement('a');
       option.className = 'search-result';
       option.id = `search-result-${index}`;
-      option.href = hrefForTarget(entry.route, entry.target);
+      // Entradas de jogo apontam para `#/jogo/{n}`; as restantes, para a rota
+      // com âncora.
+      option.href = entry.game
+        ? gameRoute(entry.game)
+        : hrefForTarget(entry.route, entry.target);
       option.setAttribute('role', 'option');
       option.setAttribute('aria-selected', 'false');
       option.dataset.route = entry.route;
 
       const route = document.createElement('span');
       route.className = 'search-result__route';
-      route.textContent = routeLabel(entry.route);
+      route.textContent = entry.game
+        ? `${routeLabel('capitulo-7')} · jogo ${entry.game}`
+        : routeLabel(entry.route);
       const title = document.createElement('strong');
       title.textContent = entry.title;
       const excerpt = document.createElement('span');

@@ -35,6 +35,16 @@
   --prosperity: #9a6500;
   --peace: #4e5fa8;
   --partnerships: #6e4a9d;
+  /* Acentos das Secções, não as cores do CNE.
+     O CNE dá #FDD400 / #3FA535 / #00A0E6 / #EF1013. Essas cores não passam
+     WCAG 1.4.11 (3:1 para elementos gráficos) sobre os fundos do site —
+     #FDD400 dá 1,7:1 — por isso são escurecidas até cumprirem. A cor da Secção
+     entra como barra lateral, marcador e contorno; o texto mantém sempre a cor
+     do tema. A cor original continua em content.config.json. */
+  --progress-1-accent: #8a6f00; /* de #FDD400, escurecida até 4.19:1 */
+  --progress-2-accent: #2f7d43; /* de #3FA535 */
+  --progress-3-accent: #0079b8; /* de #00A0E6 */
+  --progress-4-accent: #c21518; /* de #EF1013 */
 }
 
 :root[data-theme="dark"] {
@@ -58,6 +68,11 @@
   --planet: #70d39c;
   --prosperity: #f1bf61;
   --peace: #aab7ff;
+  /* No tema escuro o acento é clareado para manter ≥ 3:1 sobre o fundo. */
+  --progress-1-accent: #d9b430;
+  --progress-2-accent: #5cc47c;
+  --progress-3-accent: #4fb6ef;
+  --progress-4-accent: #f2686a;
   --partnerships: #d0a9ff;
 }
 
@@ -1541,6 +1556,345 @@ tbody tr:last-child > * {
   .activity-area > h2::before,
   .activity-card {
     border-color: CanvasText;
+  }
+}
+
+/* ------------------------------------------------------- navegação por grupos */
+
+.nav-group + .nav-group {
+  margin-top: 0.9rem;
+}
+
+.nav-group__title {
+  margin: 0 0 0.35rem;
+  padding-inline-start: 0.7rem;
+  color: var(--ink-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nav-list,
+.nav-games__list,
+.nav-games__games {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-games {
+  margin-top: 0.3rem;
+}
+
+.nav-games__summary {
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+  color: var(--ink-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.nav-games__list {
+  margin-top: 0.2rem;
+}
+
+.nav-games__area + .nav-games__area {
+  margin-top: 0.45rem;
+}
+
+.nav-games__area-name {
+  margin: 0 0 0.15rem;
+  padding-inline-start: 0.7rem;
+  color: var(--ink-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.nav-games__link {
+  display: flex;
+  gap: 0.45rem;
+  padding: 0.2rem 0.7rem 0.2rem 1.15rem;
+  color: var(--ink);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  text-decoration: none;
+  border-inline-start: 2px solid transparent;
+}
+
+.nav-games__link:hover {
+  background: var(--paper-soft);
+}
+
+.nav-games__link.is-active {
+  border-inline-start-color: var(--focus);
+  background: var(--green-50);
+  font-weight: 600;
+}
+
+.nav-games__number {
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------- página de um jogo */
+
+.game-back {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.game-area-label {
+  margin: 0.15rem 0 1rem;
+  color: var(--ink-muted);
+}
+
+.game-meta {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.2rem 0.8rem;
+  margin: 0 0 1.25rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--paper-soft);
+  font-size: 0.92rem;
+}
+
+.game-meta dt {
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.game-meta dd {
+  margin: 0;
+}
+
+.game-detail {
+  border: 1px solid var(--line);
+  padding: 1rem 1.1rem;
+}
+
+.progress-block--standalone {
+  margin-top: 1.5rem;
+  padding-top: 1.1rem;
+  border-top: 2px solid var(--line-strong);
+}
+
+.progress-block--standalone h2 {
+  margin: 0 0 0.3rem;
+  font-size: 1.1rem;
+}
+
+/* ------------------------------------------- jogos: ações e Progresso Pessoal */
+
+.activity-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin: 0.9rem 0 0;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--line);
+}
+
+.activity-action {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.activity-action:hover,
+.activity-action:focus-visible {
+  text-decoration: underline;
+}
+
+.progress-block {
+  margin-top: 1.1rem;
+  padding-top: 0.9rem;
+  border-top: 1px dashed var(--line);
+}
+
+.progress-hint {
+  margin: 0.25rem 0 0.7rem;
+  color: var(--ink-muted);
+  font-size: 0.86rem;
+}
+
+.progress-sections,
+.progress-trilhos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.progress-sections {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.progress-section__details {
+  /* A barra lateral carrega a cor da Secção; o texto mantém a cor do tema. */
+  border-inline-start: 4px solid var(--line-strong);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--paper-soft);
+  padding: 0.5rem 0.7rem;
+}
+
+/* A cor é escolhida por índice de Secção, não pelo valor bruto da folha, para
+   que cada tema use o tom com contraste adequado. */
+.progress-section[data-section-index] .progress-section__details {
+  border-inline-start-color: var(--progress-1-accent);
+}
+
+.progress-section[data-section-index="2"] .progress-section__details {
+  border-inline-start-color: var(--progress-2-accent);
+}
+
+.progress-section[data-section-index="3"] .progress-section__details {
+  border-inline-start-color: var(--progress-3-accent);
+}
+
+.progress-section[data-section-index="4"] .progress-section__details {
+  border-inline-start-color: var(--progress-4-accent);
+}
+
+.progress-section[data-section-index] .progress-section__dot {
+  background: var(--progress-1-accent);
+}
+
+.progress-section[data-section-index="2"] .progress-section__dot {
+  background: var(--progress-2-accent);
+}
+
+.progress-section[data-section-index="3"] .progress-section__dot {
+  background: var(--progress-3-accent);
+}
+
+.progress-section[data-section-index="4"] .progress-section__dot {
+  background: var(--progress-4-accent);
+}
+
+.progress-section__summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.6rem;
+  cursor: pointer;
+  font-size: 0.94rem;
+}
+
+.progress-section__summary::marker {
+  color: var(--ink-muted);
+}
+
+.progress-section__dot {
+  inline-size: 0.7rem;
+  block-size: 0.7rem;
+  border-radius: 50%;
+  background: var(--progress-accent, var(--line-strong));
+  flex: none;
+}
+
+.progress-section__branch {
+  color: var(--ink-muted);
+}
+
+.progress-section__count {
+  margin-inline-start: auto;
+  color: var(--ink-muted);
+  font-size: 0.82rem;
+}
+
+.progress-section__panel {
+  margin-top: 0.6rem;
+  padding-inline-start: 0.2rem;
+}
+
+.progress-area + .progress-area {
+  margin-top: 0.7rem;
+}
+
+.progress-area__name {
+  margin: 0 0 0.25rem;
+  font-size: 0.88rem;
+  letter-spacing: 0.01em;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+}
+
+.progress-trilhos {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.progress-trilho > .progress-trilho__details {
+  border-inline-start: 2px solid var(--line-strong);
+  padding-inline-start: 0.55rem;
+}
+
+.progress-trilho__summary {
+  cursor: pointer;
+  font-size: 0.92rem;
+}
+
+.progress-trilho__descriptors {
+  margin: 0.4rem 0 0.2rem;
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.86rem;
+}
+
+.progress-trilho__descriptors dt {
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.progress-trilho__descriptors dd {
+  margin: 0;
+}
+
+.progress-trilho__descriptors ul {
+  margin: 0;
+  padding-inline-start: 1.1rem;
+}
+
+.progress-note {
+  margin: 0.7rem 0 0;
+  padding: 0.4rem 0.55rem;
+  border-radius: var(--radius-sm);
+  background: var(--amber-100);
+  color: var(--ink);
+  font-size: 0.86rem;
+}
+
+.progress-reference {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-size: 0.86rem;
+}
+
+@media print {
+  /* Na impressão o Progresso Pessoal aparece por inteiro: um dirigente tem de
+     conseguir levá-lo em papel sem perder informação. */
+  .progress-section__details,
+  .progress-trilho > .progress-trilho__details {
+    break-inside: avoid;
+  }
+
+  .progress-section__details > .progress-section__panel,
+  .progress-trilho__descriptors {
+    display: block !important;
+  }
+
+  .progress-trilho__details:not([open]) .progress-trilho__descriptors {
+    display: block !important;
+  }
+
+  .activity-actions {
+    display: none;
   }
 }
 

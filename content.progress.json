@@ -1,0 +1,786 @@
+{
+  "$comment": "Progresso Pessoal por jogo. Preenchido à mão por um dirigente: a folha do CNE só diz quais são os trilhos, não quais se aplicam a cada jogo. Este mapeamento é uma PROPOSTA inicial feita a partir das descrições dos trilhos e deve ser revisto antes de usado. Use `npm run progress:keys` para ver todos os valores válidos.",
+  "version": 1,
+  "sections": {
+    "1Sec": {
+      "1": {
+        "trilhos": [
+          "afetivo-equilibrio-emocional",
+          "afetivo-autoestima",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "2": {
+        "trilhos": [
+          "fisico-desempenho",
+          "social-exercer-ativamente-cidadania",
+          "carater-coerencia"
+        ]
+      },
+      "3": {
+        "trilhos": [
+          "intelectual-criatividade-e-expressao",
+          "social-exercer-ativamente-cidadania",
+          "carater-autonomia"
+        ]
+      },
+      "4": {
+        "trilhos": [
+          "afetivo-equilibrio-emocional",
+          "social-interacao-e-cooperacao"
+        ]
+      },
+      "5": {
+        "trilhos": [
+          "social-interacao-e-cooperacao",
+          "social-solidariedade-e-tolerancia",
+          "espiritual-descoberta"
+        ]
+      },
+      "6": {
+        "trilhos": [
+          "fisico-desempenho",
+          "fisico-bem-estar-fisico"
+        ]
+      },
+      "7": {
+        "trilhos": [
+          "intelectual-resolucao-de-problemas",
+          "carater-responsabilidade"
+        ]
+      },
+      "8": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "carater-coerencia",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "9": {
+        "trilhos": [
+          "intelectual-resolucao-de-problemas",
+          "espiritual-servico"
+        ]
+      },
+      "10": {
+        "trilhos": [
+          "fisico-desempenho",
+          "espiritual-servico",
+          "intelectual-criatividade-e-expressao"
+        ]
+      },
+      "11": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "intelectual-criatividade-e-expressao"
+        ]
+      },
+      "12": {
+        "trilhos": [
+          "intelectual-resolucao-de-problemas",
+          "intelectual-procura-de-conhecimento",
+          "carater-autonomia"
+        ]
+      },
+      "13": {
+        "trilhos": [
+          "intelectual-resolucao-de-problemas",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "14": {
+        "trilhos": [
+          "intelectual-criatividade-e-expressao",
+          "carater-autonomia"
+        ]
+      },
+      "15": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "social-exercer-ativamente-cidadania",
+          "social-solidariedade-e-tolerancia",
+          "afetivo-equilibrio-emocional"
+        ]
+      },
+      "16": {
+        "trilhos": [
+          "afetivo-equilibrio-emocional",
+          "social-solidariedade-e-tolerancia"
+        ]
+      },
+      "17": {
+        "trilhos": [
+          "carater-autonomia",
+          "carater-responsabilidade",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "18": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "intelectual-resolucao-de-problemas"
+        ]
+      },
+      "19": {
+        "trilhos": [
+          "espiritual-aprofundamento",
+          "carater-coerencia"
+        ]
+      },
+      "20": {
+        "trilhos": [
+          "espiritual-descoberta",
+          "afetivo-relacionamento-e-sensibilidade"
+        ]
+      },
+      "21": {
+        "trilhos": [
+          "espiritual-aprofundamento",
+          "intelectual-criatividade-e-expressao"
+        ]
+      },
+      "22": {
+        "trilhos": [
+          "carater-coerencia",
+          "carater-autonomia",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "23": {
+        "trilhos": [
+          "intelectual-procura-de-conhecimento",
+          "carater-responsabilidade"
+        ]
+      },
+      "24": {
+        "trilhos": [
+          "afetivo-relacionamento-e-sensibilidade",
+          "social-interacao-e-cooperacao"
+        ]
+      },
+      "25": {
+        "trilhos": [
+          "intelectual-procura-de-conhecimento",
+          "social-interacao-e-cooperacao"
+        ]
+      },
+      "26": {
+        "trilhos": [
+          "social-interacao-e-cooperacao",
+          "carater-coerencia"
+        ]
+      },
+      "27": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "intelectual-resolucao-de-problemas"
+        ]
+      },
+      "28": {
+        "trilhos": [
+          "intelectual-criatividade-e-expressao",
+          "social-interacao-e-cooperacao"
+        ]
+      },
+      "29": {
+        "trilhos": [
+          "intelectual-procura-de-conhecimento",
+          "espiritual-descoberta"
+        ]
+      },
+      "30": {
+        "trilhos": [
+          "social-exercer-ativamente-cidadania",
+          "social-interacao-e-cooperacao",
+          "carater-responsabilidade",
+          "afetivo-relacionamento-e-sensibilidade"
+        ]
+      }
+    },
+    "2Sec": {
+      "1": {
+        "trilhos": [
+          "afetivo-equilibrio-emocional",
+          "afetivo-autoestima",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "2": {
+        "trilhos": [
+          "fisico-desempenho",
+          "social-exercer-ativamente-cidadania",
+          "carater-coerencia"
+        ]
+      },
+      "3": {
+        "trilhos": [
+          "intelectual-criatividade-e-expressao",
+          "social-exercer-ativamente-cidadania",
+          "carater-autonomia"
+        ]
+      },
+      "4": {
+        "trilhos": [
+          "afetivo-equilibrio-emocional",
+          "social-interacao-e-cooperacao"
+        ]
+      },
+      "5": {
+        "trilhos": [
+          "social-interacao-e-cooperacao",
+          "social-solidariedade-e-tolerancia",
+          "espiritual-descoberta"
+        ]
+      },
+      "6": {
+        "trilhos": [
+          "fisico-desempenho",
+          "fisico-bem-estar-fisico"
+        ]
+      },
+      "7": {
+        "trilhos": [
+          "intelectual-resolucao-de-problemas",
+          "carater-responsabilidade"
+        ]
+      },
+      "8": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "carater-coerencia",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "9": {
+        "trilhos": [
+          "intelectual-resolucao-de-problemas",
+          "espiritual-servico"
+        ]
+      },
+      "10": {
+        "trilhos": [
+          "fisico-desempenho",
+          "espiritual-servico",
+          "intelectual-criatividade-e-expressao"
+        ]
+      },
+      "11": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "intelectual-criatividade-e-expressao"
+        ]
+      },
+      "12": {
+        "trilhos": [
+          "intelectual-resolucao-de-problemas",
+          "intelectual-procura-de-conhecimento",
+          "carater-autonomia"
+        ]
+      },
+      "13": {
+        "trilhos": [
+          "intelectual-resolucao-de-problemas",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "14": {
+        "trilhos": [
+          "intelectual-criatividade-e-expressao",
+          "carater-autonomia"
+        ]
+      },
+      "15": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "social-exercer-ativamente-cidadania",
+          "social-solidariedade-e-tolerancia",
+          "afetivo-equilibrio-emocional"
+        ]
+      },
+      "16": {
+        "trilhos": [
+          "afetivo-equilibrio-emocional",
+          "social-solidariedade-e-tolerancia"
+        ]
+      },
+      "17": {
+        "trilhos": [
+          "carater-autonomia",
+          "carater-responsabilidade",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "18": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "intelectual-resolucao-de-problemas"
+        ]
+      },
+      "19": {
+        "trilhos": [
+          "espiritual-aprofundamento",
+          "carater-coerencia"
+        ]
+      },
+      "20": {
+        "trilhos": [
+          "espiritual-descoberta",
+          "afetivo-relacionamento-e-sensibilidade"
+        ]
+      },
+      "21": {
+        "trilhos": [
+          "espiritual-aprofundamento",
+          "intelectual-criatividade-e-expressao"
+        ]
+      },
+      "22": {
+        "trilhos": [
+          "carater-coerencia",
+          "carater-autonomia",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "23": {
+        "trilhos": [
+          "intelectual-procura-de-conhecimento",
+          "carater-responsabilidade"
+        ]
+      },
+      "24": {
+        "trilhos": [
+          "afetivo-relacionamento-e-sensibilidade",
+          "social-interacao-e-cooperacao"
+        ]
+      },
+      "25": {
+        "trilhos": [
+          "intelectual-procura-de-conhecimento",
+          "social-interacao-e-cooperacao"
+        ]
+      },
+      "26": {
+        "trilhos": [
+          "social-interacao-e-cooperacao",
+          "carater-coerencia"
+        ]
+      },
+      "27": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "intelectual-resolucao-de-problemas"
+        ]
+      },
+      "28": {
+        "trilhos": [
+          "intelectual-criatividade-e-expressao",
+          "social-interacao-e-cooperacao"
+        ]
+      },
+      "29": {
+        "trilhos": [
+          "intelectual-procura-de-conhecimento",
+          "espiritual-descoberta"
+        ]
+      },
+      "30": {
+        "trilhos": [
+          "social-exercer-ativamente-cidadania",
+          "social-interacao-e-cooperacao",
+          "carater-responsabilidade",
+          "afetivo-relacionamento-e-sensibilidade"
+        ]
+      }
+    },
+    "3Sec": {
+      "1": {
+        "trilhos": [
+          "afetivo-equilibrio-emocional",
+          "afetivo-autoestima",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "2": {
+        "trilhos": [
+          "fisico-desempenho",
+          "social-exercer-ativamente-cidadania",
+          "carater-coerencia"
+        ]
+      },
+      "3": {
+        "trilhos": [
+          "intelectual-criatividade-e-expressao",
+          "social-exercer-ativamente-cidadania",
+          "carater-autonomia"
+        ]
+      },
+      "4": {
+        "trilhos": [
+          "afetivo-equilibrio-emocional",
+          "social-interacao-e-cooperacao"
+        ]
+      },
+      "5": {
+        "trilhos": [
+          "social-interacao-e-cooperacao",
+          "social-solidariedade-e-tolerancia",
+          "espiritual-descoberta"
+        ]
+      },
+      "6": {
+        "trilhos": [
+          "fisico-desempenho",
+          "fisico-bem-estar-fisico"
+        ]
+      },
+      "7": {
+        "trilhos": [
+          "intelectual-resolucao-de-problemas",
+          "carater-responsabilidade"
+        ]
+      },
+      "8": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "carater-coerencia",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "9": {
+        "trilhos": [
+          "intelectual-resolucao-de-problemas",
+          "espiritual-servico"
+        ]
+      },
+      "10": {
+        "trilhos": [
+          "fisico-desempenho",
+          "espiritual-servico",
+          "intelectual-criatividade-e-expressao"
+        ]
+      },
+      "11": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "intelectual-criatividade-e-expressao"
+        ]
+      },
+      "12": {
+        "trilhos": [
+          "intelectual-resolucao-de-problemas",
+          "intelectual-procura-de-conhecimento",
+          "carater-autonomia"
+        ]
+      },
+      "13": {
+        "trilhos": [
+          "intelectual-resolucao-de-problemas",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "14": {
+        "trilhos": [
+          "intelectual-criatividade-e-expressao",
+          "carater-autonomia"
+        ]
+      },
+      "15": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "social-exercer-ativamente-cidadania",
+          "social-solidariedade-e-tolerancia",
+          "afetivo-equilibrio-emocional"
+        ]
+      },
+      "16": {
+        "trilhos": [
+          "afetivo-equilibrio-emocional",
+          "social-solidariedade-e-tolerancia"
+        ]
+      },
+      "17": {
+        "trilhos": [
+          "carater-autonomia",
+          "carater-responsabilidade",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "18": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "intelectual-resolucao-de-problemas"
+        ]
+      },
+      "19": {
+        "trilhos": [
+          "espiritual-aprofundamento",
+          "carater-coerencia"
+        ]
+      },
+      "20": {
+        "trilhos": [
+          "espiritual-descoberta",
+          "afetivo-relacionamento-e-sensibilidade"
+        ]
+      },
+      "21": {
+        "trilhos": [
+          "espiritual-aprofundamento",
+          "intelectual-criatividade-e-expressao"
+        ]
+      },
+      "22": {
+        "trilhos": [
+          "carater-coerencia",
+          "carater-autonomia",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "23": {
+        "trilhos": [
+          "intelectual-procura-de-conhecimento",
+          "carater-responsabilidade"
+        ]
+      },
+      "24": {
+        "trilhos": [
+          "afetivo-relacionamento-e-sensibilidade",
+          "social-interacao-e-cooperacao"
+        ]
+      },
+      "25": {
+        "trilhos": [
+          "intelectual-procura-de-conhecimento",
+          "social-interacao-e-cooperacao"
+        ]
+      },
+      "26": {
+        "trilhos": [
+          "social-interacao-e-cooperacao",
+          "carater-coerencia"
+        ]
+      },
+      "27": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "intelectual-resolucao-de-problemas"
+        ]
+      },
+      "28": {
+        "trilhos": [
+          "intelectual-criatividade-e-expressao",
+          "social-interacao-e-cooperacao"
+        ]
+      },
+      "29": {
+        "trilhos": [
+          "intelectual-procura-de-conhecimento",
+          "espiritual-descoberta"
+        ]
+      },
+      "30": {
+        "trilhos": [
+          "social-exercer-ativamente-cidadania",
+          "social-interacao-e-cooperacao",
+          "carater-responsabilidade",
+          "afetivo-relacionamento-e-sensibilidade"
+        ]
+      }
+    },
+    "4Sec": {
+      "1": {
+        "trilhos": [
+          "afetivo-equilibrio-emocional",
+          "afetivo-autoestima",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "2": {
+        "trilhos": [
+          "fisico-desempenho",
+          "social-exercer-ativamente-cidadania",
+          "carater-coerencia"
+        ]
+      },
+      "3": {
+        "trilhos": [
+          "intelectual-criatividade-e-expressao",
+          "social-exercer-ativamente-cidadania",
+          "carater-autonomia"
+        ]
+      },
+      "4": {
+        "trilhos": [
+          "afetivo-equilibrio-emocional",
+          "social-interacao-e-cooperacao"
+        ]
+      },
+      "5": {
+        "trilhos": [
+          "social-interacao-e-cooperacao",
+          "social-solidariedade-e-tolerancia",
+          "espiritual-descoberta"
+        ]
+      },
+      "6": {
+        "trilhos": [
+          "fisico-desempenho",
+          "fisico-bem-estar-fisico"
+        ]
+      },
+      "7": {
+        "trilhos": [
+          "intelectual-resolucao-de-problemas",
+          "carater-responsabilidade"
+        ]
+      },
+      "8": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "carater-coerencia",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "9": {
+        "trilhos": [
+          "intelectual-resolucao-de-problemas",
+          "espiritual-servico"
+        ]
+      },
+      "10": {
+        "trilhos": [
+          "fisico-desempenho",
+          "espiritual-servico",
+          "intelectual-criatividade-e-expressao"
+        ]
+      },
+      "11": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "intelectual-criatividade-e-expressao"
+        ]
+      },
+      "12": {
+        "trilhos": [
+          "intelectual-resolucao-de-problemas",
+          "intelectual-procura-de-conhecimento",
+          "carater-autonomia"
+        ]
+      },
+      "13": {
+        "trilhos": [
+          "intelectual-resolucao-de-problemas",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "14": {
+        "trilhos": [
+          "intelectual-criatividade-e-expressao",
+          "carater-autonomia"
+        ]
+      },
+      "15": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "social-exercer-ativamente-cidadania",
+          "social-solidariedade-e-tolerancia",
+          "afetivo-equilibrio-emocional"
+        ]
+      },
+      "16": {
+        "trilhos": [
+          "afetivo-equilibrio-emocional",
+          "social-solidariedade-e-tolerancia"
+        ]
+      },
+      "17": {
+        "trilhos": [
+          "carater-autonomia",
+          "carater-responsabilidade",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "18": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "intelectual-resolucao-de-problemas"
+        ]
+      },
+      "19": {
+        "trilhos": [
+          "espiritual-aprofundamento",
+          "carater-coerencia"
+        ]
+      },
+      "20": {
+        "trilhos": [
+          "espiritual-descoberta",
+          "afetivo-relacionamento-e-sensibilidade"
+        ]
+      },
+      "21": {
+        "trilhos": [
+          "espiritual-aprofundamento",
+          "intelectual-criatividade-e-expressao"
+        ]
+      },
+      "22": {
+        "trilhos": [
+          "carater-coerencia",
+          "carater-autonomia",
+          "social-exercer-ativamente-cidadania"
+        ]
+      },
+      "23": {
+        "trilhos": [
+          "intelectual-procura-de-conhecimento",
+          "carater-responsabilidade"
+        ]
+      },
+      "24": {
+        "trilhos": [
+          "afetivo-relacionamento-e-sensibilidade",
+          "social-interacao-e-cooperacao"
+        ]
+      },
+      "25": {
+        "trilhos": [
+          "intelectual-procura-de-conhecimento",
+          "social-interacao-e-cooperacao"
+        ]
+      },
+      "26": {
+        "trilhos": [
+          "social-interacao-e-cooperacao",
+          "carater-coerencia"
+        ]
+      },
+      "27": {
+        "trilhos": [
+          "carater-responsabilidade",
+          "intelectual-resolucao-de-problemas"
+        ]
+      },
+      "28": {
+        "trilhos": [
+          "intelectual-criatividade-e-expressao",
+          "social-interacao-e-cooperacao"
+        ]
+      },
+      "29": {
+        "trilhos": [
+          "intelectual-procura-de-conhecimento",
+          "espiritual-descoberta"
+        ]
+      },
+      "30": {
+        "trilhos": [
+          "social-exercer-ativamente-cidadania",
+          "social-interacao-e-cooperacao",
+          "carater-responsabilidade",
+          "afetivo-relacionamento-e-sensibilidade"
+        ]
+      }
+    }
+  }
+}

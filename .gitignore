@@ -2,6 +2,16 @@
 node_modules/
 dist/
 coverage/
+.venv/
+__pycache__/
+*.pyc
+
+# Relatórios de construção: têm timestamp e não interessam ao versionamento.
+# Os artefactos que o site consome (progress-taxonomy.json, template-schema.json)
+# são gerados, mas versionados de propósito, para que o build funcione sem rede.
+build/*
+!build/progress-taxonomy.json
+!build/template-schema.json
 
 # Local logs and editor/OS files
 *.log

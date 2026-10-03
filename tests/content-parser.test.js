@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { beforeAll, describe, expect, it } from 'vitest';
-import { CHAPTER7_AREAS, CHAPTER8_RESOURCES, ECONOMICS_TABLE } from '../src/content/source-map.js';
+import { CHAPTER7_AREAS, ECONOMICS_TABLE } from '../src/content/source-map.js';
 import { parseDocument, validateParsedDocument } from '../src/content/parser.js';
 
 const source = readFileSync('file.md', 'utf8');
@@ -12,8 +12,17 @@ beforeAll(() => {
 
 describe('modelo de conteúdo sem perdas', () => {
   it('reproduz todos os caracteres e offsets por uma única vez', () => {
-    expect(model.nodes.map((node) => node.sourceText).join('')).toBe(source);
-    expect(model.nodes.reduce((total, node) => total + node.sourceText.length, 0)).toBe(source.length);
+    // Nós e trechos excluídos, pela ordem na fonte, devolvem a fonte inteira:
+    // o Capítulo 8 não é publicado, mas também não se perde nada.
+    const segments = [
+      ...model.nodes.map((node) => ({ start: node.sourceOffset, text: node.sourceText })),
+      ...model.excluded.map((range) => ({ start: range.start, text: source.slice(range.start, range.end) })),
+    ].sort((a, b) => a.start - b.start);
+
+    expect(segments.map((segment) => segment.text).join('')).toBe(source);
+    expect(
+      segments.reduce((total, segment) => total + segment.text.length, 0),
+    ).toBe(source.length);
     expect(validateParsedDocument(model)).toEqual([]);
     expect(model.stats).toMatchObject({
       sourceCharacters: 30_100,
@@ -26,7 +35,7 @@ describe('modelo de conteúdo sem perdas', () => {
     });
   });
 
-  it('mantém a ordem das doze rotas', () => {
+  it('mantém a ordem das onze rotas publicadas', () => {
     expect(model.routes.map((route) => route.id)).toEqual([
       'inicio',
       'glossario',
@@ -38,9 +47,27 @@ describe('modelo de conteúdo sem perdas', () => {
       'capitulo-5',
       'capitulo-6',
       'capitulo-7',
-      'capitulo-8',
       'referencias',
     ]);
+  });
+
+  it('retira o Capítulo 8 do modelo e da fonte publicada', () => {
+    // O capítulo é cortado da fonte na fronteira do Capítulo 7.
+    expect(model.excluded).toHaveLength(1);
+    const [excluded] = model.excluded;
+    expect(source.slice(excluded.start, excluded.end)).toContain('Espaço Influencers');
+
+    // Nenhum nó publicado pode estar dentro do capítulo excluído, nem ser de um
+    // tipo que só ele produz.
+    const insideExcluded = model.nodes.filter(
+      (node) => node.sourceOffset >= excluded.start && node.sourceOffset < excluded.end,
+    );
+    expect(insideExcluded).toEqual([]);
+    expect(model.nodes.some((node) => node.kind === 'resource-group')).toBe(false);
+
+    // A rota `capitulo-7` termina onde o capítulo excluído começa.
+    const chapter7 = model.routeMap.get('capitulo-7');
+    expect(chapter7.sourceEnd).toBe(excluded.start);
   });
 
   it('recupera os 19 termos do glossário em três grupos', () => {
@@ -84,11 +111,7 @@ describe('modelo de conteúdo sem perdas', () => {
     });
   });
 
-  it('mantém os cinco grupos de recursos e os dois domínios', () => {
-    const areas = model.nodes.filter((node) => node.kind === 'resource-area-heading');
-    const groups = model.nodes.filter((node) => node.kind === 'resource-group');
-    expect(areas.map((node) => node.data.title)).toEqual(CHAPTER8_RESOURCES.map((area) => area.title));
-    expect(groups.map((node) => node.data.title)).toEqual(CHAPTER8_RESOURCES.flatMap((area) => area.groups));
+  it('mantém os dois domínios das ferramentas', () => {
     expect(source).toContain('ods.pt');
     expect(source).toContain('footprintcalculator.org');
   });

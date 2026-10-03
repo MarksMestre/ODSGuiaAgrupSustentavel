@@ -1,0 +1,1618 @@
+{
+  "$generated": "NÃO EDITAR — gerado por `npm run progress:refresh`. Edite content.progress.json, não este ficheiro.",
+  "source": {
+    "spreadsheetId": "1RHOm4LJZ0mtMH6yp_9ou5DnDK4uqn7MMJBQXRiBvWrg",
+    "url": "https://docs.google.com/spreadsheets/d/1RHOm4LJZ0mtMH6yp_9ou5DnDK4uqn7MMJBQXRiBvWrg/edit",
+    "endpoint": "https://docs.google.com/spreadsheets/d/{spreadsheetId}/gviz/tq?tqx=out:csv&sheet={tab}",
+    "fetchedAt": "2026-10-03T18:26:43Z",
+    "sha256": {
+      "1Sec": "e556935807e8fb049ff92b3da4b6ca5d4834ba61ac7cf4813e349359bdbc3ddc",
+      "2Sec": "d81f7dfe67617c623eafe0aa7c29f4b47830062a4931309de102fc67da850918",
+      "3Sec": "6fbc365b28dee1fb9f08f2f518d2f47e6734aa2c8d217bb83aadae9b63206cbd",
+      "4Sec": "4707857b2305bf6652be9485fb54f1c67b8fc876b261d2d9ca9d0469c016f0a1"
+    }
+  },
+  "sections": {
+    "1Sec": {
+      "label": "I Secção",
+      "branch": "Lobitos",
+      "ages": "6–10",
+      "color": "#FDD400",
+      "ink": "#1a1a1a",
+      "referenceUrl": "https://drive.google.com/file/d/129ouD67XuatPjxL6gdPBVrNkHUVX_3LS/view",
+      "areas": [
+        {
+          "key": "fisico",
+          "name": "Físico",
+          "trilhos": [
+            {
+              "key": "fisico-desempenho",
+              "name": "Desempenho",
+              "attitudes": [
+                "Saúde",
+                "Atividade física"
+              ],
+              "questions": [
+                "Gosta de correr, saltar, dançar, testar a sua força ou flexibilidade, nadar, ou caminhar?",
+                "Reage bem ao esforço físico, e sem desistir de imediato?",
+                "Faz parte de algum grupo desportivo?"
+              ],
+              "observations": [
+                "Desembaraça-se bem fisicamente.",
+                "Mostra boa frescura e resistência físicas, próprias para a idade.",
+                "Pratica uma modalidade com dedicação e entusiasmo."
+              ]
+            },
+            {
+              "key": "fisico-autoconhecimento",
+              "name": "Autoconhecimento",
+              "attitudes": [
+                "Conhecer",
+                "Aceitar",
+                "Respeitar",
+                "Corpo"
+              ],
+              "questions": [
+                "Conhece os órgãos do corpo humano e sabe para que servem?",
+                "• Tem uma doença crónica e sabe os cuidados a ter com a sua própria condição?",
+                "Sabe quais são as principais mudanças que estão a ocorrer no seu corpo?",
+                "Sabe as principais diferenças entre os rapazes e as raparigas?"
+              ],
+              "observations": [
+                "Revela hábitos de superação sobre os problemas físicos ou limitações próprios.",
+                "Tem noção das principais dores e sabe o que poderão significar.",
+                "Não reage com estranheza perante as mudanças físicas próprias.",
+                "Distingue com facilidade as diferenças entre rapazes e raparigas."
+              ]
+            },
+            {
+              "key": "fisico-bem-estar-fisico",
+              "name": "Bem-estar físico",
+              "attitudes": [
+                "Alimentação equilibrada",
+                "Descanso",
+                "Higiene",
+                "Saúde",
+                "Hábitos saudáveis",
+                "Prevenção"
+              ],
+              "questions": [
+                "Sabe e escolhe os alimentos mais indicados?",
+                "Tem noção das quantidades?",
+                "Descansa pelo menos 8 horas diárias?",
+                "Sabe quando deve lavar os dentes e a cara e mudar a roupa interior e fá-lo sem ajuda?",
+                "Conhece e pratica cuidados básicos para evitar acidentes ou doenças?",
+                "Sabe as consequências do fumo e de outros produtos prejudiciais?"
+              ],
+              "observations": [
+                "Alimenta-se equilibradamente.",
+                "Descansa o suficiente.",
+                "Apresenta-se motivado e enérgico em atividade.",
+                "Revela aprumo e asseio."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "afetivo",
+          "name": "Afetivo",
+          "trilhos": [
+            {
+              "key": "afetivo-relacionamento-e-sensibilidade",
+              "name": "Relacionamento e sensibilidade",
+              "attitudes": [
+                "Participativo",
+                "Amigo",
+                "Valorizar relações",
+                "Conhecer sentimentos"
+              ],
+              "questions": [
+                "Fala abertamente com todos? Faz amizades dentro e fora da Alcateia?",
+                "Demonstra afeto e obediência, dentro e fora do âmbito familiar?",
+                "Sabe e revela o que gosta e o que não gosta, com determinação e respeito?",
+                "Compreende as diferenças entre uns e outros e reage de acordo com essas diferenças?"
+              ],
+              "observations": [
+                "Não se isola e diverte-se entre os seus parceiros.",
+                "Obedece prontamente e demonstra afeto para com aqueles de que mais gosta.",
+                "Os seus gostos são explícitos.",
+                "Adapta o seu comportamento, de acordo com o contexto."
+              ]
+            },
+            {
+              "key": "afetivo-equilibrio-emocional",
+              "name": "Equilibrio emocional",
+              "attitudes": [
+                "Respeitar",
+                "Expressar sentimentos"
+              ],
+              "questions": [
+                "Revela os sentimentos de modo espontâneo e verdadeiro?",
+                "É capaz de falar sobre os seus próprios sentimentos?",
+                "É capaz de controlar as suas emoções em prol do bem-estar dos outros?"
+              ],
+              "observations": [
+                "Demonstra os afetos genuinamente.",
+                "Fala sobre os seus sentimentos."
+              ]
+            },
+            {
+              "key": "afetivo-autoestima",
+              "name": "Autoestima",
+              "attitudes": [
+                "Autoconsciência",
+                "Corrigir erros",
+                "Valorização pessoal",
+                "Melhorar (ser melhor)"
+              ],
+              "questions": [
+                "Reconhece algumas das suas qualidades e alguns dos seus defeitos?",
+                "Sabe que pode melhorar os seus defeitos e esforça-se para isso?",
+                "Procura desvalorizar os seus medos?",
+                "Acredita em si e ajuda os outros a superarem-se?"
+              ],
+              "observations": [
+                "Identifica e corrige os seus próprios defeitos.",
+                "Enfrenta os próprios medos e receios.",
+                "Procura apontar os erros dos outros, ajudando-os a corrigi-los."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "carater",
+          "name": "Caráter",
+          "trilhos": [
+            {
+              "key": "carater-autonomia",
+              "name": "Autonomia",
+              "attitudes": [
+                "Autonomia",
+                "Tomar decisões"
+              ],
+              "questions": [
+                "Gosta de abordar a Lei e as Máximas, na Alcateia, e sabe aplicá-las no seu dia-a-dia?",
+                "Reconhece os erros quando os comete? É capaz de se avaliar negativa e positivamente?",
+                "Valoriza os conselhos dos outros, sobretudo os dos mais velhos?",
+                "Escolhe umas atividades em detrimento de outras e é capaz de justificar essa escolha?"
+              ],
+              "observations": [
+                "Pede ajuda apenas quando se verifica ser mesmo necessário.",
+                "Segue os conselhos, dos pais, chefes, professores...",
+                "Toma decisões e justifica-as."
+              ]
+            },
+            {
+              "key": "carater-responsabilidade",
+              "name": "Responsabilidade",
+              "attitudes": [
+                "Empenho",
+                "Persistência"
+              ],
+              "questions": [
+                "Dedica-se prontamente às tarefas que lhe foram incumbidas, mesmo as que menos gosta?",
+                "Mostra empenho pelo seu cargo, no Bando?",
+                "Demonstra boa disposição nos momentos mais difíceis, ajudando os outros?",
+                "Tem noção de que pode influenciar os outros, através de palavras e ações?"
+              ],
+              "observations": [
+                "Não desanima numa tarefa atribuída aleatoriamente.",
+                "Desempenha bem o seu cargo.",
+                "Apercebe-se dos momentos difíceis, mas não desanima."
+              ]
+            },
+            {
+              "key": "carater-coerencia",
+              "name": "Coerência",
+              "attitudes": [
+                "Defender ideias",
+                "Convicção"
+              ],
+              "questions": [
+                "Na escolha da Caçada (por exemplo), dá a sua opinião, esperando pela sua vez de falar e sem ferir suscetibilidades? Fá-lo de acordo com o que pensou antes?",
+                "Recusa-se a alinhar em maus comportamentos, à primeira oportunidade?",
+                "As suas atitudes de bom comportamento estão de acordo com a Lei e as Máximas, sendo capaz de reconhecer isso mesmo?"
+              ],
+              "observations": [
+                "Respeita a ordem dos momentos e das coisas.",
+                "Não aceita mau comportamento dentro e fora da Alcateia.",
+                "Justifica o seu comportamento com recurso à Lei e Máximas do Lobito."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "espiritual",
+          "name": "Espiritual",
+          "trilhos": [
+            {
+              "key": "espiritual-descoberta",
+              "name": "Descoberta",
+              "attitudes": [
+                "Conhecimento",
+                "Descoberta"
+              ],
+              "questions": [
+                "Conhece a Bíblia? Conhece as figuras de Adão e Eva, Noé, e respetivas histórias?",
+                "Sabe que Jesus é um amigo que está presente na sua vida de forma diferente dos outros?",
+                "Participa ativamente nas celebrações, demonstrando uma atitude positiva?"
+              ],
+              "observations": [
+                "Reconhece a existência de Deus e a forma como Ele criou o mundo.",
+                "Conhece a figura de Jesus e o Seu amor pelas crianças e pelos homens.",
+                "Sabe que todos têm um lugar na Igreja e os papéis que pode desempenhar."
+              ]
+            },
+            {
+              "key": "espiritual-aprofundamento",
+              "name": "Aprofundamento",
+              "attitudes": [
+                "Encontro",
+                "Relação",
+                "Participação",
+                "Oração",
+                "Aprofundamento"
+              ],
+              "questions": [
+                "Sabe o Pai Nosso e a Avé Maria? Reza a Oração do Lobito e demonstra uma atitude genuina?",
+                "Reconhece na figura de Jesus um exemplo a seguir, pelas suas ações e história de vida?",
+                "É capaz de identificar outras religiões que não a sua? Conhece as particularidades da religião católica?"
+              ],
+              "observations": [
+                "Revela alguns hábitos de oração, sabendo que a mesma lhe permite um contacto direto com Jesus.",
+                "Reconhece formas de imitar o comportamento de Jesus e por compreender o que é correto à luz do mesmo.",
+                "Conhece outras religiões e que todos se devem respeitar."
+              ]
+            },
+            {
+              "key": "espiritual-servico",
+              "name": "Serviço",
+              "attitudes": [
+                "(Boa) ação",
+                "Deus na Natureza",
+                "Exemplo"
+              ],
+              "questions": [
+                "É capaz de distinguir o que é da Natureza e o que não é? Identifica casos simples de poluição?",
+                "Fala sobre a amizade que tem com Jesus, em casa, na escola, na Alcateia e na família?",
+                "Diz abertamente aos outros que vai à missa e aos escuteiros?"
+              ],
+              "observations": [
+                "Sabe que a natureza é obra de Deus, contempla-a e tem atitudes de proteção para com a mesma.",
+                "Respeita os outros como seus irmãos.",
+                "Fala abertamente com todos sobre a sua relação com Jesus (escola, catequese, casa, Alcateia, …)."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "intelectual",
+          "name": "Intelectual",
+          "trilhos": [
+            {
+              "key": "intelectual-procura-de-conhecimento",
+              "name": "Procura de conhecimento",
+              "attitudes": [
+                "Conhecer",
+                "Experimentar",
+                "Descobrir"
+              ],
+              "questions": [
+                "Dá ideias ou propõe temas novos?",
+                "Gosta de fazer experiências?",
+                "Tem vontade de saber mais?",
+                "Tem recursos para não se esquecer dos avisos ou tarefas? (por exemplo, utilizando o caderno de caça)",
+                "Faz as escolhas em função do que mais gosta?"
+              ],
+              "observations": [
+                "Não se satisfaz com as mesmas atividades.",
+                "Gosta de jogos e atividades não experimentados antes.",
+                "Entusiasma-se com a novidade de uma técnica ou saber e não desanima na apredizagem."
+              ]
+            },
+            {
+              "key": "intelectual-resolucao-de-problemas",
+              "name": "Resolução de problemas",
+              "attitudes": [
+                "Identificar causas de problemas",
+                "Resolver problemas"
+              ],
+              "questions": [
+                "É desembaraçado e não desiste, perante problemas ou dificuldades?",
+                "Consegue, perante um problema, pensar nas hipóteses de solução e escolher racionalmente uma?",
+                "É capaz de identificar problemas concretos e pertinentes?",
+                "Esforça-se por encontrar soluções?"
+              ],
+              "observations": [
+                "Tenta várias vezes, até conseguir arranjar uma solução.",
+                "Expõe todas as suas dúvidas, sem dificuldade."
+              ]
+            },
+            {
+              "key": "intelectual-criatividade-e-expressao",
+              "name": "Criatividade e expressão",
+              "attitudes": [
+                "Desafio",
+                "Criatividade",
+                "Expressar ideias e emoções"
+              ],
+              "questions": [
+                "Apresenta propostas de forma criativa?",
+                "Demonstra entusiasmo por ideias novas?",
+                "Preocupa-se em expôr as ideias com ordem?"
+              ],
+              "observations": [
+                "Experimenta coisas novas com entusiasmo.",
+                "Conversa com fluidez, lógica e pausadamente."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "social",
+          "name": "Social",
+          "trilhos": [
+            {
+              "key": "social-exercer-ativamente-cidadania",
+              "name": "Exercer ativamente cidadania",
+              "attitudes": [
+                "Ser/Dar exemplo",
+                "Integração",
+                "Responsabilidade"
+              ],
+              "questions": [
+                "Participa nos conselhos da Alcateia, expressando a sua opinião e ouvindo os demais?",
+                "Demonstra a postura adequada a cada momento?",
+                "Encara bem os que têm opinião diferente da sua?",
+                "Aceita quando as suas ideias não vencem e empenha-se, ainda assim, no sucesso da Alcateia?"
+              ],
+              "observations": [
+                "Participa com ordem e respeito.",
+                "Cumprimenta os outros.",
+                "Pensa e abdica das sua as opiniões, quando reconhece valor nas dos outros."
+              ]
+            },
+            {
+              "key": "social-solidariedade-e-tolerancia",
+              "name": "Solidariedade e tolerância",
+              "attitudes": [
+                "Ser útil",
+                "Saber ouvir"
+              ],
+              "questions": [
+                "Está atento às necessidades ou dificuldades dos outros, principalmente os mais novos?",
+                "Tem uma atitude genuina de prática da boa-ação perante as necessidades que encontra?",
+                "Consegue dialogar e argumentar com lealdade com os que têm opinião diferente?"
+              ],
+              "observations": [
+                "Ajuda de bom grado quem tem alguma dificuldade no bando, Alcateia, escola, família.",
+                "Os outros procuram o seu conselho sabendo que está disponivel.",
+                "Complementa quem tem ideias diferentes das suas procurando conciliar os diferentes pontos de vista.",
+                "Procura praticar uma boa-ação diária."
+              ]
+            },
+            {
+              "key": "social-interacao-e-cooperacao",
+              "name": "Interação e cooperação",
+              "attitudes": [
+                "Sistema de Patrulhas",
+                "Vida em Grupo",
+                "Respeito pelos outros"
+              ],
+              "questions": [
+                "Fomenta a agregação, respeito e espírito de amizade no Bando?",
+                "Sabe dialogar e estar, de forma a conseguir trabalhar em Bando?",
+                "Encara sucessos e fracassos como sendo fruto da dinâmica do Bando, a melhorar?",
+                "Demonstra capacidade de liderança?"
+              ],
+              "observations": [
+                "Tem orgulho e brio no seu Bando, não sendo depreciativo com os demais.",
+                "Voluntaria-se rapida e prontamente, quer no Bando, quer na Alcateia.",
+                "Anima o restante Bando, perante os insucessos ou outros motivos de desânimo.",
+                "Sabe liderar em qualquer situação (p.e. desempenho do cargo), respeitando os que estão a seu cuidado."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "2Sec": {
+      "label": "II Secção",
+      "branch": "Exploradores",
+      "ages": "10–14",
+      "color": "#3FA535",
+      "ink": "#ffffff",
+      "referenceUrl": "https://drive.google.com/file/d/1fMmcDEX1T3NxNyYmwOKr52Bm7LaHaDcT/view",
+      "areas": [
+        {
+          "key": "fisico",
+          "name": "Físico",
+          "trilhos": [
+            {
+              "key": "fisico-desempenho",
+              "name": "Desempenho",
+              "attitudes": [
+                "Saúde",
+                "Atividade Física"
+              ],
+              "questions": [
+                "O jovem demonstra gosto pela atividade fisica?",
+                "Procura superar-se, correr mais, saltar mais?"
+              ],
+              "observations": [
+                "Tenta superar-se no jogo em reunião da unidade.",
+                "Empenha-se em atividade físicas, p.ex.º gincanas.",
+                "Pratica empenhadamente um desporto."
+              ]
+            },
+            {
+              "key": "fisico-autoconhecimento",
+              "name": "Autoconhecimento",
+              "attitudes": [
+                "Conhecer",
+                "Aceitar",
+                "Respeitar",
+                "Corpo"
+              ],
+              "questions": [
+                "O jovem apercebe-se e aceita as suas mudanças físicas e dos seus pares, respeitando-os?"
+              ],
+              "observations": [
+                "Aceita facilmente a integração do sexo oposto em jogos e dinâmicas que necessitem de empenho fisico."
+              ]
+            },
+            {
+              "key": "fisico-bem-estar-fisico",
+              "name": "Bem-estar físico",
+              "attitudes": [
+                "Alimentação equilibrada",
+                "Descanso",
+                "Higiene",
+                "Saúde",
+                "Hábitos saudáveis",
+                "Prevenção"
+              ],
+              "questions": [
+                "O jovem demonstra cuidar da sua saúde e bem estar ?"
+              ],
+              "observations": [
+                "Alimenta-se equilibradamente, descansa o suficiente, apresenta-se motivado e enérgico em atividade."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "afetivo",
+          "name": "Afetivo",
+          "trilhos": [
+            {
+              "key": "afetivo-relacionamento-e-sensibilidade",
+              "name": "Relacionamento e sensibilidade",
+              "attitudes": [
+                "Participativo",
+                "Amigo",
+                "Valorizar relações",
+                "Conhecer sentimentos",
+                "Expressar gosto pela arte"
+              ],
+              "questions": [
+                "O jovem valoriza a amizade para se relacionar com os demais?",
+                "O jovem valoriza as suas relações familiares?",
+                "O jovem aceita as diferenças e procura resolver conflitos?",
+                "O jovem expressa-se ou gosta de uma forma de arte como meio de demonstrar sentimentos?"
+              ],
+              "observations": [
+                "O jovem procura preservar a amizade sincera, propondo soluções para resolver conflitos na unidade.",
+                "Reserva tempo para atividade em família e tem gosto nesses momentos.",
+                "Aceita diferentes opiniões e procura a conciliação das mesmas nos debates na Expedição.",
+                "Gosta de desenhar, dançar, representar, tocar ou ouvir música, ver cinema."
+              ]
+            },
+            {
+              "key": "afetivo-equilibrio-emocional",
+              "name": "Equilibrio emocional",
+              "attitudes": [
+                "Respeitar",
+                "Expressar sentimentos"
+              ],
+              "questions": [
+                "O jovem consegue expressar alegria, tristeza, e desagrado de forma equilibrada?",
+                "Aceita os seus sentimentos e os dos outros, de forma natural sem agressividade?"
+              ],
+              "observations": [
+                "Expressa os seus sentimentos livremente, de forma natural e com equilibrio. ( ri , chora, abraça, ).",
+                "Na expressão dos seus sentimentos, não é agressivo com os outros, não os culpando ou queixando-se exclusivamente dos demais."
+              ]
+            },
+            {
+              "key": "afetivo-autoestima",
+              "name": "Autoestima",
+              "attitudes": [
+                "Superar dificuldades",
+                "Corrigir erros",
+                "Autoconsciência",
+                "Melhorar (ser melhor)"
+              ],
+              "questions": [
+                "O jovem consegue reconhecer as suas dificuldades e os erros cometidos?",
+                "Perante o reconhecimento de dificuldades e erros, tem uma atitude positiva de procurar soluções e ajuda de outros por forma a ser melhor?"
+              ],
+              "observations": [
+                "Reconhecimento dos pontos positvos e negativos do seu desempenho na unidade.",
+                "Procura ser melhor em cada novo projeto de forma alegre e equilibrada."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "carater",
+          "name": "Caráter",
+          "trilhos": [
+            {
+              "key": "carater-autonomia",
+              "name": "Autonomia",
+              "attitudes": [
+                "Autonomia",
+                "Tomar e executar decisões"
+              ],
+              "questions": [
+                "O jovem consegue dar a sua opinião ?",
+                "O jovem não é desequilibradamente",
+                "influenciável?",
+                "O jovem procura ser autónomo nas suas tarefas e atividades?"
+              ],
+              "observations": [
+                "Emite as suas opinões em momentos de decisão ou avaliação da unidade.",
+                "Justifica as suas opções com raciocínio lógico e não por influência exclusiva de outros.",
+                "Procura ser autónomo nas suas tarefas não dependedo em excesso dos outros."
+              ]
+            },
+            {
+              "key": "carater-responsabilidade",
+              "name": "Responsabilidade",
+              "attitudes": [
+                "Empenho",
+                "Não desistir",
+                "Persistência"
+              ],
+              "questions": [
+                "O jovem empenha-se nas suas tarefas e cargos?",
+                "O jovem encara as dificuldades e procura ser melhor?",
+                "O jovem é comprometido e sabe que as suas ações e omissões influenciam os outros?"
+              ],
+              "observations": [
+                "É empenhado na unidade, na escola, na família, bem como noutras atividades.",
+                "Não desanima com dificuldades e procura soluções de ajuda.",
+                "Pensa antes de tomar uma atitude."
+              ]
+            },
+            {
+              "key": "carater-coerencia",
+              "name": "Coerência",
+              "attitudes": [
+                "Defender ideias",
+                "Convicção"
+              ],
+              "questions": [
+                "Defende ideias com fundamento no que pensou antes?",
+                "Partilha os seus valores com os demais de acordo com a Lei do Escuta?"
+              ],
+              "observations": [
+                "Tem um comportamento que demonstra esforço no cumprimento da Lei do Escuta.",
+                "Defende os valores da Lei do Escuta, pela sua atitude, perante os demais nas atividades, partilhando o porquê do seu valor."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "espiritual",
+          "name": "Espiritual",
+          "trilhos": [
+            {
+              "key": "espiritual-descoberta",
+              "name": "Descoberta",
+              "attitudes": [
+                "Conhecimento",
+                "Descoberta"
+              ],
+              "questions": [
+                "Tem uma atitude de curiosidade quanto à Fé, quanto aos ensinamentos e exemplo de Jesus e dos Heróis do Povo de Deus?"
+              ],
+              "observations": [
+                "Demonstra interesse e procura saber mais sobre a vivência da Fé.",
+                "É curioso sobre o exemplo de Jesus e dos Heróis do Povo de Deus."
+              ]
+            },
+            {
+              "key": "espiritual-aprofundamento",
+              "name": "Aprofundamento",
+              "attitudes": [
+                "Encontro",
+                "Relação",
+                "Participação",
+                "Oração",
+                "Aprofundamento"
+              ],
+              "questions": [
+                "Tem uma atitude genuína de oração em grupo?",
+                "Procura integrar-se na comunidade paroquial?",
+                "Tem curiosidade quanto a outras religiões?"
+              ],
+              "observations": [
+                "Tem iniciativa de oração na Patrulha/ Expedição.",
+                "Participa na vida paroquial de bom grado.",
+                "Procura ter conhecimentos sobre outras religiões."
+              ]
+            },
+            {
+              "key": "espiritual-servico",
+              "name": "Serviço",
+              "attitudes": [
+                "(Boa) ação",
+                "Deus na Natureza",
+                "Exemplo"
+              ],
+              "questions": [
+                "É cuidadoso com a Natureza e ambiente?",
+                "Partilha com os amigos e família as suas vivências da Fé e Espiritualidade na comunidade paroquial e Expedição?"
+              ],
+              "observations": [
+                "É exemplo de cuidado com a Natureza em campo, com árvores, animais, residuos.",
+                "Refere que partilha em casa e escola as vivências da Fé."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "intelectual",
+          "name": "Intelectual",
+          "trilhos": [
+            {
+              "key": "intelectual-procura-de-conhecimento",
+              "name": "Procura de conhecimento",
+              "attitudes": [
+                "Conhecer",
+                "Experimentar",
+                "Descobrir"
+              ],
+              "questions": [
+                "Tem curiosidade sobre assuntos e temas novos?",
+                "Propõe novas vivências de imaginários e temas?",
+                "Gosta de experimentar novas técnicas e saberes?"
+              ],
+              "observations": [
+                "Não se satisfaz com as mesmas atividades.",
+                "Gosta de jogos e atividades não experimentados antes.",
+                "Entusiasma-se com a novidade de uma técnica ou saber e não desanima na apredizagem."
+              ]
+            },
+            {
+              "key": "intelectual-resolucao-de-problemas",
+              "name": "Resolução de problemas",
+              "attitudes": [
+                "Identificar causas de problemas",
+                "Resolver problemas"
+              ],
+              "questions": [
+                "Não desiste ou fica em silêncio perante",
+                "problemas ou dificuldades?",
+                "Consegue perante um problema, pensar nas hipóteses e escolher racionalmente uma?"
+              ],
+              "observations": [
+                "Na Expedição, família ou escola encara as dificuldades como desafios a superar.",
+                "Pede ajuda aos seus colegas quando não consegue realizar uma tarefa.",
+                "Consegue adaptar-se aos desafios de tarefas diferentes nos projetos."
+              ]
+            },
+            {
+              "key": "intelectual-criatividade-e-expressao",
+              "name": "Criatividade e expressão",
+              "attitudes": [
+                "Desafio",
+                "Criatividade",
+                "Expressar ideias e emoções"
+              ],
+              "questions": [
+                "Apresenta propostas criativas com novas ideias?",
+                "É criador de diferentes formas de apresentação?",
+                "Nos projetos empenha-se nas oficinas ?"
+              ],
+              "observations": [
+                "Tem gosto e brio nas apresentações de projetos da Patrulha.",
+                "Tem iniciativa de inovar em apresentações como no Conselho de Expedição ou fogos de conselho ou oficinas de projeto."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "social",
+          "name": "Social",
+          "trilhos": [
+            {
+              "key": "social-exercer-ativamente-cidadania",
+              "name": "Exercer ativamente cidadania",
+              "attitudes": [
+                "Ser/dar exemplo",
+                "Integração",
+                "Responsabilidade"
+              ],
+              "questions": [
+                "Participa nos Conselhos de Unidade, expressando a sua opinião e ouvindo os demais?",
+                "Encara bem os que têm opinião diferente da sua?",
+                "Aceita quando as suas ideias não vençem e empenha-se ainda assim no sucesso da Expedição?"
+              ],
+              "observations": [
+                "Participa nos momentos cruciais de discussão da Expedição com serenidade e dando a sua opinião.",
+                "Não guarda ressentimento com o vencimento de ideias dos outros."
+              ]
+            },
+            {
+              "key": "social-solidariedade-e-tolerancia",
+              "name": "Solidariedade e tolerância",
+              "attitudes": [
+                "Ser útil",
+                "Saber ouvir"
+              ],
+              "questions": [
+                "Está atento às necessidades ou dificuldades dos que o rodeiam?",
+                "Tem uma atitude genuina de prática da boa-ação perante as necessidades que encontra?",
+                "Consegue dialogar e argumentar com lealdade com os que têm opinião diferente?"
+              ],
+              "observations": [
+                "Ajuda de bom grado quem tem alguma dificuldade na Patrulha/Expedição, escola, família.",
+                "Os outros procuram o seu conselho sabendo que está disponivel.",
+                "Complementa quem tem ideias diferentes das suas procurando conciliar os diferentes pontos de vista."
+              ]
+            },
+            {
+              "key": "social-interacao-e-cooperacao",
+              "name": "Interação e cooperação",
+              "attitudes": [
+                "Sistema de Patrulhas",
+                "Vida em grupo",
+                "Respeito pelos outros"
+              ],
+              "questions": [
+                "Fomenta a agregação, respeito e espírito de amizade na Patrulha?",
+                "Sabe dialogar e estar, de forma a conseguir trabalhar em Patrulha?",
+                "Encara sucessos e fracassos como sendo fruto da dinâmica da Patrulha a melhorar?"
+              ],
+              "observations": [
+                "Tem orgulho e brio na sua Patrulha não sendo depreciativo com as demais.",
+                "É companheiro e voluntário nas tarefas fáceis e dificeis da Patrulha.",
+                "Anima os companheiros de Patrulha perante os insucessos."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "3Sec": {
+      "label": "III Secção",
+      "branch": "Pioneiros",
+      "ages": "14–18",
+      "color": "#00A0E6",
+      "ink": "#0b1a24",
+      "referenceUrl": "https://drive.google.com/file/d/1cQnvbZdMB3ef8o-C9DTlgp87xAl8ZJmn/view",
+      "areas": [
+        {
+          "key": "fisico",
+          "name": "Físico",
+          "trilhos": [
+            {
+              "key": "fisico-desempenho",
+              "name": "Desempenho",
+              "attitudes": [
+                "Testar limites",
+                "Capacidade",
+                "Destreza"
+              ],
+              "questions": [
+                "Pratica regularmente atividade física ou dança?",
+                "Demonstra agilidade?",
+                "Adequa a atividade física à resistência do corpo?"
+              ],
+              "observations": [
+                "Tenta superar-se no jogo em reunião da Unidade;",
+                "Empenha-se em atividade físicas, p.ex.º gincanas",
+                "Pratica empenhadamente um desporto/dança."
+              ]
+            },
+            {
+              "key": "fisico-autoconhecimento",
+              "name": "Autoconhecimento",
+              "attitudes": [
+                "Aceitação",
+                "Respeito",
+                "Corpo"
+              ],
+              "questions": [
+                "Tem cuidado com a sua condição física?",
+                "Respeita as diferenças físicas dos outros?",
+                "Aceita-se como é?",
+                "Respeita as diferenças de comportamento entre homens e mulheres, derivadas das alterações hormonais?"
+              ],
+              "observations": [
+                "Demonstra cuidado com a alimentação.",
+                "Demonstra estar confortável com o seu corpo.",
+                "Aceita os elementos com diferenças físicas.",
+                "Vive, plenamente integrado, numa equipa mista;",
+                "Aceita a integração de elementos do sexo oposto nos jogos propostos."
+              ]
+            },
+            {
+              "key": "fisico-bem-estar-fisico",
+              "name": "Bem-estar físico",
+              "attitudes": [
+                "Escolhas saudáveis",
+                "Atividade Física",
+                "Nutrição"
+              ],
+              "questions": [
+                "Faz uma alimentação equilibrada contendo os diversos nutrientes?",
+                "Tem em conta a necessidade do descanso quando organiza o seu dia-a-dia?",
+                "Tem hábitos de higiene?",
+                "Tem consciência das consequências do consumo de drogas, cigarros, álcool, ...?",
+                "Evita este tipo de consumos?"
+              ],
+              "observations": [
+                "Planeia refeições e ementas equilibradas.",
+                "Respeita os tempos de descanso nas atividades.",
+                "Não tem comportamentos de risco.",
+                "Demonstra ter cuidados de higiene e preocupação com a sua saúde."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "afetivo",
+          "name": "Afetivo",
+          "trilhos": [
+            {
+              "key": "afetivo-relacionamento-e-sensibilidade",
+              "name": "Relacionamento e sensibilidade",
+              "attitudes": [
+                "Gestão de conflitos",
+                "Valores"
+              ],
+              "questions": [
+                "Mantém e cultiva as relações (amizade, familiares, amorosas)?",
+                "Encara o seu crescimento de forma natural?",
+                "Desempenha tarefas em casa?",
+                "Informa os pais/educadores e envolve-os na vida do Agrupamento?",
+                "Frequenta exposições, concertos, ...",
+                "Conhece uma determinada forma de arte?"
+              ],
+              "observations": [
+                "Participa ativamente nos eventos familiares;",
+                "Fala com entusiasmo da sua família/educadores.",
+                "Gosta de música, de cinema/séries, de ler, ... e respeita os gostos dos outros.",
+                "Não entra em conflito com os elementos do grupo.",
+                "Respeita o seu \"espaço\"  e o \"espaço\" dos outros."
+              ]
+            },
+            {
+              "key": "afetivo-equilibrio-emocional",
+              "name": "Equilibrio emocional",
+              "attitudes": [
+                "Autocontrolo",
+                "Otimismo/Pessimismo",
+                "Maturidade"
+              ],
+              "questions": [
+                "Pensa, antes de agir impulsivamente?",
+                "É cuidadoso nas suas palavras e ações, de forma a não ferir suscetibilidades?",
+                "Sabe pedir desculpa?",
+                "Reconhece quando erra?"
+              ],
+              "observations": [
+                "Expressa os seus sentimentos livremente, de forma natural e com equilibrio (ri , chora, abraça, ...).",
+                "Não é agressivo com os outros, não os culpa nem se queixa demasiado deles.",
+                "Aprende com os erros."
+              ]
+            },
+            {
+              "key": "afetivo-autoestima",
+              "name": "Autoestima",
+              "attitudes": [
+                "Valorização pessoal"
+              ],
+              "questions": [
+                "Conhece-se a si próprio?",
+                "Reconhece as suas falhas e procura corrigi-las?",
+                "Sabe quais são os seus limites e procura superá-los?",
+                "Conhece o seu valor?"
+              ],
+              "observations": [
+                "Reflete sobre o seu comportamento nas atividades.",
+                "Identifica os seus pontos fracos.",
+                "Aceita as observações dos outros.",
+                "Frequenta atividades extra-curriculares.",
+                "Supera os desafios que lhe são apresentados nas atividades."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "carater",
+          "name": "Caráter",
+          "trilhos": [
+            {
+              "key": "carater-autonomia",
+              "name": "Autonomia",
+              "attitudes": [
+                "Independência",
+                "Referências",
+                "Opção"
+              ],
+              "questions": [
+                "Estabele para si próprio padrões de vida?",
+                "Faz escolhas, sabendo o que estas implicam?",
+                "Estabelece objetivos para si próprio?",
+                "Estabelece prioridades na sua vida?"
+              ],
+              "observations": [
+                "É coerente nos seus atos e convicções;",
+                "Explica aos outros as suas convicções, sem as impôr;",
+                "Analisa situações e estabelece alternativas;",
+                "Contribui na resolução de situações na equipa(gem);",
+                "Tem o seu percurso escolar definido;",
+                "Toma decisões de forma informada."
+              ]
+            },
+            {
+              "key": "carater-responsabilidade",
+              "name": "Responsabilidade",
+              "attitudes": [
+                "Perseverança",
+                "Compromisso",
+                "Consequência"
+              ],
+              "questions": [
+                "É empenhado no desempenho do seu cargo?",
+                "Demonstra responsabilidade no cumprimento das tarefas?",
+                "Assume as tarefas de forma consciente?",
+                "É persistente na resolução dos problemas?",
+                "Assume as consequências das suas ações?"
+              ],
+              "observations": [
+                "Desempenha com empenho o seu cargo e/ou tarefas que lhe são atribuídas.",
+                "Assume responsabilidades no grupo, na escola, ...:",
+                "Distingue tarefas importantes de urgentes.",
+                "Demonstra uma atitude construtiva perante as dificuldades.",
+                "Tens hábitos de avaliação.",
+                "Participa de forma empenhada nos Conselhos.",
+                "Assume as opções tomadas."
+              ]
+            },
+            {
+              "key": "carater-coerencia",
+              "name": "Coerência",
+              "attitudes": [
+                "Partilha de valores",
+                "Defender ideias",
+                "Convicção"
+              ],
+              "questions": [
+                "É coerente na apresentação das suas ideias e valores?",
+                "Sabe transmitir aos outros os seus padrões de vida?"
+              ],
+              "observations": [
+                "É coerente entre os seus atos e convicções pessoais.",
+                "Explica aos outros as suas convicções.",
+                "Participa de forma empenhada nos Conselhos.",
+                "Defende as ideias em que acredita."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "espiritual",
+          "name": "Espiritual",
+          "trilhos": [
+            {
+              "key": "espiritual-descoberta",
+              "name": "Descoberta",
+              "attitudes": [
+                "Procurar",
+                "Saber",
+                "Viver"
+              ],
+              "questions": [
+                "Conhece e sabe manusear o Antigo Testamento?",
+                "Conhece os principais profetas?",
+                "Conhece a vida dos Apóstolos e os principais momentos com Jesus?",
+                "É membro ativo da comunidade paroquial?",
+                "Sabe a importância dos vários grupos paroquiais?"
+              ],
+              "observations": [
+                "Sabe transmitir aos outros os ensinamentos de Deus.",
+                "Conhece o projeto de Deus e como se deu a conhecer aos Homens.",
+                "Participa ativamente na Eucatristia.",
+                "Participa em algum grupo paroquial.",
+                "Conhece os principais momentos de Jesus com os Apóstolos."
+              ]
+            },
+            {
+              "key": "espiritual-aprofundamento",
+              "name": "Aprofundamento",
+              "attitudes": [
+                "Comunidade",
+                "Testemunho",
+                "Diálogo inter-religioso"
+              ],
+              "questions": [
+                "Demonstra hábitos de oração?",
+                "Reconhece na Eucaristia o expoente da oração comunitária?",
+                "Conhece outras religiões e confissões cristãs?",
+                "Sabe o que a Igreja defende no que diz respeito a temas da atualidade?"
+              ],
+              "observations": [
+                "Organiza/participa em momentos de oração.",
+                "Participa na Eucaristia semanal.",
+                "Enquadra temas atuais com passagens bíblicas.",
+                "Participa em iniciativas da comunidade paroquial.",
+                "Participa em iniciativas ecuménicas.",
+                "Faz parte de grupos de oração."
+              ]
+            },
+            {
+              "key": "espiritual-servico",
+              "name": "Serviço",
+              "attitudes": [
+                "Dar mais",
+                "Construir",
+                "Evangelização"
+              ],
+              "questions": [
+                "Reconhece a Criação como obra de Deus?",
+                "Não atenta contra os outros ou contra si próprio?",
+                "Reconhece que a vida humana tem valor absoluto?",
+                "Assume a sua fé perante a família, os colegas, ...?"
+              ],
+              "observations": [
+                "Colabora em movimentos de solidariedade social.",
+                "Assume liderança em grupos de jovens.",
+                "Tem atitudes de preocupação e de proteção do ambiente.",
+                "Indigna-se contra a ofensa da dignidade humana."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "intelectual",
+          "name": "Intelectual",
+          "trilhos": [
+            {
+              "key": "intelectual-procura-de-conhecimento",
+              "name": "Procura de conhecimento",
+              "attitudes": [
+                "Autoaprendizagem",
+                "Iniciativa",
+                "Procura"
+              ],
+              "questions": [
+                "Demonstra maior aquisição de conhecimentos?",
+                "Sabe partilhar com os outros as suas ideias?",
+                "Sabe fazer seleção de conhecimentos e informação?",
+                "Conhece todas as fontes de informação e meios de busca?",
+                "Sabe adequar as suas aptidões a atividades e estudos em que se sinta à vontade?",
+                "Desenvolve competências que vão ao encontro dos seus desejos profissionais?"
+              ],
+              "observations": [
+                "Escolhe uma área de estudo.",
+                "Elabora conteúdos para uma atividade.",
+                "Separa informação mediática e sensionalista do verdadeiro conhecimento.",
+                "Participa em fóruns e debates.",
+                "Procura fontes fidedignas.",
+                "Coloca o seu conhecimento em prática nos projetos."
+              ]
+            },
+            {
+              "key": "intelectual-resolucao-de-problemas",
+              "name": "Resolução de problemas",
+              "attitudes": [
+                "Capacidade de análise",
+                "Uso de recursos",
+                "Capacidade de síntese"
+              ],
+              "questions": [
+                "Procura e utiliza novos conhecimentos?",
+                "Aplica conhecimentos adquiridos para resolver problemas?",
+                "Tem em conta as experiências vividas para a escolha do seu percurso?",
+                "Tem capacidade crítica?",
+                "Usa a capacidade crítica de forma construtiva, contribuindo para o bem comum?"
+              ],
+              "observations": [
+                "Aplica os conhecimentos adquiridos na escola e/ou escuteiros.",
+                "Propõe novas dinâmicas no grupo.",
+                "Participa ativamente nos momentos de avaliação.",
+                "Tem em conta a avaliação de uma atividade.",
+                "Propõe novas ideias para os projetos da equipa.",
+                "Tem uma atitude construtiva nos momentos de discussão/avaliação."
+              ]
+            },
+            {
+              "key": "intelectual-criatividade-e-expressao",
+              "name": "Criatividade e expressão",
+              "attitudes": [
+                "Inovação",
+                "Copiar ideias",
+                "Projetos"
+              ],
+              "questions": [
+                "Apresenta propostas criativas com novas ideias?",
+                "É criativo nas formas de apresentação?",
+                "Nos projetos empenha-se nas oficinas?",
+                "Sabe adequar a linguagem aos destinatários?"
+              ],
+              "observations": [
+                "Demonstra criatividade nas apresentações dos projetos, fogos de conselho, ....",
+                "Faz apresentações/exposições de forma clara e criativa.",
+                "Participa, de forma inovadora, nas oficinas do projeto.",
+                "Tem um papel ativo nos momentos de animação (p.e. Fogo de Conselho)."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "social",
+          "name": "Social",
+          "trilhos": [
+            {
+              "key": "social-exercer-ativamente-cidadania",
+              "name": "Exercer ativamente cidadania",
+              "attitudes": [
+                "Democracia",
+                "Direitos",
+                "Deveres"
+              ],
+              "questions": [
+                "Conhece os seus direitos e deveres como cidadão?",
+                "Conhece os orgãos onde tem assento e o seu funcionamento?",
+                "Pertence ou colcabora com organizações de interesse local ou ONG?",
+                "Apresenta sempre as suas ideias?",
+                "Aceita as decisões tomadas pelo grupo como suas?"
+              ],
+              "observations": [
+                "Pertence à associação de estudantes.",
+                "Sabe como agir em caso de emergência/catástrofre.",
+                "Participa ativamente nos momentos de decisão.",
+                "Colabora no enriquecimento do projeto vencedor.",
+                "Integra-se na vida da equipa e do grupo.",
+                "Envolve-se na comunidade."
+              ]
+            },
+            {
+              "key": "social-solidariedade-e-tolerancia",
+              "name": "Solidariedade e tolerância",
+              "attitudes": [
+                "Aceitação",
+                "Respeito pela diferença",
+                "Interajuda"
+              ],
+              "questions": [
+                "Está atento às necessidades ou dificuldades dos que o rodeiam?",
+                "Identifica situações onde pode ser útil?",
+                "Tem uma atitude genuina de prática da boa-acção perante as necessidades que encontra?",
+                "Tem uma voz ativa no grupo expondo as suas ideias?"
+              ],
+              "observations": [
+                "Ajuda de bom grado os seus pares.",
+                "Participa em projetos de cidadania ou de ação social.",
+                "Apresenta propostas de projetos, no âmbito da ação social, à equipa ou grupo.",
+                "Envolve-se em projetos de voluntariado."
+              ]
+            },
+            {
+              "key": "social-interacao-e-cooperacao",
+              "name": "Interação e cooperação",
+              "attitudes": [
+                "Espírito de Equipa",
+                "Assertividade"
+              ],
+              "questions": [
+                "Tem consciência da importância das funções de todos?",
+                "Desempenha com empenho e responsabilidade as suas tarefas?",
+                "Sabe ser líder, dividindo tarefas por todos?",
+                "Motiva os outros no desempenho das suas tarefas?"
+              ],
+              "observations": [
+                "Participa ativamente num projeto de equipa.",
+                "Desempenha de forma continuada e empenhada o seu cargo.",
+                "Delega tarefas por todos os elementos.",
+                "Motiva os seus pares no cumprimento das suas tarefas."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "4Sec": {
+      "label": "IV Secção",
+      "branch": "Caminheiros",
+      "ages": "18–22",
+      "color": "#EF1013",
+      "ink": "#ffffff",
+      "referenceUrl": "https://drive.google.com/file/d/1XeQoyoAPpEQCglDbUEbckLqamIwYNqsj/view",
+      "areas": [
+        {
+          "key": "fisico",
+          "name": "Físico",
+          "trilhos": [
+            {
+              "key": "fisico-desempenho",
+              "name": "Desempenho",
+              "attitudes": [
+                "Exercício"
+              ],
+              "questions": [
+                "Integra a atividade física regular no dia-a-dia, de acordo com aquilo que gosta e pode fazer?"
+              ],
+              "observations": [
+                "Propõe atividades alguma exigência a nível físico.",
+                "Pratica algum desporto.",
+                "Frequenta alguma atividade física (ginásio, danças entre outros)."
+              ]
+            },
+            {
+              "key": "fisico-autoconhecimento",
+              "name": "Autoconhecimento",
+              "attitudes": [
+                "Relação com o corpo",
+                "Diferenças fisiológicas"
+              ],
+              "questions": [
+                "Age com naturalidade em situações que integrem ambos os sexos?",
+                "Demonstra algum constrangimento de si próprio?"
+              ],
+              "observations": [
+                "Aceitação de tribos mistas e compreende as diferenças.",
+                "Age naturalmente na organização das dormidas em clã."
+              ]
+            },
+            {
+              "key": "fisico-bem-estar-fisico",
+              "name": "Bem-estar físico",
+              "attitudes": [
+                "Equilíbrio",
+                "Higiene",
+                "Comportamentos de risco"
+              ],
+              "questions": [
+                "Tem noção seus limites e dos excessos que afetam o seu bem estar?"
+              ],
+              "observations": [
+                "Organização da agenda tendo em conta os vários compromissos diários.",
+                "Nas atividades tem em conta o descanso.",
+                "Os comportamentos  de risco na vida social.",
+                "Os cuidados com a alimentação e higiene."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "afetivo",
+          "name": "Afetivo",
+          "trilhos": [
+            {
+              "key": "afetivo-relacionamento-e-sensibilidade",
+              "name": "Relacionamento e sensibilidade",
+              "attitudes": [
+                "Afetos",
+                "Respeito",
+                "Sexualidade e relação amorosa"
+              ],
+              "questions": [
+                "Tem amigos de longa data?",
+                "Mantém relação com a família?",
+                "Na sua vida pessoal, consegue construir uma relação amorosa madura?"
+              ],
+              "observations": [
+                "Círculo de amigos.",
+                "Redes sociais.",
+                "Participação em eventos de família.",
+                "Valorização da relação amorosa (se existir).",
+                "Respeita as pessoas e opiniões em debate."
+              ]
+            },
+            {
+              "key": "afetivo-equilibrio-emocional",
+              "name": "Equilíbrio emocional",
+              "attitudes": [
+                "Emoções"
+              ],
+              "questions": [
+                "Demonstra as suas emoções respeitando as dos outros?"
+              ],
+              "observations": [
+                "Trabalhos de equipa.",
+                "auto-avaliações.",
+                "PPV.",
+                "Auxiliar os outros no PPV.",
+                "Participação na Carta de Clã."
+              ]
+            },
+            {
+              "key": "afetivo-autoestima",
+              "name": "Autoestima",
+              "attitudes": [
+                "Personalidade",
+                "Confiança"
+              ],
+              "questions": [
+                "Tem consciência da pessoa que é,  e das suas características?"
+              ],
+              "observations": [
+                "PPV.",
+                "Avaliações.",
+                "Reflexões pessoais.",
+                "Reações na resolução de problemas pessoais."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "carater",
+          "name": "Caráter",
+          "trilhos": [
+            {
+              "key": "carater-autonomia",
+              "name": "Autonomia",
+              "attitudes": [
+                "Valores",
+                "Decisão",
+                "Aperfeiçoamento"
+              ],
+              "questions": [
+                "Rege a sua vida pelo um quadro de valores?",
+                "Toma decisões pensando no que é melhor para si? E para os outros?",
+                "Estabelece objetivos claros e realistas para a seu progressão pessoal?"
+              ],
+              "observations": [
+                "PPV.",
+                "Reflexões.",
+                "Participação nos Conselho de Agrupamento e Regional/Núcleo;",
+                "Participação no Cenáculo Regional/Núcleo;",
+                "O Progresso Pessoal."
+              ]
+            },
+            {
+              "key": "carater-responsabilidade",
+              "name": "Responsabilidade",
+              "attitudes": [
+                "Compromisso",
+                "Perseverança",
+                "Responsabilidade"
+              ],
+              "questions": [
+                "Assume e cumpre as tarefas que aceita?",
+                "Retira lições, a partir de erros e falhas, por forma a melhorar ações futuras?",
+                "Assume integralmente os seus atos, responsabilizando-se totalmente pelos mesmos, bem como pelas consequências que destes advêm?"
+              ],
+              "observations": [
+                "Ser pontual e assíduo.",
+                "Desempenho dos seus cargos e funções no Clã.",
+                "Trabalho em Projetos (Unidade, Agrupamento, Núcleo, Região)."
+              ]
+            },
+            {
+              "key": "carater-coerencia",
+              "name": "Coerência",
+              "attitudes": [
+                "Consistência",
+                "Coerência"
+              ],
+              "questions": [
+                "É capaz de exprimir e defender as suas ideias de forma serena e convicta?",
+                "Partilha os seus valores com os demais de acordo com a Lei do Escuta?"
+              ],
+              "observations": [
+                "Participação ativa na vida do clã e agrupamento, nomeadamente nos  espaços de debate.",
+                "A preparação e participação em debates;",
+                "Se as suas ideias têm correspondência às ações."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "espiritual",
+          "name": "Espiritual",
+          "trilhos": [
+            {
+              "key": "espiritual-descoberta",
+              "name": "Descoberta",
+              "attitudes": [
+                "Pai Felicidade",
+                "Filho amor",
+                "Espírito Santo"
+              ],
+              "questions": [
+                "Conhece a História da Salvação e como Deus age na sua vida?",
+                "Conhece a novidade da mensagem de Cristo no Seu tempo e no tempo de hoje?",
+                "Tem consciência que a vivência em Igreja é fundamental, como comunidade fundada por Cristo e chamada à comunhao?"
+              ],
+              "observations": [
+                "Atitude positiva perante a vida, mesmo nas dificuldades.",
+                "Identificar o que o afasta de Deus e procurar ajuda.",
+                "Tem em conta a relação com Deus na elaboração do PPV.",
+                "Interpreta o mundo de hoje à luz do Evangelho.",
+                "É assíduo na Eucaristia semanal.",
+                "Assume um papel ativo na Igreja."
+              ]
+            },
+            {
+              "key": "espiritual-aprofundamento",
+              "name": "Aprofundamento",
+              "attitudes": [
+                "Oração",
+                "Transformação",
+                "Identidade"
+              ],
+              "questions": [
+                "Conhece várias formas de oração e encontra a sua forma pessoal?",
+                "Participa conscientemente na Eucaristia?",
+                "Conhece os documentos da Igreja sobre assuntos da atualidade?",
+                "Procura viver segundo os valores do Evangelho?",
+                "Conhece as diferentes religiões e confissões cristãs, as principais diferenças e o que as une?"
+              ],
+              "observations": [
+                "É assíduo na Eucaristia semanal.",
+                "Sabe preparar um momento de oração.",
+                "Participa em momentos de oração com outros grupos.",
+                "Conhece a posição da Igreja sobre assuntos da atualidade.",
+                "Vive de modo assumido os princípios da própria fé.",
+                "Participa em espaços ecuménicos (p.e. orações de Taizé) ou interreligiosos."
+              ]
+            },
+            {
+              "key": "espiritual-servico",
+              "name": "Serviço",
+              "attitudes": [
+                "Unidade",
+                "Missão"
+              ],
+              "questions": [
+                "Reconhece a vida como dom de Deus?",
+                "Respeita a Criação?",
+                "Preserva a vida em todas as suas formas?",
+                "Compromete-se como cristão na sociedade?",
+                "Configura a sua vida com a mensagem do Homem Novo?"
+              ],
+              "observations": [
+                "Cuida da sua vida não assumindo hábitos ou situações que a coloquem em risco.",
+                "Protege a vida humana desde a conceção até à morte.",
+                "Tem uma atitude de preocupação com o ambiente.",
+                "Participa de forma ativa nos processos de decisão a nível local e nacional.",
+                "Envolve-se na procura de soluções para com os problemas que encontra no contexto onde vive."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "intelectual",
+          "name": "Intelectual",
+          "trilhos": [
+            {
+              "key": "intelectual-procura-de-conhecimento",
+              "name": "Procura de conhecimento",
+              "attitudes": [
+                "Aprendizagem",
+                "Filtrar",
+                "Rumo"
+              ],
+              "questions": [
+                "Gosta de aprender mais?",
+                "Demonstra vontade em abraçar novos projetos (dentro e fora do escutismo)?",
+                "Aquando da elaboração de um projeto, debate,etc.., procura fazer uma pesquisa prévia sobre a temática abordada?",
+                "Identifica as suas necessidades no seu projeto pessoal de vida?"
+              ],
+              "observations": [
+                "Frequenta formações ou Workshops voluntariamente.",
+                "Investiga para elaboração de imaginários e outros projetos.",
+                "Procura atividades ou projetos para participar (dentro e fora do escutismo).",
+                "Define caminhos no PPV de forma a responder às suas necessidades."
+              ]
+            },
+            {
+              "key": "intelectual-resolucao-de-problemas",
+              "name": "Resolução de problemas",
+              "attitudes": [
+                "Adaptação",
+                "Estratégia"
+              ],
+              "questions": [
+                "Perante um problema analisa e resolve?",
+                "Demonstra coragem de abraçar novos projetos?"
+              ],
+              "observations": [
+                "Criação/Proposta de estratégia para a execução da caminhada, PPV.",
+                "Propõe atividades fora da zona de conforto."
+              ]
+            },
+            {
+              "key": "intelectual-criatividade-e-expressao",
+              "name": "Criatividade e expressão",
+              "attitudes": [
+                "Criatividade",
+                "Expressividade"
+              ],
+              "questions": [
+                "Sabe-se expressar de forma criativa?",
+                "Está sempre à procura de novas ideias?"
+              ],
+              "observations": [
+                "Na idealização e preparação de uma Caminhada.",
+                "Ateliers para outros secções.",
+                "Apresentações.",
+                "Fogo de conselho.",
+                "Cria/dinamiza dinâmicas de grupo.",
+                "Utilização de imaginários nas ações que desenvolve."
+              ]
+            }
+          ]
+        },
+        {
+          "key": "social",
+          "name": "Social",
+          "trilhos": [
+            {
+              "key": "social-exercer-ativamente-cidadania",
+              "name": "Exercer ativamente cidadania",
+              "attitudes": [
+                "Cidadania",
+                "Participação",
+                "Democracia"
+              ],
+              "questions": [
+                "Exerce o seu direito de voto quando é chamado a fazê-lo?",
+                "Revela uma atitude construtiva?",
+                "Respeita a opinião alheia ainda que seja contrária à sua?"
+              ],
+              "observations": [
+                "Participação na escolha e enriquecimento da Caminhada, respeitando opiniões diversas;",
+                "Exercer o seu direito de voto  (dentro e fora do escutismo).",
+                "Participação no Conselho de Clã.",
+                "Participação em associações ou em grupos paroquiais (leitores, acólitos, coro, etc.)."
+              ]
+            },
+            {
+              "key": "social-solidariedade-e-tolerancia",
+              "name": "Solidariedade e tolerância",
+              "attitudes": [
+                "Serviço",
+                "Tolerância"
+              ],
+              "questions": [
+                "Adota uma atitude de serviço perante a comunidade?",
+                "Dá oportunidade aos outros de se manifestarem em todas as decisões que são tomadas nos diversos espaço em que se insere?"
+              ],
+              "observations": [
+                "Procura ter uma atitude de serviço.",
+                "Exercer o cargo gerando harmonia entre todos.",
+                "Participa de forma tolerante nas reuniões de Tribo."
+              ]
+            },
+            {
+              "key": "social-interacao-e-cooperacao",
+              "name": "Interação e cooperação",
+              "attitudes": [
+                "Equipa",
+                "Liderança"
+              ],
+              "questions": [
+                "Acata as ordens do Guia ou de quem está a liderar dando sempre a tua opinião, mas não sendo reacionário?",
+                "Procura ajudar a sua Tribo a ser cada vez melhor?",
+                "É capaz de liderar (no cargo que desempenha) quando é necessário?"
+              ],
+              "observations": [
+                "Desempenhar com competência as funções ou cargo na Tribo.",
+                "Assume a coordenação de ações da tribo ou de outros espaços onde participa."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

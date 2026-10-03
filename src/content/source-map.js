@@ -7,13 +7,15 @@ export function slugify(value) {
     .replace(/^-+|-+$/g, '');
 }
 
+// O Capítulo 8 (Espaço Influencers) está fora do âmbito do site, por isso não
+// tem rota nem contagens próprias. A sua_secsão continua na fonte editorial
+// (`file.md`), o que é o que permite reconstruir as 30 atividades do Capítulo 7.
 export const EXPECTED_COUNTS = Object.freeze({
-  routes: 12,
+  routes: 11,
   glossaryGroups: 3,
   glossaryEntries: 19,
   chapter7Areas: 5,
   chapter7Activities: 30,
-  chapter8Areas: 5,
   bibliographyEntries: 8,
   tools: 2,
   diagrams: 4,
@@ -33,7 +35,6 @@ export const ROUTES = Object.freeze([
   { id: 'capitulo-5', hash: '#/capitulo/5', label: 'Capítulo 5', title: 'Capítulo 5: Como Criar um Projeto ODS' },
   { id: 'capitulo-6', hash: '#/capitulo/6', label: 'Capítulo 6', title: 'Capítulo 6: Como Criar uma Parceria para a Sustentabilidade' },
   { id: 'capitulo-7', hash: '#/capitulo/7', label: 'Capítulo 7', title: 'Capítulo 7: Jogos e Workshops — Oferta Pedagógica' },
-  { id: 'capitulo-8', hash: '#/capitulo/8', label: 'Capítulo 8', title: 'Capítulo 8: Espaço Influencers' },
   { id: 'referencias', hash: '#/referencias', label: 'Bibliografia e ferramentas', title: 'Bibliografia, Materiais & Ferramentas' },
 ]);
 
@@ -44,6 +45,9 @@ export const TOP_LEVEL_MARKERS = Object.freeze({
   glossary: 'Siglas, Abreviaturas e Glossário',
   index: 'Índice Geral',
   references: 'Bibliografia, Materiais & Ferramentas',
+  // Marca o começo do capítulo que não é publicado. Serve de limite: o conteúdo
+  // entre esta marca e a bibliografia é excluído do modelo.
+  influencersChapter: 'Capítulo 8: Espaço Influencers',
 });
 
 export const OPENING_FIELDS = Object.freeze([
@@ -217,12 +221,6 @@ export const CHAPTERS = Object.freeze([
     indexHeading: 'Capítulo 7: Jogos e Workshops — Oferta Pedagógica',
     route: '#/capitulo/7',
   },
-  {
-    id: 'capitulo-8',
-    heading: 'Capítulo 8: Espaço Influencers',
-    indexHeading: 'Capítulo 8: Espaço Influencers',
-    route: '#/capitulo/8',
-  },
 ]);
 
 export const CHAPTER_2_5P_TABLE = Object.freeze({
@@ -391,6 +389,32 @@ export const TOOL_ENTRIES = Object.freeze([
   'Calculadora Oficial da Pegada Ecológica: footprintcalculator.org',
 ]);
 
+/**
+ * Grupos da navegação lateral.
+ *
+ * A barra é construída a partir desta lista, nunca de marcação escrita à mão
+ * em `index.html`. O grupo `jogos` recebe, além da rota do Capítulo 7, a lista
+ * expansível com as cinco áreas e os trinta jogos.
+ */
+export const NAV_GROUPS = Object.freeze([
+  { id: 'inicio', title: '', routes: ['inicio'] },
+  { id: 'referencias-rapidas', title: '', routes: ['glossario', 'indice'] },
+  {
+    id: 'capitulos',
+    title: 'Capítulos',
+    routes: [
+      'capitulo-1',
+      'capitulo-2',
+      'capitulo-3',
+      'capitulo-4',
+      'capitulo-5',
+      'capitulo-6',
+    ],
+  },
+  { id: 'jogos', title: '', routes: ['capitulo-7'] },
+  { id: 'final', title: '', routes: ['referencias'] },
+]);
+
 export const INDEX_ENTRIES = Object.freeze([
   { text: CHAPTERS[0].indexHeading, target: '#/capitulo/1' },
   { text: CHAPTERS[1].indexHeading, target: '#/capitulo/2' },
@@ -409,7 +433,8 @@ export const INDEX_ENTRIES = Object.freeze([
     target: '#/capitulo/7',
     anchor: `area-${slugify(area.title)}`,
   })),
-  { text: CHAPTERS[7].indexHeading, target: '#/capitulo/8' },
+  // O Capítulo 8 (Espaço Influencers) não é publicado e por isso não tem
+  // entrada no Índice Geral.
   { text: TOP_LEVEL_MARKERS.references, target: '#/referencias' },
 ]);
 

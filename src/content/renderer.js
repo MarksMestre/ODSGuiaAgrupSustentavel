@@ -1,8 +1,45 @@
 import DOMPurify from 'dompurify';
 import katex from 'katex';
 import MarkdownIt from 'markdown-it';
-import { EXTERNAL_DOMAINS, ROUTES, VALID_MATH, slugify } from './source-map.js';
+import {
+  EXTERNAL_DOMAINS,
+  NAV_GROUPS,
+  ROUTES,
+  VALID_MATH,
+  slugify,
+} from './source-map.js';
 import { validateParsedDocument } from './parser.js';
+import {
+  GAMES,
+  activityKey,
+  gamePrintUrl,
+  gameRoute,
+} from './games.js';
+import { SECTIONS, loadProgress, progressForGame } from './progress.js';
+
+/** Taxonomia do Progresso Pessoal, ou `null` se ainda não foi buscada. */
+const progress = loadProgress();
+
+/**
+ * A cor de cada Secção vem de uma custom property do tema
+ * (`--progress-N-accent`), não do valor bruto da folha: os tons do CNE são
+ * ajustados para manter o contraste em cada tema, e o CSS trata do resto.
+ */
+const SECTION_ACCENTS = Object.freeze(
+  Object.fromEntries(SECTIONS.map((meta, index) => [meta.tab, String(index + 1)])),
+);
+
+/** Liga uma atividade do Capítulo 7 à sua ficha em `content/games-map.json`. */
+// Chave: título normalizado da atividade. É único no Capítulo 7, ao contrário do
+// número, que se repete a cada área.
+const gameByTitle = new Map(GAMES.map((game) => [game.slug, game]));
+
+function gameForActivity(node) {
+  if (node.kind !== 'activity') return null;
+  return gameByTitle.get(activityKey(slugify(node.data.title))) ?? null;
+}
+
+
 
 const markdown = new MarkdownIt({
   html: false,
@@ -32,7 +69,7 @@ const KATEX_ALLOWED_ATTR = [
 const validMath = new Set(VALID_MATH);
 const externalDomainPattern = new RegExp(`(?<![\\w@])(${EXTERNAL_DOMAINS.map((domain) => domain.replace('.', '\\.')).join('|')})(?![\\w.-])`, 'giu');
 
-function element(tagName, attributes = {}, children = []) {
+export function element(tagName, attributes = {}, children = []) {
   const node = document.createElement(tagName);
   Object.entries(attributes).forEach(([name, value]) => {
     if (value === undefined || value === null || value === false) return;
@@ -327,6 +364,12 @@ function renderActivity(node, idRegistry) {
     article.append(table);
   }
 
+  // Ficha para impressão e bloco de Progresso Pessoal (ver §6 e §7 da
+  // especificação 002). Ambos são estritamente aditivos: sem taxonomia ou sem
+  // mapeamento, simplesmente não aparecem.
+  article.append(renderGameActions(node, idRegistry));
+  article.append(renderProgressBlock(node, idRegistry));
+
   const dynamics = element('section', { class: 'activity-dynamics' });
   dynamics.append(element('h4', { text: 'Dinâmica:' }));
   if (node.data.dynamics.intro) {
@@ -347,6 +390,163 @@ function renderActivity(node, idRegistry) {
   }
   article.append(dynamics);
   return article;
+}
+
+/** Liga a ficha em Word/impressão e o jogo na navegação. */
+function renderGameActions(node, idRegistry) {
+  const mapEntry = gameForActivity(node);
+  if (!mapEntry) return document.createDocumentFragment();
+
+  const actions = element('p', { class: 'activity-actions' });
+  const detail = element('a', {
+    class: 'activity-action',
+    href: gameRoute(mapEntry.number),
+    dataset: { gameLink: String(mapEntry.number) },
+    text: 'Ver jogo completo',
+  });
+  actions.append(detail);
+
+  const print = element('a', {
+    class: 'activity-action activity-action--print',
+    href: gamePrintUrl(mapEntry.number),
+    target: '_blank',
+    rel: 'noopener noreferrer',
+    text: 'Imprimir ficha',
+  });
+  actions.append(print);
+  return actions;
+}
+
+/**
+ * Bloco de Progresso Pessoal.
+ *
+ * A cor da Secção é usada como acento (barra lateral e marcador). Nunca é usada
+ * como fundo de texto: `#FDD400` com branco não passa WCAG AA, por isso a cor
+ * do texto é sempre a do tema e a tinta da Secção só entra em superfícies
+ * sólidas.
+ */
+function renderProgressBlock(node, idRegistry) {
+  const mapEntry = gameForActivity(node);
+  if (!mapEntry) return document.createDocumentFragment();
+
+  const groups = progressForGame(progress, mapEntry.number);
+  if (!groups.length) return document.createDocumentFragment();
+
+  const blockId = `progresso-${mapEntry.number}`;
+  const block = element('section', {
+    class: 'progress-block',
+    id: blockId,
+    'aria-labelledby': `${blockId}-titulo`,
+    dataset: { gameProgress: String(mapEntry.number) },
+  });
+  block.append(heading(4, 'Progresso Pessoal', `${blockId}-titulo`, idRegistry));
+  block.append(element('p', {
+    class: 'progress-hint',
+    text: 'Trilhos que este jogo pode contribuir para. Adapte à sua secção.',
+  }));
+
+  const list = element('ul', { class: 'progress-sections' });
+  groups.forEach((group, index) => {
+    list.append(renderProgressSection(group, mapEntry.number, { open: index === 0 }));
+  });
+  block.append(list);
+  return block;
+}
+
+export function renderProgressSection(group, gameNumber, { open, standalone = false }) {
+  const item = element('li', {
+    class: standalone ? 'progress-section progress-section--standalone' : 'progress-section',
+    dataset: {
+      section: group.tab,
+      // Índice 1..4: o CSS escolhe a cor do tema a partir daqui.
+      sectionIndex: SECTION_ACCENTS[group.tab] ?? '1',
+    },
+  });
+  const panelId = `progresso-${gameNumber}-${group.tab}`;
+
+  const details = element('details', {
+    class: 'progress-section__details',
+    open: open || undefined,
+  });
+
+  const summary = element('summary', { class: 'progress-section__summary' });
+  summary.append(element('span', { class: 'progress-section__dot', 'aria-hidden': 'true' }));
+  const name = element('span', { class: 'progress-section__name' });
+  name.append(element('strong', { text: group.label }));
+  name.append(element('span', { class: 'progress-section__branch', text: ` · ${group.branch} · ${group.ages}` }));
+  summary.append(name);
+  summary.append(element('span', {
+    class: 'progress-section__count',
+    text: `${group.count} ${group.count === 1 ? 'trilho' : 'trilhos'}`,
+  }));
+  details.append(summary);
+
+  const panel = element('div', { class: 'progress-section__panel', id: panelId });
+  for (const area of group.areas) {
+    const group4 = element('div', { class: 'progress-area' });
+    group4.append(element('h5', { class: 'progress-area__name', text: area.name }));
+    const trilhos = element('ul', { class: 'progress-trilhos' });
+    for (const trilho of area.trilhos) {
+      trilhos.append(renderTrilho(trilho));
+    }
+    group4.append(trilhos);
+    panel.append(group4);
+  }
+
+  if (group.note) {
+    const note = element('p', { class: 'progress-note' });
+    addInline(note, group.note);
+    panel.append(note);
+  }
+
+  if (group.referenceUrl) {
+    const reference = element('a', {
+      class: 'progress-reference',
+      href: sanitizeUrl(group.referenceUrl) ?? undefined,
+      target: '_blank',
+      rel: 'noopener noreferrer',
+      text: `Caderno de Pista — ${group.branch}`,
+    });
+    if (!reference.getAttribute('href')) reference.remove();
+    else panel.append(reference);
+  }
+
+  details.append(panel);
+  item.append(details);
+  return item;
+}
+
+function renderTrilho(trilho) {
+  const item = element('li', { class: 'progress-trilho', dataset: { trilho: trilho.key } });
+  const details = element('details', { class: 'progress-trilho__details' });
+  const summary = element('summary', { class: 'progress-trilho__summary', text: trilho.name });
+  details.append(summary);
+
+  const descriptors = [
+    ['Atitudes / Palavras-chave', trilho.attitudes],
+    ['Será que?', trilho.questions],
+    ['O que observar?', trilho.observations],
+  ].filter(([, values]) => Array.isArray(values) && values.length);
+
+  if (descriptors.length) {
+    const list = element('dl', { class: 'progress-trilho__descriptors' });
+    for (const [label, values] of descriptors) {
+      list.append(element('dt', { text: label }));
+      const dd = element('dd');
+      const bullets = element('ul');
+      for (const value of values) {
+        const li = element('li');
+        addInline(li, value);
+        bullets.append(li);
+      }
+      dd.append(bullets);
+      list.append(dd);
+    }
+    details.append(list);
+  }
+
+  item.append(details);
+  return item;
 }
 
 function extractOdsCodes(value) {
@@ -426,31 +626,7 @@ function renderChapter7(routeNodes, idRegistry) {
   return fragment;
 }
 
-function renderChapter8(routeNodes, idRegistry) {
-  const fragment = document.createDocumentFragment();
-  let currentGroup = null;
-  routeNodes.forEach((node) => {
-    if (node.kind === 'resource-area-heading') {
-      currentGroup = element('section', { class: `resource-area resource-area--${node.data.color}`, id: node.data.id });
-      currentGroup.append(heading(2, node.data.title, `${node.data.id}-titulo`, idRegistry));
-      fragment.append(currentGroup);
-    } else if (node.kind === 'resource-group') {
-      const details = element('details', { class: 'resource-group', open: true });
-      details.append(element('summary', {}, heading(3, node.data.title, `recurso-${slugify(node.data.title)}`, idRegistry)));
-      const list = element('ul', { class: 'resource-list' });
-      node.data.items.forEach((item) => {
-        const li = element('li');
-        addInline(li, item);
-        list.append(li);
-      });
-      details.append(list);
-      (currentGroup ?? fragment).append(details);
-    } else {
-      fragment.append(renderNode(node, idRegistry));
-    }
-  });
-  return fragment;
-}
+
 
 function renderNode(node, idRegistry) {
   switch (node.kind) {
@@ -589,7 +765,6 @@ function renderRouteContent(route, routeNodes, idRegistry) {
     return list;
   }
   if (route.id === 'capitulo-7') return renderChapter7(routeNodes, idRegistry);
-  if (route.id === 'capitulo-8') return renderChapter8(routeNodes, idRegistry);
   if (['capitulo-4', 'capitulo-6'].includes(route.id)) {
     const fragment = document.createDocumentFragment();
     const list = element('ol', { class: 'stepper' });
@@ -617,25 +792,97 @@ function renderRouteContent(route, routeNodes, idRegistry) {
   return fragment;
 }
 
+/**
+ * Navegação do guia.
+ *
+ * Os grupos saem de `NAV_GROUPS` (ver `source-map.js`), não de marcação escrita
+ * à mão. O grupo dos jogos é expansível: brings as cinco áreas e cada jogo, para
+ * que o Capítulo 7 se navegue a partir da barra lateral como qualquer outro.
+ */
 function renderNavigation(navigationRoot) {
   const fragment = document.createDocumentFragment();
-  ROUTES.forEach((route) => {
-    const link = element('a', {
-      class: 'nav-link',
-      href: route.hash,
-      dataset: { route: route.id },
-    });
-    if (route.id.startsWith('capitulo-')) {
-      const number = route.label.match(/\d+/u)?.[0];
-      if (number) link.append(element('span', { class: 'nav-link__number', text: number }));
-      link.append(element('span', { text: route.id === 'capitulo-7' ? 'Jogos e Workshops' : route.label.replace(/^Capítulo \d+:?\s*/u, route.label) }));
-    } else {
-      link.append(element('span', { text: route.label }));
+
+  for (const group of NAV_GROUPS) {
+    const section = element('div', { class: 'nav-group', dataset: { navGroup: group.id } });
+    if (group.title) {
+      section.append(element('p', { class: 'nav-group__title', text: group.title }));
     }
-    fragment.append(link);
-  });
+
+    const list = element('ul', { class: 'nav-list' });
+    for (const routeId of group.routes) {
+      const route = ROUTES.find((candidate) => candidate.id === routeId);
+      if (!route) continue;
+      list.append(element('li', {}, renderNavLink(route)));
+    }
+    section.append(list);
+
+    if (group.id === 'jogos') section.append(renderGameSubnav());
+    fragment.append(section);
+  }
+
   navigationRoot.replaceChildren(fragment);
   return [...navigationRoot.querySelectorAll('[data-route]')];
+}
+
+function renderNavLink(route) {
+  const link = element('a', {
+    class: 'nav-link',
+    href: route.hash,
+    dataset: { route: route.id },
+  });
+  if (route.id.startsWith('capitulo-')) {
+    const number = route.label.match(/\d+/u)?.[0];
+    if (number) link.append(element('span', { class: 'nav-link__number', text: number }));
+    link.append(element('span', {
+      text: route.id === 'capitulo-7'
+        ? 'Jogos e Workshops'
+        : route.label.replace(/^Capítulo \d+:?\s*/u, route.label),
+    }));
+  } else {
+    link.append(element('span', { text: route.label }));
+  }
+  return link;
+}
+
+/** As cinco áreas e os trinta jogos, agrupados como no Capítulo 7. */
+function renderGameSubnav() {
+  const details = element('details', { class: 'nav-games', id: 'nav-games' });
+  details.append(element('summary', { class: 'nav-games__summary' }, [
+    element('span', { text: `Os ${GAMES.length} jogos` }),
+  ]));
+
+  const byArea = new Map();
+  for (const game of GAMES) {
+    if (!byArea.has(game.area)) byArea.set(game.area, []);
+    byArea.get(game.area).push(game);
+  }
+
+  const groups = element('ul', { class: 'nav-games__list' });
+  for (const [area, games] of byArea) {
+    const areaItem = element('li', { class: 'nav-games__area' });
+    areaItem.append(element('p', {
+      class: 'nav-games__area-name',
+      text: area.replace(/^Área /u, ''),
+    }));
+    const gameList = element('ul', { class: 'nav-games__games' });
+    for (const game of games) {
+      // O número do jogo e o `aria-label` dão contexto a quem navega por
+      // leitor de ecrã, onde a lista visualmente truncada perde a informação.
+      gameList.append(element('li', {}, element('a', {
+        class: 'nav-games__link',
+        href: gameRoute(game.number),
+        dataset: { gameNav: String(game.number) },
+        'aria-label': `${game.title}, jogo ${game.number} de ${GAMES.length}`,
+      }, [
+        element('span', { class: 'nav-games__number', text: String(game.number), 'aria-hidden': 'true' }),
+        element('span', { class: 'nav-games__title', text: game.title }),
+      ])));
+    }
+    areaItem.append(gameList);
+    groups.append(areaItem);
+  }
+  details.append(groups);
+  return details;
 }
 
 export function renderApplication(model, { contentRoot, navigationRoot }) {

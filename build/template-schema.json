@@ -1,0 +1,12 @@
+{
+  "$generated": "Gerado por scripts/build_content.py a partir do molde.",
+  "source": "source/games/00GameSheetTemplate.docx",
+  "labels": [
+    "Nome do Jogo",
+    "Objetivos de Desenvolvimento Sustentável (ODS)",
+    "Objetivos",
+    "Duração e Participantes",
+    "Material",
+    "Instruções"
+  ]
+}

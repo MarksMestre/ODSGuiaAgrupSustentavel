@@ -167,6 +167,32 @@ describe('rotas, tema, gaveta e impressão', () => {
     expect(menu.getAttribute('aria-expanded')).toBe('false');
   });
 
+  it('abre um jogo individual e realça o Capítulo 7 na navegação', () => {
+    window.location.hash = '#/jogo/15';
+    window.dispatchEvent(new window.HashChangeEvent('hashchange'));
+
+    const visible = contentRoot.querySelectorAll('.route-section:not([hidden])');
+    expect(visible).toHaveLength(1);
+    expect(visible[0].dataset.route).toBe('jogo');
+    expect(visible[0].querySelector('h1').textContent).toContain('Jogo dos Salários');
+
+    // O Capítulo 7 continua marked como a secção activa, para que a navegação
+    // não salte de sítio ao abrir um jogo.
+    expect(navigationRoot.querySelector('[aria-current]')?.dataset.route).toBe('capitulo-7');
+    expect(navigationRoot.querySelector('.nav-games__link.is-active')?.dataset.gameNav).toBe('15');
+  });
+
+  it('mostra uma página de erro para um número de jogo inexistente', () => {
+    window.location.hash = '#/jogo/99';
+    window.dispatchEvent(new window.HashChangeEvent('hashchange'));
+
+    const visible = contentRoot.querySelectorAll('.route-section:not([hidden])');
+    expect(visible).toHaveLength(1);
+    expect(visible[0].querySelector('h1').textContent).toBe('Jogo não encontrado');
+    expect(visible[0].querySelector('.game-back')?.getAttribute('href')).toBe('#/capitulo/7');
+    expect(navigationRoot.querySelector('[aria-current]')?.dataset.route).toBe('capitulo-7');
+  });
+
   it('expõe todas as rotas para impressão e restaura o estado anterior', () => {
     const area = query('#filter-area');
     area.value = 'area-do-planeta';
@@ -175,7 +201,7 @@ describe('rotas, tema, gaveta e impressão', () => {
     details.open = false;
 
     controller.prepareForPrint();
-    expect(contentRoot.querySelectorAll('.route-section:not([hidden])')).toHaveLength(12);
+    expect(contentRoot.querySelectorAll('.route-section:not([hidden])')).toHaveLength(11);
     expect(contentRoot.querySelectorAll('.activity-card:not([hidden])')).toHaveLength(30);
     expect(details.open).toBe(true);
 

@@ -1,9 +1,7 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { JSDOM } from 'jsdom';
 import {
   CHAPTER7_AREAS,
-  CHAPTER8_RESOURCES,
-  CHAPTERS,
   ECONOMICS_TABLE,
   EXPECTED_COUNTS,
   GLOSSARY_GROUPS,
@@ -20,14 +18,20 @@ const warnings = [];
 const model = parseDocument(source);
 errors.push(...validateParsedDocument(model));
 
+// Cobertura: os nós e os trechos excluídos (Capítulo 8) têm de consumir a
+// fonte por inteiro, pela ordem.
+const segments = [
+  ...model.nodes.map((node) => ({ start: node.sourceOffset, end: node.sourceOffset + node.sourceText.length })),
+  ...model.excluded.map((range) => ({ start: range.start, end: range.end })),
+].sort((a, b) => a.start - b.start);
 let expectedOffset = 0;
-for (const [index, node] of model.nodes.entries()) {
-  if (node.sourceOffset !== expectedOffset) {
-    errors.push(`Nó ${index}: esperado offset ${expectedOffset}, recebido ${node.sourceOffset}.`);
+for (const [index, segment] of segments.entries()) {
+  if (segment.start !== expectedOffset) {
+    errors.push(`Segmento ${index}: esperado offset ${expectedOffset}, recebido ${segment.start}.`);
   }
-  expectedOffset = node.sourceOffset + node.sourceText.length;
+  expectedOffset = Math.max(expectedOffset, segment.end);
 }
-if (expectedOffset !== source.length) errors.push('A cobertura de nós não consome a fonte por inteiro.');
+if (expectedOffset !== source.length) errors.push('A cobertura não consome a fonte por inteiro.');
 
 const glossaryGroups = model.nodes.filter((node) => node.kind === 'glossary-group');
 if (glossaryGroups.length !== EXPECTED_COUNTS.glossaryGroups) errors.push('Número inválido de grupos de glossário.');
@@ -65,15 +69,9 @@ CHAPTER7_AREAS.forEach((area) => {
   });
 });
 
-const resourceAreas = model.nodes.filter((node) => node.kind === 'resource-area-heading');
-if (resourceAreas.length !== EXPECTED_COUNTS.chapter8Areas) errors.push('Número inválido de áreas de recursos.');
-const resourceGroups = model.nodes.filter((node) => node.kind === 'resource-group');
-const expectedResourceLabels = CHAPTER8_RESOURCES.flatMap((area) => area.groups);
-if (resourceGroups.length !== expectedResourceLabels.length) errors.push('Número inválido de grupos de recursos.');
-resourceGroups.forEach((node, index) => {
-  if (node.data.title !== expectedResourceLabels[index]) errors.push(`Grupo de recursos fora de ordem: ${node.data.title}.`);
-  if (!node.data.items.length) errors.push(`Grupo de recursos vazio: ${node.data.title}.`);
-});
+// Os recursos do Capítulo 8 (Espaço Influencers) não são publicados: o
+// capítulo é excluído na fonte, logo não há áreas nem grupos de recursos.
+// A ausência é o resultado esperado, não um erro.
 
 const fivePRows = model.nodes.find((node) => node.kind === 'five-p-table')?.data.rows ?? [];
 if (fivePRows.length !== 5) errors.push('A tabela dos 5 P’s não contém cinco linhas.');
@@ -155,11 +153,150 @@ if (unsafeLinks.length) errors.push(`Links inseguros renderizados: ${unsafeLinks
 const renderedAssets = collectAssetReferences(source);
 if (renderedAssets.length !== assetReferences.length) errors.push('A deteção de ativos diverge entre o verificador e o renderer.');
 
+// -------------------------------------------------_capítulo 8 fora do site
+
+// O Capítulo 8 (Espaço Influencers) está fora do âmbito: asingual na rota, na
+// navegação e no DOM. A verificação é automatizada para que uma reintrodução
+// acidental não passe despercebida.
+//
+// A fonte editorial ainda guarda o Capítulo 8 e é isso que permite reconstruir
+// as 30 atividades (incluindo «Descobre +ODS», que falta no Word), por isso a
+// ausência é exigida a partir do ponto em que o site é montado — não na fonte.
+if (ROUTES.some((route) => route.id === 'capitulo-8')) {
+  errors.push('ROUTES ainda inclui "capitulo-8". Remova-o de src/content/source-map.js.');
+}
+for (const marker of ['Influencers', 'influencers']) {
+  if ((document.body.textContent ?? '').includes(marker)) {
+    errors.push(`O DOM renderizado ainda contém "${marker}".`);
+    break;
+  }
+}
+const navText = [...document.querySelectorAll('#navigation a')].map((a) => a.textContent).join(' ');
+if (/influencers/iu.test(navText)) errors.push('A navegação ainda lista "Influencers".');
+if ([...document.querySelectorAll('[data-route="capitulo-8"]')].length) {
+  errors.push('O DOM ainda contém uma secção com data-route="capitulo-8".');
+}
+
+// ------------------------------------------------------ fichas de jogo
+
+const config = JSON.parse(readFileSync(new URL('../content.config.json', import.meta.url), 'utf8'));
+const gameMap = JSON.parse(readFileSync(new URL(`../${config.games.mapFile}`, import.meta.url), 'utf8'));
+const games = Array.isArray(gameMap.games) ? gameMap.games : [];
+
+if (games.length !== config.games.expectedCount) {
+  errors.push(`content/games-map.json tem ${games.length} jogos; o guia anuncia ${config.games.expectedCount}.`);
+}
+
+const gameNumbers = games.map((game) => game.number);
+const duplicateNumbers = [...new Set(gameNumbers.filter((n, i) => gameNumbers.indexOf(n) !== i))];
+if (duplicateNumbers.length) errors.push(`Números de jogo duplicados: ${duplicateNumbers.join(', ')}.`);
+
+const outOfRange = gameNumbers.filter((n) => n < config.games.firstNumber || n > config.games.lastNumber);
+if (outOfRange.length) errors.push(`Números de fora de [${config.games.firstNumber}, ${config.games.lastNumber}]: ${outOfRange.join(', ')}.`);
+
+const gameSlugs = games.map((game) => game.slug);
+const duplicateSlugs = [...new Set(gameSlugs.filter((s, i) => gameSlugs.indexOf(s) !== i))];
+if (duplicateSlugs.length) errors.push(`Slugs de jogo duplicados: ${duplicateSlugs.join(', ')}.`);
+
+// Cada ficha tem de existir em .md e .html, ter as linhas do molde e o título
+// certo. Os rótulos vêm do molde, lidos em tempo de execução pelo pipeline.
+const template = JSON.parse(readFileSync(new URL('../build/template-schema.json', import.meta.url), 'utf8'));
+const templateLabels = template.labels ?? [];
+
+const sheetIssues = [];
+for (const game of games) {
+  const sheetName = `${String(game.number).padStart(2, '0')}Game`;
+  const mdPath = new URL(`../source/games/${sheetName}.md`, import.meta.url);
+  const htmlPath = new URL(`../source/games/${sheetName}.html`, import.meta.url);
+
+  if (!existsSync(mdPath)) { sheetIssues.push(`${sheetName}.md em falta`); continue; }
+  if (!existsSync(htmlPath)) { sheetIssues.push(`${sheetName}.html em falta`); continue; }
+
+  const sheet = readFileSync(mdPath, 'utf8');
+  let cursor = -1;
+  for (const label of templateLabels) {
+    const row = `| ${label} |`;
+    const at = sheet.indexOf(row);
+    if (at === -1) { sheetIssues.push(`${sheetName}.md: falta a linha "${label}"`); continue; }
+    if (at < cursor) sheetIssues.push(`${sheetName}.md: a linha "${label}" está fora de ordem`);
+    cursor = at;
+  }
+  if (!sheet.includes(`**Título:** ${game.title}`)) {
+    sheetIssues.push(`${sheetName}.md: o título não corresponde ao mapa ("${game.title}")`);
+  }
+}
+errors.push(...sheetIssues);
+
+// O molde nunca é gerado nem alterado.
+if (!existsSync(new URL(`../${config.games.template}`, import.meta.url))) {
+  errors.push(`Molde em falta: ${config.games.template}`);
+}
+
+// -------------------------------------------------- taxonomia de progresso
+
+const progressReport = { present: false, sections: 0, areas: 0, trilhos: 0, staleDays: null };
+const artefactPath = new URL(`../${config.progress.artefact}`, import.meta.url);
+if (existsSync(artefactPath)) {
+  progressReport.present = true;
+  const artefact = JSON.parse(readFileSync(artefactPath, 'utf8'));
+  const trilhoKeys = new Set();
+
+  for (const meta of config.progress.sections) {
+    const section = artefact.sections?.[meta.tab];
+    if (!section) continue;
+    progressReport.sections += 1;
+    progressReport.areas += section.areas.length;
+    for (const area of section.areas) {
+      for (const trilho of area.trilhos) {
+        trilhoKeys.add(`${meta.tab}:${trilho.key}`);
+        if (!trilho.key.startsWith(`${area.key}-`)) {
+          errors.push(`progresso: a chave "${trilho.key}" não corresponde à área "${area.key}".`);
+        }
+      }
+    }
+  }
+  progressReport.trilhos = trilhoKeys.size;
+
+  // As quatro Secções têm de ser distintas: duas iguais significam que um
+  // separador da folha foi renomeado e a folha devolveu o primeiro em seu lugar.
+  const hashes = Object.values(artefact.source?.sha256 ?? {});
+  if (new Set(hashes).size !== hashes.length) {
+    errors.push('progresso: duas Secções têm conteúdo idêntico. Provavelmente um separador foi renomeado.');
+  }
+
+  const fetchedAt = Date.parse(artefact.source?.fetchedAt ?? '');
+  if (Number.isFinite(fetchedAt)) {
+    progressReport.staleDays = Math.round((Date.now() - fetchedAt) / 86_400_000);
+    if (progressReport.staleDays > config.progress.maxAgeDays) {
+      warnings.push(`A taxonomia do Progresso Pessoal tem ${progressReport.staleDays} dias. Corra \`npm run progress:refresh\`.`);
+    }
+  }
+}
+
+// O mapeamento por jogo só é validado quando a taxonomia existe.
+if (progressReport.present && existsSync(new URL(`../${config.progress.mapping}`, import.meta.url))) {
+  const mapping = JSON.parse(readFileSync(new URL(`../${config.progress.mapping}`, import.meta.url), 'utf8'));
+  const validNumbers = new Set(gameNumbers.map(String));
+  for (const [tab, byGame] of Object.entries(mapping.sections ?? {})) {
+    if (!config.progress.tabs.includes(tab)) {
+      errors.push(`content.progress.json: Secção desconhecida "${tab}".`);
+      continue;
+    }
+    for (const [number, entry] of Object.entries(byGame ?? {})) {
+      if (!validNumbers.has(number)) {
+        errors.push(`content.progress.json: o jogo ${number} não existe em games-map.json (${tab}).`);
+      }
+    }
+  }
+}
+
 const report = {
   source: {
     characters: model.stats.sourceCharacters,
     bytes: model.stats.sourceBytes,
     nodes: model.stats.nodeCount,
+    excludedSegments: model.excluded.length,
+    excludedCharacters: model.excludedText.length,
     coverage: `${expectedOffset}/${source.length}`,
   },
   counts: {
@@ -169,7 +306,6 @@ const report = {
     activities: model.stats.activities,
     areas: CHAPTER7_AREAS.length,
     diagrams: model.stats.diagrams,
-    resourceAreas: resourceAreas.length,
     bibliographyEntries: model.stats.references,
     tools: model.stats.tools,
     dollarSpans: model.dollarSpans.length,

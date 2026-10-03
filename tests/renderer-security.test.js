@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { parseDocument } from '../src/content/parser.js';
 import { renderApplication, renderInlineText, sanitizeUrl } from '../src/content/renderer.js';
@@ -25,19 +25,107 @@ beforeEach(() => {
 
 describe('renderização semântica', () => {
   it('renderiza todas as rotas, atividades e diagramas uma vez', () => {
-    expect(rendered.routeSections).toHaveLength(12);
-    expect(contentRoot.querySelectorAll('h1')).toHaveLength(12);
+    // Onze rotas: o Capítulo 8 (Espaço Influencers) não é publicado.
+    expect(rendered.routeSections).toHaveLength(11);
+    expect(contentRoot.querySelectorAll('h1')).toHaveLength(11);
     expect(contentRoot.querySelectorAll('.activity-card')).toHaveLength(30);
     expect(contentRoot.querySelectorAll('section.activity-area')).toHaveLength(5);
     expect(contentRoot.querySelectorAll('.diagram-disclosure')).toHaveLength(4);
-    expect(contentRoot.querySelectorAll('.resource-area')).toHaveLength(5);
+    // As áreas de recursos eram do Capítulo 8, que não é publicado.
+    expect(contentRoot.querySelectorAll('.resource-area')).toHaveLength(0);
+    expect(contentRoot.textContent).not.toMatch(/Influencers/u);
+  });
+
+  it('mostra um bloco de progresso por jogo, agrupado Secção → Área → Trilho', () => {
+    // Requer taxonomia e mapeamento; sem eles o bloco simplesmente não existe,
+    // o que é verificado por `npm run progress:degrade`.
+    const blocks = contentRoot.querySelectorAll('.progress-block');
+    if (!existsSync('build/progress-taxonomy.json')) {
+      expect(blocks).toHaveLength(0);
+      return;
+    }
+    expect(blocks).toHaveLength(30);
+
+    for (const block of blocks) {
+      const tabs = [...block.querySelectorAll('.progress-section')].map((el) => el.dataset.section);
+      expect(tabs.length).toBeGreaterThan(0);
+      expect(new Set(tabs).size).toBe(tabs.length);
+      for (const tab of tabs) expect(['1Sec', '2Sec', '3Sec', '4Sec']).toContain(tab);
+
+      // Cada Secção tem áreas e, dentro de cada área, trilhos.
+      for (const section of block.querySelectorAll('.progress-section')) {
+        const areas = [...section.querySelectorAll('.progress-area')];
+        expect(areas.length).toBeGreaterThan(0);
+        for (const area of areas) {
+          expect(area.querySelector('.progress-area__name').textContent).toBeTruthy();
+          expect(area.querySelectorAll('.progress-trilho').length).toBeGreaterThan(0);
+        }
+      }
+    }
+  });
+
+  it('distingue as quatro Secções sem depender só da cor', () => {
+    const sections = [...contentRoot.querySelectorAll('.progress-section')].slice(0, 4);
+    if (!sections.length) return; // sem mapeamento: nada a verificar
+    const indexes = sections.map((el) => el.dataset.sectionIndex);
+    expect(new Set(indexes).size).toBe(4);
+    for (const section of sections) {
+      const summary = section.querySelector('.progress-section__summary').textContent;
+      expect(summary).toMatch(/Secção/u);
+      expect(summary).toMatch(/\d+–\d+/u);
+    }
+  });
+
+  it('revela os descritores do trilho e o Caderno de Pista', () => {
+    const trilho = contentRoot.querySelector('.progress-trilho');
+    if (!trilho) return; // sem taxonomia
+    const descriptors = trilho.querySelector('.progress-trilho__descriptors');
+    expect(descriptors).not.toBeNull();
+    expect(descriptors.textContent).toMatch(/Atitudes/u);
+    expect(descriptors.textContent).toMatch(/Será que/u);
+    expect(descriptors.textContent).toMatch(/observar/u);
+
+    const reference = contentRoot.querySelector('.progress-reference');
+    expect(reference.getAttribute('href')).toMatch(/^https:\/\/drive\.google\.com/u);
+    expect(reference.getAttribute('rel')).toContain('noopener');
+  });
+
+  it('trata os descritores como conteúdo não fiável', () => {
+    // Vêm de uma folha externa: têm de passar por DOMPurify.
+    for (const descriptors of contentRoot.querySelectorAll('.progress-trilho__descriptors')) {
+      expect(descriptors.querySelector('script')).toBeNull();
+      expect(descriptors.querySelector('iframe')).toBeNull();
+    }
+    for (const link of contentRoot.querySelectorAll('.progress-reference')) {
+      expect(link.getAttribute('href') ?? '').not.toMatch(/^javascript:/iu);
+    }
+  });
+
+  it('liga cada cartão à ficha para impressão e ao jogo individual', () => {
+    const print = [...contentRoot.querySelectorAll('.activity-action--print')];
+    const detail = [...contentRoot.querySelectorAll('[data-game-link]')];
+    expect(print).toHaveLength(30);
+    expect(detail).toHaveLength(30);
+    for (const link of print) {
+      // O `href` é relativo a `index.html`, por isso começa por `source/`.
+      expect(link.getAttribute('href')).toMatch(/^(?:\.\.\/)?source\/games\/\d{2}Game\.html$/u);
+    }
+    for (const link of detail) {
+      expect(link.getAttribute('href')).toMatch(/^#\/jogo\/\d{1,2}$/u);
+    }
+  });
+
+  it('não cria IDs duplicados com o bloco de progresso', () => {
+    const ids = [...contentRoot.querySelectorAll('[id]')].map((el) => el.id);
+    expect(new Set(ids).size).toBe(ids.length);
   });
 
   it('não cria IDs duplicados e resolve todos os destinos do índice', () => {
     const ids = [...contentRoot.querySelectorAll('[id]')].map((element) => element.id);
     expect(new Set(ids).size).toBe(ids.length);
     const links = [...contentRoot.querySelectorAll('.source-index-list a')];
-    expect(links).toHaveLength(19);
+    // Dezanove entradas, menos a do Capítulo 8, que não é publicado.
+    expect(links).toHaveLength(18);
     links.forEach((link) => {
       const url = new URL(link.href, window.location.href);
       const [routeHash, query] = url.hash.split('?');

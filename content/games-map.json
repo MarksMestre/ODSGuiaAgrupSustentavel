@@ -1,0 +1,510 @@
+{
+  "$comment": "Gerado por scripts/build_content.py. Pode editar à vontade: o número de cada jogo é permanente, por isso mudar o Word não renumera as fichas.",
+  "count": 30,
+  "games": [
+    {
+      "number": 1,
+      "slug": "dramatizacao-de-realidades",
+      "title": "Dramatização de Realidades",
+      "area": "Área das Pessoas",
+      "ods": [
+        1
+      ],
+      "format": "Presencial",
+      "duration": "60 minutos",
+      "participants": "13 elementos (adaptável)",
+      "sheet": "01Game.md",
+      "print": "01Game.html"
+    },
+    {
+      "number": 2,
+      "slug": "jogo-justo-futebol-desigual",
+      "title": "Jogo Justo (Futebol Desigual)",
+      "area": "Área das Pessoas",
+      "ods": [
+        10
+      ],
+      "format": "Presencial",
+      "duration": "30 a 45 minutos",
+      "participants": "Mínimo 6",
+      "sheet": "02Game.md",
+      "print": "02Game.html"
+    },
+    {
+      "number": 3,
+      "slug": "o-caminho-para-a-terra-da-igualdade",
+      "title": "O Caminho para a Terra da Igualdade",
+      "area": "Área das Pessoas",
+      "ods": [
+        5,
+        10
+      ],
+      "format": "Presencial ou Online",
+      "duration": "60 minutos",
+      "participants": "Secção organizada em subunidades",
+      "sheet": "03Game.md",
+      "print": "03Game.html"
+    },
+    {
+      "number": 4,
+      "slug": "muda-os-teus-oculos",
+      "title": "Muda os Teus Óculos",
+      "area": "Área das Pessoas",
+      "ods": [
+        10
+      ],
+      "format": "Presencial",
+      "duration": "90 minutos",
+      "participants": "Variável",
+      "sheet": "04Game.md",
+      "print": "04Game.html"
+    },
+    {
+      "number": 5,
+      "slug": "peixinho-das-desigualdades",
+      "title": "Peixinho das Desigualdades",
+      "area": "Área das Pessoas",
+      "ods": [
+        5,
+        10
+      ],
+      "format": "Presencial",
+      "duration": "90 a 120 minutos",
+      "participants": "Até 8 elementos",
+      "sheet": "05Game.md",
+      "print": "05Game.html"
+    },
+    {
+      "number": 6,
+      "slug": "corrida-da-saude",
+      "title": "Corrida da Saúde",
+      "area": "Área das Pessoas",
+      "ods": [
+        3
+      ],
+      "format": "Presencial",
+      "duration": "Variável",
+      "participants": "Subunidades em estafeta",
+      "sheet": "06Game.md",
+      "print": "06Game.html"
+    },
+    {
+      "number": 7,
+      "slug": "a-certeza-no-caos",
+      "title": "A Certeza no Caos",
+      "area": "Área do Planeta",
+      "ods": [
+        10
+      ],
+      "format": "Presencial",
+      "duration": "45 a 50 minutos",
+      "participants": "Equipas de subunidade",
+      "sheet": "07Game.md",
+      "print": "07Game.html"
+    },
+    {
+      "number": 8,
+      "slug": "agua-bem-de-todos-para-todos",
+      "title": "Água: Bem de Todos, para Todos!",
+      "area": "Área do Planeta",
+      "ods": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "format": "Presencial",
+      "duration": "Mínimo 30 minutos",
+      "participants": "Subunidades",
+      "sheet": "08Game.md",
+      "print": "08Game.html"
+    },
+    {
+      "number": 9,
+      "slug": "alteracoes-climaticas",
+      "title": "Alterações Climáticas",
+      "area": "Área do Planeta",
+      "ods": [
+        4
+      ],
+      "format": "Online ou Presencial",
+      "duration": "45 minutos",
+      "participants": "Mínimo 3",
+      "sheet": "09Game.md",
+      "print": "09Game.html"
+    },
+    {
+      "number": 10,
+      "slug": "hoteis-para-insetos",
+      "title": "Hotéis para Insetos",
+      "area": "Área do Planeta",
+      "ods": [
+        4
+      ],
+      "format": "Presencial",
+      "duration": "40 a 60 minutos",
+      "participants": "Individual ou em subunidades",
+      "sheet": "10Game.md",
+      "print": "10Game.html"
+    },
+    {
+      "number": 11,
+      "slug": "reciclagem-2-0",
+      "title": "Reciclagem 2.0",
+      "area": "Área do Planeta",
+      "ods": [
+        12
+      ],
+      "format": "Presencial",
+      "duration": "30 minutos",
+      "participants": "Mínimo 2 equipas",
+      "sheet": "11Game.md",
+      "print": "11Game.html"
+    },
+    {
+      "number": 12,
+      "slug": "qual-o-tamanho-da-tua-pegada",
+      "title": "Qual o Tamanho da Tua Pegada?",
+      "area": "Área do Planeta",
+      "ods": [
+        12
+      ],
+      "format": "Presencial ou Online",
+      "duration": "60 minutos",
+      "participants": "Secção completa",
+      "sheet": "12Game.md",
+      "print": "12Game.html"
+    },
+    {
+      "number": 13,
+      "slug": "quantos-queres-dos-direitos",
+      "title": "Quantos Queres dos Direitos",
+      "area": "Área da Prosperidade",
+      "ods": [
+        8
+      ],
+      "format": "Presencial ou Online",
+      "duration": "20 a 30 minutos",
+      "participants": "Indefinido",
+      "sheet": "13Game.md",
+      "print": "13Game.html"
+    },
+    {
+      "number": 14,
+      "slug": "e-se-eu-nao-fosse-a-escola",
+      "title": "E se Eu Não Fosse à Escola?",
+      "area": "Área da Prosperidade",
+      "ods": [
+        4,
+        8
+      ],
+      "format": "Presencial ou Online",
+      "duration": "30 a 45 minutos",
+      "participants": "Secção",
+      "sheet": "14Game.md",
+      "print": "14Game.html"
+    },
+    {
+      "number": 15,
+      "slug": "jogo-dos-salarios",
+      "title": "Jogo dos Salários",
+      "area": "Área da Prosperidade",
+      "ods": [
+        8,
+        12
+      ],
+      "format": "Presencial ou Online",
+      "duration": "45 minutos",
+      "participants": "Secção",
+      "sheet": "15Game.md",
+      "print": "15Game.html"
+    },
+    {
+      "number": 16,
+      "slug": "o-mundo-sem-todos-os-empregos",
+      "title": "O Mundo Sem Todos os Empregos",
+      "area": "Área da Prosperidade",
+      "ods": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "format": "Presencial ou Online",
+      "duration": "40 minutos",
+      "participants": "Secção",
+      "sheet": "16Game.md",
+      "print": "16Game.html"
+    },
+    {
+      "number": 17,
+      "slug": "o-orcamento-nas-tuas-maos",
+      "title": "O Orçamento nas Tuas Mãos",
+      "area": "Área da Prosperidade",
+      "ods": [
+        8
+      ],
+      "format": "Presencial ou Online",
+      "duration": "3 horas",
+      "participants": "Até 30",
+      "sheet": "17Game.md",
+      "print": "17Game.html"
+    },
+    {
+      "number": 18,
+      "slug": "a-rota-do-vestuario",
+      "title": "A Rota do Vestuário",
+      "area": "Área da Prosperidade",
+      "ods": [
+        8
+      ],
+      "format": "Presencial ou Online",
+      "duration": "60 minutos",
+      "participants": "Subunidades",
+      "sheet": "18Game.md",
+      "print": "18Game.html"
+    },
+    {
+      "number": 19,
+      "slug": "time-s-up-dos-valores",
+      "title": "Time's Up dos Valores",
+      "area": "Área da Paz",
+      "ods": [
+        16
+      ],
+      "format": "Presencial",
+      "duration": "30 minutos",
+      "participants": "Subunidades",
+      "sheet": "19Game.md",
+      "print": "19Game.html"
+    },
+    {
+      "number": 20,
+      "slug": "3-coisas-na-bagagem",
+      "title": "3 Coisas na Bagagem",
+      "area": "Área da Paz",
+      "ods": [
+        16
+      ],
+      "format": "Presencial ou Online",
+      "duration": "30 minutos",
+      "participants": "Secção",
+      "sheet": "20Game.md",
+      "print": "20Game.html"
+    },
+    {
+      "number": 21,
+      "slug": "o-novo-planeta",
+      "title": "O Novo Planeta",
+      "area": "Área da Paz",
+      "ods": [
+        16
+      ],
+      "format": "Presencial ou Online",
+      "duration": "120 minutos",
+      "participants": "Mínimo 4 elementos",
+      "sheet": "21Game.md",
+      "print": "21Game.html"
+    },
+    {
+      "number": 22,
+      "slug": "qual-a-tua-posicao",
+      "title": "Qual a Tua Posição?",
+      "area": "Área da Paz",
+      "ods": [
+        16
+      ],
+      "format": "Presencial",
+      "duration": "60 minutos",
+      "participants": "Até 30 elementos",
+      "sheet": "22Game.md",
+      "print": "22Game.html"
+    },
+    {
+      "number": 23,
+      "slug": "olha-a-noticia",
+      "title": "Olha a Notícia!",
+      "area": "Área da Paz",
+      "ods": [
+        16
+      ],
+      "format": "Presencial ou Online",
+      "duration": "45 minutos",
+      "participants": "Mínimo 3",
+      "sheet": "23Game.md",
+      "print": "23Game.html"
+    },
+    {
+      "number": 24,
+      "slug": "representar-e-humano",
+      "title": "Representar é Humano",
+      "area": "Área da Paz",
+      "ods": [
+        16
+      ],
+      "format": "Presencial ou Online",
+      "duration": "45 minutos",
+      "participants": "10 a 30 elementos",
+      "sheet": "24Game.md",
+      "print": "24Game.html"
+    },
+    {
+      "number": 25,
+      "slug": "jogo-do-quim-dos-ods",
+      "title": "Jogo do Quim dos ODS",
+      "area": "Área das Parcerias",
+      "ods": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "format": "Presencial ou Online",
+      "duration": "20 minutos",
+      "participants": "Secção",
+      "sheet": "25Game.md",
+      "print": "25Game.html"
+    },
+    {
+      "number": 26,
+      "slug": "jogo-da-memoria-cooperativo",
+      "title": "Jogo da Memória Cooperativo",
+      "area": "Área das Parcerias",
+      "ods": [
+        17
+      ],
+      "format": "Presencial",
+      "duration": "45 minutos",
+      "participants": "Subunidades",
+      "sheet": "26Game.md",
+      "print": "26Game.html"
+    },
+    {
+      "number": 27,
+      "slug": "o-pacote-de-acucar",
+      "title": "O Pacote de Açúcar",
+      "area": "Área das Parcerias",
+      "ods": [
+        11
+      ],
+      "format": "Presencial (em contexto de Raid / Jogo de Vila)",
+      "duration": "2 a 3 horas",
+      "participants": "Subunidades",
+      "sheet": "27Game.md",
+      "print": "27Game.html"
+    },
+    {
+      "number": 28,
+      "slug": "desenho-estragado-dos-ods",
+      "title": "Desenho Estragado dos ODS",
+      "area": "Área das Parcerias",
+      "ods": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "format": "Presencial ou Online",
+      "duration": "20 minutos",
+      "participants": "Subunidade",
+      "sheet": "28Game.md",
+      "print": "28Game.html"
+    },
+    {
+      "number": 29,
+      "slug": "descobre-ods",
+      "title": "Descobre +ODS",
+      "area": "Área das Parcerias",
+      "ods": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "format": "Presencial ou Online",
+      "duration": "Variável",
+      "participants": "Subunidades",
+      "sheet": "29Game.md",
+      "print": "29Game.html"
+    },
+    {
+      "number": 30,
+      "slug": "negociar-na-onu-simulacao-de-assembleia-geral",
+      "title": "Negociar na ONU (Simulação de Assembleia Geral)",
+      "area": "Área das Parcerias",
+      "ods": [
+        17
+      ],
+      "format": "Presencial",
+      "duration": "90 a 120 minutos",
+      "participants": "8 a 16 elementos (Estados-Membros, Sociedade Civil e Mesa)",
+      "sheet": "30Game.md",
+      "print": "30Game.html"
+    }
+  ]
+}

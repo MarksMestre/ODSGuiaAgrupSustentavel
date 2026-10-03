@@ -1,4 +1,4 @@
-import {
+﻿import {
   ACTIVITY_FIELDS,
   CHAPTER_2_5P_TABLE,
   CHAPTER_4_DIAGRAM,
@@ -6,7 +6,6 @@ import {
   CHAPTER_6_DIAGRAM,
   CHAPTER7_AREAS,
   CHAPTER_7_DIAGRAM,
-  CHAPTER8_RESOURCES,
   CHAPTERS,
   ECONOMICS_TABLE,
   EXPECTED_COUNTS,
@@ -126,16 +125,26 @@ function createParser(source) {
   const nodes = [];
   const routes = [];
   const routeMap = new Map();
+  // Trechos da fonte que fazem parte do documento mas não são publicados (o
+  // Capítulo 8). São guardados para que a concatenação dos nós reproduza a
+  // fonte inteira, como a verificação de paridade exige.
+  const excluded = [];
 
   function addNode(kind, route, start, end, data = {}) {
     requireRange(start, end, kind);
     const previous = nodes.at(-1);
-    if (previous && start !== previous.sourceOffset + previous.sourceText.length) {
-      throw new ContentParseError('Os nós do conteúdo não são contíguos.', {
-        kind,
-        start,
-        previousEnd: previous.sourceOffset + previous.sourceText.length,
-      });
+    if (previous) {
+      const expected = previous.sourceOffset + previous.sourceText.length;
+      if (start < expected) {
+        throw new ContentParseError('Os nós do conteúdo sobrepõem-se.', {
+          kind,
+          start,
+          previousEnd: expected,
+        });
+      }
+      if (start > expected) {
+        excluded.push({ start: expected, end: start });
+      }
     }
     const node = Object.freeze({
       kind,
@@ -678,50 +687,6 @@ function createParser(source) {
     });
   }
 
-  function parseChapter8(route, start, end) {
-    const chapter = CHAPTERS[7];
-    const headingEnd = start + chapter.heading.length;
-    addRange(route, start, headingEnd, { kind: 'route-title', text: chapter.heading });
-
-    const firstArea = findRequired(source, CHAPTER8_RESOURCES[0].title, headingEnd, chapter.id);
-    addRange(route, headingEnd, firstArea, { kind: 'paragraph' });
-    let cursor = firstArea;
-
-    CHAPTER8_RESOURCES.forEach((area, areaIndex) => {
-      const firstGroup = findRequired(source, area.groups[0], cursor, area.title);
-      addRange(route, cursor, firstGroup, {
-        kind: 'resource-area-heading',
-        title: area.title,
-        color: area.color,
-        id: `recursos-${slugify(area.title)}`,
-      });
-
-      const nextArea = CHAPTER8_RESOURCES[areaIndex + 1];
-      const areaEnd = nextArea
-        ? findRequired(source, nextArea.title, firstGroup, chapter.id)
-        : end;
-      let groupCursor = firstGroup;
-
-      area.groups.forEach((label, groupIndex) => {
-        const groupStart = findRequired(source, label, groupCursor, `${area.title}: ${label}`);
-        const nextGroup = area.groups[groupIndex + 1];
-        const groupEnd = nextGroup
-          ? findRequired(source, nextGroup, groupStart + label.length, area.title)
-          : areaEnd;
-        const fullText = source.slice(groupStart, groupEnd);
-        const split = splitLabelValue(fullText, label);
-        addRange(route, groupStart, groupEnd, {
-          kind: 'resource-group',
-          title: label,
-          items: splitList(split.value),
-        });
-        groupCursor = groupEnd;
-      });
-
-      cursor = areaEnd;
-    });
-  }
-
   function parseReferences(route, start, end) {
     const headingEnd = start + TOP_LEVEL_MARKERS.references.length;
     addRange(route, start, headingEnd, {
@@ -756,6 +721,25 @@ function createParser(source) {
 
   function build() {
     const { glossaryStart, indexStart, starts, referencesStart } = findChapterStarts();
+
+    // O Capítulo 8 não é publicado. A marca delimita o fim do Capítulo 7 para
+    // que o conteúdo do Capítulo 8 nunca entre no modelo.
+    const influencersStart = findRequired(
+      source,
+      TOP_LEVEL_MARKERS.influencersChapter,
+      starts[starts.length - 1].offset,
+      'início do Capítulo 8',
+    );
+    if (influencersStart >= referencesStart) {
+      throw new ContentParseError(
+        'O limite do Capítulo 8 vem depois da bibliografia; a fonte está corrompida.',
+        { influencersStart, referencesStart },
+      );
+    }
+    // O conteúdo do Capítulo 8 fica fora do modelo: o Capítulo 7 termina onde o
+    // Capítulo 8 começa, e a bibliografia é a rota seguinte. O salto de offsets
+    // entre `capitulo-7` e `referencias` é intencional — é o Capítulo 8
+    // excluído, e não uma lacuna perdida.
     const boundaries = [
       { id: 'inicio', start: 0, end: glossaryStart },
       { id: 'glossario', start: glossaryStart, end: indexStart },
@@ -763,7 +747,7 @@ function createParser(source) {
       ...CHAPTERS.map((chapter, index) => ({
         id: chapter.id,
         start: starts[index].offset,
-        end: index === CHAPTERS.length - 1 ? referencesStart : starts[index + 1].offset,
+        end: chapter.id === 'capitulo-7' ? influencersStart : starts[index + 1].offset,
       })),
       { id: 'referencias', start: referencesStart, end: source.length },
     ];
@@ -814,9 +798,6 @@ function createParser(source) {
         case 'capitulo-7':
           parseChapter7(route, route.sourceOffset, route.sourceEnd);
           break;
-        case 'capitulo-8':
-          parseChapter8(route, route.sourceOffset, route.sourceEnd);
-          break;
         case 'referencias':
           parseReferences(route, route.sourceOffset, route.sourceEnd);
           break;
@@ -829,6 +810,10 @@ function createParser(source) {
     return Object.freeze({
       source,
       nodes: Object.freeze(nodes),
+      // Trechos excluídos (Capítulo 8). `excludedText` é a concatenação deles,
+      // para que a cobertura da fonte continue a ser integral.
+      excluded: Object.freeze(excluded),
+      excludedText: Object.freeze(excluded.map((range) => source.slice(range.start, range.end)).join('')),
       routes: Object.freeze(routes),
       routeMap,
       dollarSpans: Object.freeze(dollarSpans),
@@ -855,23 +840,47 @@ export function parseDocument(source) {
 export function validateParsedDocument(document) {
   const errors = [];
   const { source, nodes, routes, dollarSpans } = document;
+  const excluded = document.excluded ?? [];
 
-  if (source !== nodes.map((node) => node.sourceText).join('')) {
-    errors.push('A concatenação dos nós não reproduz a fonte completa.');
-  }
+  // Os trechos excluídos têm de preencher exactamente as lacunas entre nós: nem
+  // mais, nem menos.
 
+  // Cada nó tem de estar onde o parser disse, e os nós não podem sobrepor-se.
   let expectedOffset = 0;
   nodes.forEach((node, index) => {
-    if (node.sourceOffset !== expectedOffset) {
-      errors.push(`Deslocamento inesperado no nó ${index}: ${node.sourceOffset}; esperado ${expectedOffset}.`);
-    }
     if (node.sourceText !== source.slice(node.sourceOffset, node.sourceOffset + node.sourceText.length)) {
       errors.push(`Texto bruto divergente no nó ${index}.`);
     }
-    expectedOffset += node.sourceText.length;
+    if (node.sourceOffset < expectedOffset) {
+      errors.push(`Os nós ${index} e anterior sobrepõem-se.`);
+    }
+    expectedOffset = Math.max(expectedOffset, node.sourceOffset + node.sourceText.length);
   });
 
-  if (expectedOffset !== source.length) errors.push('A cobertura não termina no fim da fonte.');
+  // As lacunas entre nós têm de ser exactamente os trechos excluídos: nem
+  // mais, nem menos.
+  const gaps = [];
+  let cursor = 0;
+  for (const node of nodes) {
+    if (node.sourceOffset > cursor) gaps.push([cursor, node.sourceOffset]);
+    cursor = node.sourceOffset + node.sourceText.length;
+  }
+  if (cursor < source.length) gaps.push([cursor, source.length]);
+  if (gaps.length !== excluded.length
+    || gaps.some(([start, end], index) => excluded[index].start !== start || excluded[index].end !== end)) {
+    errors.push('Os trechos excluídos não correspondem às lacunas entre nós.');
+  }
+  // Nós e lacunas, intercalados pela posição na fonte, têm de reconstituir a
+  // fonte inteira: nada se perde, nem sequer o que não é publicado.
+  const rebuilt = [
+    ...nodes.map((node) => ({ start: node.sourceOffset, text: node.sourceText })),
+    ...excluded.map((range) => ({ start: range.start, text: source.slice(range.start, range.end) })),
+  ]
+    .sort((a, b) => a.start - b.start)
+    .map((part) => part.text)
+    .join('');
+  if (source !== rebuilt) errors.push('A cobertura não consome a fonte por inteiro.');
+
   if (routes.length !== EXPECTED_COUNTS.routes) errors.push(`Esperadas ${EXPECTED_COUNTS.routes} rotas.`);
   if (routes.map((route) => route.id).join('|') !== ROUTES.map((route) => route.id).join('|')) {
     errors.push('A ordem das rotas não corresponde à ordem da fonte.');
@@ -896,6 +905,27 @@ export function validateParsedDocument(document) {
     if (concatenated !== source.slice(route.sourceOffset, route.sourceEnd)) {
       errors.push(`Cobertura inválida na rota ${route.id}.`);
     }
+  }
+
+  // As rotas são contíguas entre si, pela ordem em que `build` as define. A
+  // única lacuna admitida é o Capítulo 8, que não é publicado: tem de coincidir
+  // com um dos trechos excluídos.
+  let routeEnd = 0;
+  for (const route of routes) {
+    if (route.sourceOffset !== routeEnd) {
+      const isExcluded = excluded.some(
+        (range) => range.start === routeEnd && range.end === route.sourceOffset,
+      );
+      if (isExcluded) {
+        routeEnd = route.sourceOffset;
+      } else {
+        errors.push(`Lacuna ou sobreposição nas rotas antes de ${route.id}: ${routeEnd} → ${route.sourceOffset}.`);
+      }
+    }
+    routeEnd = route.sourceEnd;
+  }
+  if (routeEnd !== source.length) {
+    errors.push('A cobertura das rotas não termina no fim da fonte.');
   }
 
   if (dollarSpans.length !== EXPECTED_COUNTS.dollarSpans) {

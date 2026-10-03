@@ -1,0 +1,107 @@
+{
+  "$comment": "Ficheiro de configuração do pipeline editorial. É o ÚNICO ficheiro que precisa de editar para mudar caminhos, nomes ou opções. Não precisa de saber programar.",
+
+  "editorial": {
+    "$comment": "Os três documentos Word que formam o conteúdo do kit, por ordem de leitura.",
+    "sources": [
+      { "id": "source1", "file": "source/source1.docx", "label": "Parte 1" },
+      { "id": "source2", "file": "source/source2.docx", "label": "Parte 2" },
+      { "id": "games", "file": "source/gamesSource.docx", "label": "Jogos e Workshops" }
+    ],
+    "fallbackFile": "file.md",
+    "fallbackComment": "Fonte editorial já montada. Só é usada para preencher jogos que faltam no Word."
+  },
+
+  "games": {
+    "$comment": "Geração das fichas de jogo. n vai de 0 (molde) a 30.",
+    "template": "source/games/00GameSheetTemplate.docx",
+    "outputDir": "source/games",
+    "mapFile": "content/games-map.json",
+    "firstNumber": 1,
+    "lastNumber": 30,
+    "expectedCount": 30,
+    "extensions": { "canonical": ".md", "print": ".html" },
+    "areas": [
+      "Área das Pessoas",
+      "Área do Planeta",
+      "Área da Prosperidade",
+      "Área da Paz",
+      "Área das Parcerias"
+    ],
+    "areasPerGroup": 6
+  },
+
+  "report": {
+    "file": "build/content-report.json",
+    "console": true
+  },
+
+  "build": {
+    "dir": "build"
+  },
+
+  "progress": {
+    "$comment": "Personal Progress. Os valores editoriais (label, branch, ages, color, referenceUrl) vêm daqui; a taxonomia vem sempre do Google Sheet.",
+    "spreadsheetId": "1RHOm4LJZ0mtMH6yp_9ou5DnDK4uqn7MMJBQXRiBvWrg",
+    "endpoint": "https://docs.google.com/spreadsheets/d/{spreadsheetId}/gviz/tq?tqx=out:csv&sheet={tab}",
+    "tabs": ["1Sec", "2Sec", "3Sec", "4Sec"],
+    "artefact": "build/progress-taxonomy.json",
+    "mapping": "content.progress.json",
+    "timeoutMs": 15000,
+    "maxAgeDays": 90,
+    "sections": [
+      {
+        "tab": "1Sec",
+        "label": "I Secção",
+        "branch": "Lobitos",
+        "ages": "6–10",
+        "color": "#FDD400",
+        "ink": "#1a1a1a",
+        "referenceUrl": "https://drive.google.com/file/d/129ouD67XuatPjxL6gdPBVrNkHUVX_3LS/view"
+      },
+      {
+        "tab": "2Sec",
+        "label": "II Secção",
+        "branch": "Exploradores",
+        "ages": "10–14",
+        "color": "#3FA535",
+        "ink": "#ffffff",
+        "referenceUrl": "https://drive.google.com/file/d/1fMmcDEX1T3NxNyYmwOKr52Bm7LaHaDcT/view"
+      },
+      {
+        "tab": "3Sec",
+        "label": "III Secção",
+        "branch": "Pioneiros",
+        "ages": "14–18",
+        "color": "#00A0E6",
+        "ink": "#0b1a24",
+        "referenceUrl": "https://drive.google.com/file/d/1cQnvbZdMB3ef8o-C9DTlgp87xAl8ZJmn/view"
+      },
+      {
+        "tab": "4Sec",
+        "label": "IV Secção",
+        "branch": "Caminheiros",
+        "ages": "18–22",
+        "color": "#EF1013",
+        "ink": "#ffffff",
+        "referenceUrl": "https://drive.google.com/file/d/1XeQoyoAPpEQCglDbUEbckLqamIwYNqsj/view"
+      }
+    ],
+    "manualLink": "https://drive.google.com/file/d/1UU3kkOOKtCqPt7x-rLrcmKrXumwN0mWV/view",
+    "expectedAreas": [
+      "Físico",
+      "Afetivo",
+      "Caráter",
+      "Espiritual",
+      "Intelectual",
+      "Social"
+    ],
+    "expectedTrilhosPerArea": 3,
+    "expectedSha256": {
+      "1Sec": "e556935807e8fb049ff92b3da4b6ca5d4834ba61ac7cf4813e349359bdbc3ddc",
+      "2Sec": "d81f7dfe67617c623eafe0aa7c29f4b47830062a4931309de102fc67da850918",
+      "3Sec": "6fbc365b28dee1fb9f08f2f518d2f47e6734aa2c8d217bb83aadae9b63206cbd",
+      "4Sec": "4707857b2305bf6652be9485fb54f1c67b8fc876b261d2d9ca9d0469c016f0a1"
+    }
+  }
+}
