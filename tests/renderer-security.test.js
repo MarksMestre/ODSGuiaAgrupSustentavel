@@ -2,6 +2,8 @@ import { existsSync, readFileSync } from 'node:fs';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { parseDocument } from '../src/content/parser.js';
 import { renderApplication, renderInlineText, sanitizeUrl } from '../src/content/renderer.js';
+import { CHAPTERS, chapterNavName } from '../src/content/source-map.js';
+import { GAMES } from '../src/content/games.js';
 
 const source = readFileSync('file.md', 'utf8');
 const model = parseDocument(source);
@@ -72,7 +74,9 @@ describe('renderização semântica', () => {
     for (const section of sections) {
       const summary = section.querySelector('.progress-section__summary').textContent;
       expect(summary).toMatch(/Secção/u);
-      expect(summary).toMatch(/\d+–\d+/u);
+      // O nome da branch identifica a Secção; a faixa etária já não aparece.
+      expect(summary).toMatch(/Lobitos|Exploradores|Pioneiros|Caminheiros/u);
+      expect(summary).not.toMatch(/\d+–\d+/u);
     }
   });
 
@@ -112,6 +116,61 @@ describe('renderização semântica', () => {
     }
     for (const link of detail) {
       expect(link.getAttribute('href')).toMatch(/^#\/jogo\/\d{1,2}$/u);
+    }
+  });
+
+  it('abre a barra lateral com um convite que diz o que há para ler', () => {
+    const hero = navigationRoot.querySelector('[data-nav-group="explorar"]');
+    expect(hero).not.toBeNull();
+    // Primeiro de tudo, para que o convite seja o que se vê ao abrir a barra.
+    expect(navigationRoot.firstElementChild).toBe(hero);
+
+    const chapters = hero.querySelector('.nav-hero__stats').textContent;
+    expect(chapters).toContain(String(GAMES.length));
+    expect(chapters).toMatch(/\d+ jogos/u);
+    // As contagens são calculadas, não escritas: tem de bater certo com o mapa.
+    const expectedChapters = CHAPTERS.length;
+    expect(chapters).toContain(`${expectedChapters} capítulos`);
+    // E o atalho para a pesquisa é um botão, não texto decorativo.
+    expect(hero.querySelector('[data-nav-search]').tagName).toBe('BUTTON');
+  });
+
+  it('nomeia os capítulos na navegação com o título editorial', () => {
+    // O nome vem de `CHAPTERS[].heading`, a mesma cadeia que o parser usa para
+    // encontrar o capítulo. Escrever o nome à mão aqui faria a barra divergir.
+    for (const chapter of CHAPTERS) {
+      const link = navigationRoot.querySelector(`[data-route="${chapter.id}"]`);
+      expect(link, chapter.id).not.toBeNull();
+      const name = link.querySelector('.nav-link__name').textContent;
+      expect(name).toBe(chapterNavName(chapter.heading));
+      expect(name).not.toBe('');
+      expect(name).not.toMatch(/^Capítulo\s+\d+$/u);
+    }
+  });
+
+  it('mantém o número do capítulo legível sem depender da cor', () => {
+    const link = navigationRoot.querySelector('[data-route="capitulo-7"]');
+    const number = link.querySelector('.nav-link__number');
+    expect(number.textContent).toBe('7');
+    // O número é decorativo: o nome completo é que identifica o destino.
+    expect(number.getAttribute('aria-hidden')).toBe('true');
+    expect(link.textContent).toBe('7Jogos e Workshops — Oferta Pedagógica');
+    // E o `title` dá o nome inteiro a quem passa o rato, já que o limite de
+    // linhas é só de CSS.
+    expect(link.querySelector('.nav-link__name').getAttribute('title'))
+      .toBe('Jogos e Workshops — Oferta Pedagógica');
+  });
+
+  it('as ligações sem número ocupam a largura toda da barra', () => {
+    // `Início`, `Glossário` e `Bibliografia` não têm número à esquerda. Se usassem
+    // a grelha de duas colunas sem o número, o texto ficava na coluna de 1.4 rem
+    // e appearcia cortado em «Inic».
+    for (const routeId of ['inicio', 'glossario', 'indice', 'referencias']) {
+      const link = navigationRoot.querySelector(`[data-route="${routeId}"]`);
+      expect(link, routeId).not.toBeNull();
+      expect(link.classList.contains('nav-link--plain'), routeId).toBe(true);
+      expect(link.querySelector('.nav-link__number'), routeId).toBeNull();
+      expect(link.textContent, routeId).not.toBe('');
     }
   });
 

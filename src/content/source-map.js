@@ -223,6 +223,37 @@ export const CHAPTERS = Object.freeze([
   },
 ]);
 
+/**
+ * `Capítulo 3: Guia para uma Sede Sustentável` -> `Guia para uma Sede Sustentável`.
+ *
+ * O prefixo editorial é removido pelo mesmo padrão que o capítulo 7 usa para
+ * se localizar no `file.md`, para que a barra lateral e o corpo do texto nunca
+ * discordem sobre onde acaba o nome.
+ */
+export const CHAPTER_PREFIX_RE = /^Capítulo\s+\d+\s*[:.–—-]?\s*/u;
+
+export function chapterNavName(heading) {
+  return String(heading).replace(CHAPTER_PREFIX_RE, '').trim();
+}
+
+export function chapterNumber(heading) {
+  return String(heading).match(/^Capítulo\s+(\d+)/u)?.[1] ?? null;
+}
+
+/**
+ * O número e o nome que a barra lateral mostra para um capítulo.
+ *
+ * Sai do cabeçalho editorial — a mesma cadeia que o parser usa para *encontrar*
+ * o capítulo no `file.md` — e não de `ROUTES[].label`, que é só a forma curta
+ * `Capítulo N`. Escrever o nome duas vezes seria pedir que divergissem.
+ */
+export function chapterNavLabel(routeId) {
+  const heading = CHAPTERS.find((chapter) => chapter.id === routeId)?.heading
+    ?? ROUTES.find((route) => route.id === routeId)?.title
+    ?? '';
+  return { number: chapterNumber(heading), name: chapterNavName(heading) };
+}
+
 export const CHAPTER_2_5P_TABLE = Object.freeze({
   start: 'PrincípioODS CorrespondentesFoco Principal',
   rows: [

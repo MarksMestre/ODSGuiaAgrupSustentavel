@@ -5,48 +5,161 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Negociar na ONU (Simulação de Assembleia Geral) — Ficha de Jogo</title>
     <style>
+      :root {
+      color-scheme: light;
+      --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-serif: Georgia, "Times New Roman", serif;
+      --font-mono: "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --green-950: #0c2c22;
+      --green-900: #123c2e;
+      --green-800: #174c3a;
+      --green-700: #1f624a;
+      --green-600: #2b795d;
+      --green-100: #dcece4;
+      --green-50: #edf6f1;
+      --amber-700: #8b4d08;
+      --amber-500: #d58a1f;
+      --amber-100: #f9e8c7;
+      --paper: #fbfaf5;
+      --paper-raised: #ffffff;
+      --paper-soft: #f2efe6;
+      --ink: #1d2924;
+      --ink-muted: #53635c;
+      --line: #d8ded9;
+      --line-strong: #b7c3bc;
+      --focus: #b85c00;
+      --danger: #a32828;
+      --shadow-sm: 0 1px 2px rgb(12 44 34 / 8%), 0 3px 10px rgb(12 44 34 / 5%);
+      --shadow-lg: 0 18px 50px rgb(12 44 34 / 18%);
+      --radius-sm: 0.5rem;
+      --radius-md: 0.85rem;
+      --radius-lg: 1.25rem;
+      --header-height: 4.5rem;
+      --sidebar-width: 17.5rem;
+      --content-width: 78rem;
+      --people: #b33b4b;
+      --planet: #247a4d;
+      --prosperity: #9a6500;
+      --peace: #4e5fa8;
+      --partnerships: #6e4a9d;
+      O CNE dá #FDD400 / #3FA535 / #00A0E6 / #EF1013. Essas cores não passam
+      WCAG 1.4.11 (3:1 para elementos gráficos) sobre os fundos do site —
+      #FDD400 dá 1,7:1 — por isso são escurecidas até cumprirem. A cor da Secção
+      entra como barra lateral, marcador e contorno; o texto mantém sempre a cor
+      do tema. A cor original continua em content.config.json. */
+      --progress-1-accent: #8a6f00; /* de #FDD400, escurecida até 4.19:1 */
+      --progress-2-accent: #2f7d43; /* de #3FA535 */
+      --progress-3-accent: #0079b8; /* de #00A0E6 */
+      --progress-4-accent: #c21518; /* de #EF1013 */
+      }
       :root { color-scheme: light; }
+      * { box-sizing: border-box; }
       body {
-        font-family: system-ui, "Segoe UI", Tahoma, Arial, sans-serif;
-        color: #16211c;
-        background: #fff;
+        font-family: var(--font-sans);
+        color: var(--ink);
+        background: var(--paper);
         margin: 0 auto;
         max-width: 46rem;
         padding: 1.5rem;
-        line-height: 1.5;
+        line-height: 1.65;
       }
-      h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
-      .meta { color: #4a5b52; font-size: .9rem; margin: 0 0 1.25rem; }
+      .sheet {
+        --area-color: var(--green-600);
+        padding: clamp(1.1rem, 2.5vw, 1.6rem);
+        border: 1px solid var(--line);
+        border-inline-start: 0.35rem solid var(--area-color);
+        border-radius: var(--radius-md);
+        background: var(--paper-raised);
+        box-shadow: var(--shadow-sm);
+      }
+      .sheet--people { --area-color: var(--people); }
+      .sheet--planet { --area-color: var(--planet); }
+      .sheet--prosperity { --area-color: var(--prosperity); }
+      .sheet--peace { --area-color: var(--peace); }
+      .sheet--partnerships { --area-color: var(--partnerships); }
+      .area-label {
+        margin: 0 0 .2rem;
+        color: var(--ink-muted);
+        font-size: .72rem;
+        font-weight: 850;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0 0 .5rem;
+        color: var(--green-900);
+        font-family: var(--font-serif);
+        font-size: 1.6rem;
+        font-weight: 500;
+        letter-spacing: -.02em;
+        line-height: 1.15;
+      }
+      .meta { color: var(--ink-muted); font-size: .9rem; margin: 0 0 1.25rem; }
       table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; }
-      caption { text-align: left; font-weight: 700; padding-bottom: .35rem; }
-      th, td { border: 1px solid #c3cec8; padding: .5rem .6rem; text-align: left; vertical-align: top; }
-      th { width: 34%; background: #f2f6f4; font-weight: 600; }
-      td ol { margin: 0; padding-left: 1.2rem; }
+      caption { text-align: start; font-weight: 700; padding-bottom: .35rem; }
+      th, td {
+        border: 1px solid var(--line);
+        padding: .5rem .6rem;
+        text-align: start;
+        vertical-align: top;
+      }
+      th { width: 34%; background: var(--paper-soft); font-weight: 600; }
       td p { margin: 0 0 .4rem; }
-      footer { margin-top: 1.5rem; font-size: .8rem; color: #4a5b52; border-top: 1px solid #c3cec8; padding-top: .6rem; }
+      td p:last-child { margin-bottom: 0; }
+      td ol, td ul { margin: .2rem 0; padding-inline-start: 1.35rem; }
+      td ol { list-style: none; }
+      td > ol > li { margin-bottom: .3rem; }
+      .step-number { font-weight: 700; }
+      .step-heading {
+        margin: .8rem 0 .3rem;
+        color: var(--green-900);
+        font-size: 1rem;
+      }
+      .step-heading:first-child { margin-top: 0; }
+      footer {
+        margin-top: 1.5rem;
+        font-size: .8rem;
+        color: var(--ink-muted);
+        border-top: 1px solid var(--line);
+        padding-top: .6rem;
+      }
       @media print {
-        body { padding: 0; font-size: 11pt; }
+        @page { margin: 16mm 14mm; }
+        :root {
+          --paper: #fff;
+          --paper-raised: #fff;
+          --paper-soft: #fff;
+          --ink: #000;
+          --ink-muted: #333;
+          --line: #aaa;
+        }
+        body { padding: 0; font-size: 10.5pt; background: #fff; }
         h1 { font-size: 15pt; }
-        table { break-inside: avoid; }
+        .sheet { box-shadow: none; }
+        table, tr { break-inside: avoid; }
         tr { break-inside: avoid; }
+        * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
       }
     </style>
   </head>
   <body>
-    <h1>Negociar na ONU (Simulação de Assembleia Geral)</h1>
-    <p class="meta">Área das Parcerias · Jogo 30 · ODS: 17</p>
-    <table>
-      <caption>Ficha do jogo</caption>
-      <tbody>
+    <div class="sheet sheet--partnerships">
+      <p class="area-label">Área das Parcerias</p>
+      <h1>Negociar na ONU (Simulação de Assembleia Geral)</h1>
+      <p class="meta">Jogo 30 · ODS: 17</p>
+      <table>
+        <caption>Ficha do jogo</caption>
+        <tbody>
       <tr><th scope="row">Nome do Jogo</th><td><p>Negociar na ONU (Simulação de Assembleia Geral)</p></td></tr>
-      <tr><th scope="row">Objetivos de Desenvolvimento Sustentável (ODS)</th><td><p>**ODS 17** (Simulação de Assembleia Geral)</p></td></tr>
+      <tr><th scope="row">Objetivos de Desenvolvimento Sustentável (ODS)</th><td><p><strong>ODS 17</strong> (Simulação de Assembleia Geral)</p></td></tr>
       <tr><th scope="row">Objetivos</th><td><p>Simulação com papéis internacionais pré-definidos:Fase de Lobbying (20 min): Negociações de bastidores entre blocos para angariar apoios e apresentar emendas regimentais (eliminar um ODS, adicionar um objetivo ou alterar redações).Assembleia Plenária (45 min): Discursos formais ao púlpito de 1 minuto, debate com pontos de ordem e votação democrática com critério de maioria simples ($50\% + 1$).</p></td></tr>
-      <tr><th scope="row">Duração e Participantes</th><td><p>**Formato:** Presencial **Participantes:** 8 a 16 elementos (Estados-Membros, Sociedade Civil e Mesa) **Duração:** 90 a 120 minutos</p></td></tr>
+      <tr><th scope="row">Duração e Participantes</th><td><p><strong>Formato:</strong> Presencial<br /><strong>Participantes:</strong> 8 a 16 elementos (Estados-Membros, Sociedade Civil e Mesa)<br /><strong>Duração:</strong> 90 a 120 minutos</p></td></tr>
       <tr><th scope="row">Material</th><td><p>Cartões de delegação diplomática, caneta e bloco de notas</p></td></tr>
-      <tr><th scope="row">Instruções</th><td><ol><li>O animador lê as regras à secção:</li><li>Imagina que estamos no início de 2015 e temos de votar a resolução final da Agenda 2030 das Nações Unidas. Começa agora a ronda final de negociações. Estás pronto?</li><li>O objetivo deste jogo é que cada participante consiga defender e atingir os seus próprios objetivos, de acordo com o seu cartão de jogo: o ator que representa no cenário internacional. A capacidade de atingirem os objetivos é medida através do quão bem conseguiram negociar com os diferentes atores e que, no final, se tornará visível na Assembleia Geral.</li><li>10 min: Explica-se o jogo aos participantes, entregando um cartão a cada.</li><li>10 min: Cada um lê o seu cartão e define o seu objetivo pessoal: o que quer atingir nas negociações? Cada um decide se quer ou não adotar a Agenda 2030 e prepara uma proposta de alteração à Agenda 2030. As possíveis propostas de alteração à Agenda 2030 são:</li><li>Acrescentar um novo objetivo</li><li>Remover um objetivo</li><li>Mudar o nome de um objetivo</li><li>Juntar dois objetivos num só</li><li>Trocar a ordem dos ODS</li><li>20 min: Lobbying! Os escuteiros buscam informações sobre os outros atores, discutem entre eles e tentam influenciá-los, no sentido de atingirem o seu próprio objetivo.</li><li>30-60 min: Os escuteiros entregam as propostas de alteração ao Presidente da Mesa da Assembleia, que tem um importante papel na moderação da Assembleia Geral, que começa agora:</li><li>O Presidente da Mesa da Assembleia abre a Assembleia Geral e apresenta as propostas de alteração, agradecendo a todos os que contribuíram para tal.</li><li>Dá-se uma ronda de discursos de abertura. As instituições da ONU (cartões azuis) são as únicas que têm a palavra.</li><li>Depois, cada cada Estado-Membro (cartões brancos) tem um minuto para a apresentar e convencer os demais a votarem na sua proposta. Apenas os Estados-Membros têm direito a apresentar propostas.</li><li>No final da apresentação de cada proposta, os Estados-Membros e atores da Sociedade Civil que queiram reagir (contra ou a favor) formam uma fila e têm 30 segundos para discursar e tentar apelar ao voto positivo ou negativo dos outros.</li><li>No final da apresentação de cada proposta e de discursos de reação, a proposta deve ser votada, sendo que apenas os Estados-Membros podem votar. A Sociedade Civil e as instituições da ONU têm de se abster.</li><li>É necessário 50% + 1 para que a proposta seja aceite e incluída na proposta final que o Presidente da Mesa estará a escrever.</li><li>Dá-se a discussão final sobre a Resolução, conforme as alterações incluídas na mesma.</li><li>O Presidente da Mesa da Assembleia tem um minuto para explicar a proposta final que irá a votações. Esta proposta é a junção de todas as propostas aprovadas anteriormente.</li><li>Aqueles que pretenderem reagir à proposta final apresentada, formam uma fila têm 30 segundos para o fazer. Todos podem participar.</li><li>A Mesa da Assembleia-Geral da ONU tem a palavra final.</li><li>É votada a versão final com as propostas de alteração. Cada Estado-Membro tem 1 voto. A Sociedade civil e as instituições da ONU não podem votar. Com 50% dos votos a favor, a proposta é aceite. Caso contrário, é rejeitada.</li><li>O Presidente da Mesa da Assembleia Geral agradece a todos a sua presença e contribuições e dá por encerrada a Assembleia Geral.</li><li>20 min: Reflexão - Quem conseguiu atingir os seus objetivos? Como e porquê?</li><li>Nota: Todos estes cartões foram inventados e não refletem a posição oficial de qualquer uma destas entidades, sendo que algumas delas não existem.</li></ol></td></tr>
-      </tbody>
-    </table>
+      <tr><th scope="row">Instruções</th><td><p>O animador lê as regras à secção:</p><ol><li><span class="step-number">1.</span> Imagina que estamos no início de 2015 e temos de votar a resolução final da Agenda 2030 das Nações Unidas. Começa agora a ronda final de negociações. Estás pronto?</li></ol><p>O objetivo deste jogo é que cada participante consiga defender e atingir os seus próprios objetivos, de acordo com o seu cartão de jogo: o ator que representa no cenário internacional. A capacidade de atingirem os objetivos é medida através do quão bem conseguiram negociar com os diferentes atores e que, no final, se tornará visível na Assembleia Geral.</p><p>10 min: Explica-se o jogo aos participantes, entregando um cartão a cada.</p><p>10 min: Cada um lê o seu cartão e define o seu objetivo pessoal: o que quer atingir nas negociações? Cada um decide se quer ou não adotar a Agenda 2030 e prepara uma proposta de alteração à Agenda 2030. As possíveis propostas de alteração à Agenda 2030 são:</p><ul><li>Acrescentar um novo objetivo</li><li>Remover um objetivo</li><li>Mudar o nome de um objetivo</li><li>Juntar dois objetivos num só</li><li>Trocar a ordem dos ODS</li></ul><p>20 min: Lobbying! Os escuteiros buscam informações sobre os outros atores, discutem entre eles e tentam influenciá-los, no sentido de atingirem o seu próprio objetivo.</p><p>30-60 min: Os escuteiros entregam as propostas de alteração ao Presidente da Mesa da Assembleia, que tem um importante papel na moderação da Assembleia Geral, que começa agora:</p><ol><li><span class="step-number">2.</span> O Presidente da Mesa da Assembleia abre a Assembleia Geral e apresenta as propostas de alteração, agradecendo a todos os que contribuíram para tal.</li><li><span class="step-number">3.</span> Dá-se uma ronda de discursos de abertura. As instituições da ONU (cartões azuis) são as únicas que têm a palavra.</li><li><span class="step-number">4.</span> Depois, cada cada Estado-Membro (cartões brancos) tem um minuto para a apresentar e convencer os demais a votarem na sua proposta. Apenas os Estados-Membros têm direito a apresentar propostas.</li><li><span class="step-number">5.</span> No final da apresentação de cada proposta, os Estados-Membros e atores da Sociedade Civil que queiram reagir (contra ou a favor) formam uma fila e têm 30 segundos para discursar e tentar apelar ao voto positivo ou negativo dos outros.</li><li><span class="step-number">6.</span> No final da apresentação de cada proposta e de discursos de reação, a proposta deve ser votada, sendo que apenas os Estados-Membros podem votar. A Sociedade Civil e as instituições da ONU têm de se abster.</li><li><span class="step-number">7.</span> É necessário 50% + 1 para que a proposta seja aceite e incluída na proposta final que o Presidente da Mesa estará a escrever.</li><li><span class="step-number">8.</span> Dá-se a discussão final sobre a Resolução, conforme as alterações incluídas na mesma.</li><li><span class="step-number">9.</span> O Presidente da Mesa da Assembleia tem um minuto para explicar a proposta final que irá a votações. Esta proposta é a junção de todas as propostas aprovadas anteriormente.</li><li><span class="step-number">10.</span> Aqueles que pretenderem reagir à proposta final apresentada, formam uma fila têm 30 segundos para o fazer. Todos podem participar.</li><li><span class="step-number">11.</span> A Mesa da Assembleia-Geral da ONU tem a palavra final.</li><li><span class="step-number">12.</span> É votada a versão final com as propostas de alteração. Cada Estado-Membro tem 1 voto. A Sociedade civil e as instituições da ONU não podem votar. Com 50% dos votos a favor, a proposta é aceite. Caso contrário, é rejeitada.</li><li><span class="step-number">13.</span> O Presidente da Mesa da Assembleia Geral agradece a todos a sua presença e contribuições e dá por encerrada a Assembleia Geral.</li></ol><p>20 min: Reflexão - Quem conseguiu atingir os seus objetivos? Como e porquê?</p><p>Nota: Todos estes cartões foram inventados e não refletem a posição oficial de qualquer uma destas entidades, sendo que algumas delas não existem.</p></td></tr>
+        </tbody>
+      </table>
 
+    </div>
     <footer>
       Kit Agrupamento Sustentável · Corpo Nacional de Escutas · Compromisso 2030.<br />
       Ficha gerada a partir do conteúdo editorial. Não substitui o Capítulo 7 do guia.

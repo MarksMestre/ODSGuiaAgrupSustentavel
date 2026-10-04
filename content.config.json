@@ -1,17 +1,27 @@
 {
   "$comment": "Ficheiro de configuração do pipeline editorial. É o ÚNICO ficheiro que precisa de editar para mudar caminhos, nomes ou opções. Não precisa de saber programar.",
-
   "editorial": {
     "$comment": "Os três documentos Word que formam o conteúdo do kit, por ordem de leitura.",
     "sources": [
-      { "id": "source1", "file": "source/source1.docx", "label": "Parte 1" },
-      { "id": "source2", "file": "source/source2.docx", "label": "Parte 2" },
-      { "id": "games", "file": "source/gamesSource.docx", "label": "Jogos e Workshops" }
+      {
+        "id": "source1",
+        "file": "source/source1.docx",
+        "label": "Parte 1"
+      },
+      {
+        "id": "source2",
+        "file": "source/source2.docx",
+        "label": "Parte 2"
+      },
+      {
+        "id": "games",
+        "file": "source/gamesSource.docx",
+        "label": "Jogos e Workshops"
+      }
     ],
     "fallbackFile": "file.md",
     "fallbackComment": "Fonte editorial já montada. Só é usada para preencher jogos que faltam no Word."
   },
-
   "games": {
     "$comment": "Geração das fichas de jogo. n vai de 0 (molde) a 30.",
     "template": "source/games/00GameSheetTemplate.docx",
@@ -20,7 +30,12 @@
     "firstNumber": 1,
     "lastNumber": 30,
     "expectedCount": 30,
-    "extensions": { "canonical": ".md", "print": ".html" },
+    "nestedGameRule": "extract",
+    "nestedGameComment": "O Word aninha o «Descobre +ODS» dentro do «Desenho Estragado», por isso só tem 29 títulos para 30 jogos. «extract» dá a cada jogo os seus próprios passos; «ignore» deixa-os como estavam, com os dois conjuntos de passos na ficha do 28 e o 29 sem instruções.",
+    "extensions": {
+      "canonical": ".md",
+      "print": ".html"
+    },
     "areas": [
       "Área das Pessoas",
       "Área do Planeta",
@@ -30,21 +45,23 @@
     ],
     "areasPerGroup": 6
   },
-
   "report": {
     "file": "build/content-report.json",
     "console": true
   },
-
   "build": {
     "dir": "build"
   },
-
   "progress": {
     "$comment": "Personal Progress. Os valores editoriais (label, branch, ages, color, referenceUrl) vêm daqui; a taxonomia vem sempre do Google Sheet.",
     "spreadsheetId": "1RHOm4LJZ0mtMH6yp_9ou5DnDK4uqn7MMJBQXRiBvWrg",
     "endpoint": "https://docs.google.com/spreadsheets/d/{spreadsheetId}/gviz/tq?tqx=out:csv&sheet={tab}",
-    "tabs": ["1Sec", "2Sec", "3Sec", "4Sec"],
+    "tabs": [
+      "1Sec",
+      "2Sec",
+      "3Sec",
+      "4Sec"
+    ],
     "artefact": "build/progress-taxonomy.json",
     "mapping": "content.progress.json",
     "timeoutMs": 15000,

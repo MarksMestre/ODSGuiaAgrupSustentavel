@@ -73,6 +73,24 @@ ECONOMICS_HEADER = 'Categoria de DespesaCustoPontos de Estatuto Social'
 ALL_ODS = tuple(range(1, 18))
 
 
+@dataclass(frozen=True)
+class Step:
+    """Um passo das instruções, com o nível onde o Word o colocou.
+
+    `kind` é `'heading'` para uma subdivisão (uma "Parte"), `'ordered'` ou
+    `'bullet'` para um item de lista, e `'para'` para texto corrente. `level` é a
+    profundidade dentro da base do bloco: 0 é o nível de fora.
+
+    Guardar o nível e não o número final é o que permite reiniciar a contagem
+    numa "Parte 2" em vez de continuar a contagem da "Parte 1" — que era o que
+    acontecia e produzia uma lista corrida de 1 a 16.
+    """
+
+    kind: str
+    text: str
+    level: int = 0
+
+
 @dataclass
 class Game:
     """Um jogo pronto a ser transformado em ficha."""
@@ -88,7 +106,7 @@ class Game:
     duration: str = ''
     materials: str = ''
     dynamics: str = ''
-    detailed_steps: list[str] = field(default_factory=list)
+    detailed_steps: list[Step] = field(default_factory=list)
     tables: list[list[list[str]]] = field(default_factory=list)
     missing_fields: list[str] = field(default_factory=list)
 
@@ -299,8 +317,36 @@ _FIELD_PREFIXES = (
 
 _LIST_STYLES = ('listparagraph', 'listbullet', 'listnumber')
 
+# Onde começa o bloco de instruções. O Word usa três variantes e o jogo 27 traz
+# a frase colada à etiqueta, pelo que a etiqueta é removida e o resto do
+# parágrafo entra como prosa.
+_INSTRUCTIONS_RE = re.compile(
+    r'^instru(?:ç|c)(?:ões|oes)\b(?:\s+para\s+formato\s+\w+)?\s*:?\s*',
+    re.IGNORECASE,
+)
+
+# Um cabeçalho que termina em dois-pontos é um rótulo de anexo (`Perguntas:`,
+# `Recursos:`, `Cartões:`, `Cartões de salário:`), não uma etapa. As etapas
+# (`Parte 2: Desenho do mapa. (40')`) têm texto depois dos dois-pontos.
+_ANNEX_LABEL_RE = re.compile(r'^[^:]{0,60}:\s*$')
+
+# Uma etapa das instruções. `Parte 2: …`, `2ª Parte – A Viagem`, `Abrigos para
+# borboleta` e as variantes `Instruções para formato …:` continuam o bloco.
+_STAGE_RE = re.compile(r'^(?:instru|.*\bparte\b)', re.IGNORECASE)
+
+# Os campos que, repetidos em sequência, marcam o início de um jogo novo. O
+# jogo 29 («Descobre +ODS») está aninhado dentro do 28 no Word, sem ser um
+# `Heading 1`: é um parágrafo numerado com o bloco completo de campos. Sem esta
+# regra, as instruções dos dois jogos entravam misturadas na ficha do 28.
+_NESTED_GAME_FIELDS = (
+    'objetivos:',
+    'formato:',
+    'número de participantes:',
+    'duração:',
+)
+
 # Etiquetas repetidas no corpo do Word. `_is_field_start` só precisa de detetar
-# que um campo começou (para parar o título); `_instruction_steps` precisa de
+# que um campo começou (para parar o título); a leitura das instruções precisa de
 # saber até onde o bloco de metadados vai, e por isso tem a lista completa.
 _METADATA_LABELS = (
     'Objetivos de Desenvolvimento Sustentável:',
@@ -321,11 +367,21 @@ def _is_field_start(text: str) -> bool:
     return any(lowered.startswith(prefix.lower()) for prefix in _FIELD_PREFIXES)
 
 
-def read_games_from_docx(path: pathlib.Path) -> list[dict]:
-    """Lê os jogos do Word: título cru, área e os passos das instruções.
+def read_games_from_docx(
+    path: pathlib.Path, *, extract_nested: bool = True
+) -> tuple[list[dict], dict[int, ooxml.BodyItem]]:
+    """Lê os jogos do Word: título cru, área e as instruções com hierarquia.
 
     Um jogo começa em cada `Heading 1`. As áreas vêm das caixas de texto ancoradas
     nos parágrafos, o que evita ter as áreas codificadas no código.
+
+    O jogo 29 («Descobre +ODS») não tem `Heading 1` próprio: o Word aninha-o
+    dentro do 28, e por isso só há 29 entradas para 30 jogos. Com
+    `extract_nested`, esse bloco é reconhecido e devolvido como jogo separado,
+    para que cada um receba os seus próprios passos.
+
+    Devolve também o mapa posição-do-corpo → bloco, que `align_games` usa para
+    ler o nível e o tipo de lista de cada passo.
     """
     with ooxml.Document(path) as document:
         # O corpo é o filho direto `w:body` do documento; iterar o `.body` do
@@ -353,11 +409,23 @@ def read_games_from_docx(path: pathlib.Path) -> list[dict]:
             style = ooxml._paragraph_style(paragraph)
             list_flags[position] = (style or '').replace(' ', '').lower() in _LIST_STYLES
 
+        # Os mesmos parágrafos, mas com secção, colunas e numeração de lista. É
+        # daqui que sai a hierarquia das instruções.
+        item_by_position: dict[int, ooxml.BodyItem] = {}
+        item_position = 0
+        for item in document.body_items():
+            if item.kind != 'paragraph':
+                continue
+            item_by_position[item_position] = item
+            item_position += 1
+
         entries: list[dict] = []
         area: str | None = None
         current: dict | None = None
         title_parts: list[str] = []
-        steps: list[tuple[bool, str]] = []
+        # (posição no corpo, texto). A posição dá acesso ao `BodyItem`, e é
+        # através dele que se sabe o nível e o tipo de lista de cada passo.
+        steps: list[tuple[int, str]] = []
         in_instructions = False
         seen_field = False
 
@@ -404,27 +472,112 @@ def read_games_from_docx(path: pathlib.Path) -> list[dict]:
 
             if field_start:
                 seen_field = True
-                in_instructions = text.lower().startswith('instru')
-                steps.append((is_list, text))
+                in_instructions = _INSTRUCTIONS_RE.match(text) is not None
+                steps.append((position, text))
                 continue
 
             # As instruções são o corpo do jogo; o resto (número de página no fim,
             # resíduo do cabeçalho) é filtrado depois.
-            steps.append((is_list or in_instructions, text))
+            steps.append((position, text))
 
         flush()
 
-    return [
+    if extract_nested:
+        entries = split_nested_games(entries, item_by_position)
+
+    found = [
         {
             'rawTitle': entry['rawTitle'],
             'area': entry['area'],
-            # `steps` é uma lista de (é_lista, texto).
+            # `steps` é uma lista de (posição no corpo, texto).
             'steps': entry['steps'],
             'fields': entry['fields'],
         }
         for entry in entries
         if entry['rawTitle']
     ]
+    # O mapa de parágrafos volta com as entradas porque `align_games` precisa dele
+    # para transformar posições em níveis de lista.
+    return found, item_by_position
+
+
+def split_nested_games(
+    entries: list[dict], item_by_position: dict[int, ooxml.BodyItem]
+) -> list[dict]:
+    """Separa um jogo que o Word aninha dentro de outro.
+
+    O «Descobre +ODS» aparece dentro do «Desenho Estragado» como um parágrafo
+    numerado seguido de um bloco completo de campos (`Ods:`, `Objetivos:`,
+    `Formato:`, `Número de participantes:`, `Duração:`, `Material:`) e das suas
+    próprias `Instruções:`. Não é um `Heading 1`, por isso a leitura linear não o
+    via como jogo.
+
+    Sem esta separação o jogo 28 ficava com os passos dos dois e o 29 sem
+    passos detalhados. O título do jogo aninhado é o parágrafo imediatamente
+    anterior ao bloco de campos.
+    """
+    result: list[dict] = []
+    for entry in entries:
+        steps: list[tuple[int, str]] = entry['steps']
+        split_at = _nested_game_start(steps, item_by_position)
+        if split_at is None:
+            result.append(entry)
+            continue
+
+        title_index, field_start = split_at
+        # O título entra no jogo aninhado, não no de fora: é o nome do jogo 29.
+        result.append({**entry, 'steps': steps[:title_index]})
+        nested_title = steps[title_index][1]
+        result.append({
+            'area': entry['area'],
+            'fields': {},
+            'steps': steps[field_start:],
+            'rawTitle': nested_title.strip(),
+        })
+    return result
+
+
+def _nested_game_start(
+    steps: list[tuple[int, str]], item_by_position: dict[int, ooxml.BodyItem]
+) -> tuple[int | None, int] | None:
+    """Onde começa um jogo aninhado, ou `None` se não houver nenhum.
+
+    Reconhece a assinatura do Word: uma sequência de campos que volta a aparecer
+    depois de as instruções já terem começado.procura-se a segunda ocorrência de
+    `Objetivos:` e confirma-se que os campos seguintes são os de sempre.
+    """
+    objectives_indexes = [
+        index
+        for index, (_, text) in enumerate(steps)
+        if text.lower().startswith('objetivos:')
+    ]
+    if len(objectives_indexes) < 2:
+        return None
+
+    for index in objectives_indexes[1:]:
+        window = [text.lower() for _, text in steps[index:index + 4]]
+        if not all(
+            any(value.startswith(field) for value in window)
+            for field in _NESTED_GAME_FIELDS
+        ):
+            continue
+        # O título vem antes de `Objetivos:`, mas não imediatamente: há o
+        # `Ods:` pelo meio. Procura-se para trás o primeiro parágrafo que não seja
+        # uma etiqueta nem um número de página.
+        title_index = index - 1
+        while title_index >= 0:
+            candidate = steps[title_index][1]
+            if not _is_field_start(candidate) and not clean.is_page_number(candidate):
+                break
+            title_index -= 1
+        if title_index < 0:
+            continue
+
+        item = item_by_position.get(steps[title_index][0])
+        if item is None or not item.is_list_item:
+            continue
+        return title_index, index
+    return None
 
 
 # Etiquetas dos campos do Word, pela ordem em que aparecem num jogo. Os passos
@@ -432,13 +585,26 @@ def read_games_from_docx(path: pathlib.Path) -> list[dict]:
 _FIELD_LABELS_IN_ORDER = _METADATA_LABELS
 
 
-def _instruction_steps(raw_steps: list[tuple[bool, str]]) -> list[str]:
-    """Devolve só os passos de execução, já limpos.
+def instruction_steps(
+    raw_steps: list[tuple[int, str]],
+    item_by_position: dict[int, ooxml.BodyItem],
+) -> list[Step]:
+    """Devolve os passos de execução com a hierarquia do Word.
 
-    Antes das etiquetas o Word repete metadados que já estão no `file.md`
-    (ODS, objetivos, formato, participantes, duração, material); o que interessa
-    é o que vem a seguir. Descarta também números de página soltos e linhas
-    repetidas.
+    Antes das etiquetas o Word repete metadados que já estão no `file.md` (ODS,
+    objetivos, formato, participantes, duração, material); o que interessa é o
+    bloco que segue a última `Instruções:`.
+
+    O nível de cada item vem do `w:ilvl`, e o tipo de lista do `w:numFmt`
+    resolvido no `numbering.xml`. O nível é normalizado para a base do bloco —
+    o nível do **primeiro** item, e não o menor — porque o `Heading 1` do próprio
+    jogo também é um item numerado: um `ilvl 0` que aparece mais tarde é uma
+    lista nova (a "Parte 2"), não um pai.
+
+    O bloco termina no primeiro anexo. Cada regra de paragem é estrutural — a
+    mudança para uma secção multi-coluna, um `Heading 2`, um `Heading 3` em
+    forma de rótulo, ou um `Heading 3` cujos itens são mais profundos — e nunca
+    depende do nome do jogo, para continuar válida depois de uma edição no Word.
     """
     values = [clean.tidy_whitespace(text) for _, text in raw_steps]
 
@@ -448,31 +614,131 @@ def _instruction_steps(raw_steps: list[tuple[bool, str]]) -> list[str]:
             if value.lower().startswith(label.lower()):
                 start = index + 1
 
-    steps: list[str] = []
-    seen: set[str] = set()
-    for value in values[start:]:
-        if not value or clean.is_page_number(value):
-            continue
-        # `Instruções:` isolado, ou a etiqueta seguida de texto no mesmo
-        # parágrafo — neste caso o texto útil é o que vem depois da etiqueta.
-        for prefix in ('Instruções para formato presencial:',
-                       'Instruções para formato virtual:',
-                       'Instruções:'):
-            if value.lower().startswith(prefix.lower()):
-                value = value[len(prefix):].strip()
-                break
-        if not value or clean.is_page_number(value) or value in seen:
-            continue
-        seen.add(value)
-        steps.append(value)
+    # A frase pode vir colada à própria etiqueta (`Instruções: Antes de se
+    # iniciar o jogo…`, nos jogos 11 e 27) — e nesse caso está na linha que
+    # acabou de marcar o início do bloco, não na seguinte.
+    run_in = ''
+    if start:
+        match = _INSTRUCTIONS_RE.match(values[start - 1])
+        if match:
+            run_in = values[start - 1][match.end():].strip()
+
+    steps = _outline(values[start:], item_by_position, raw_steps[start:])
+
+    # `run_in` é a frase que vinha colada à etiqueta. Fica no topo porque o
+    # animador tem de a ler antes do primeiro passo.
+    if run_in:
+        steps.insert(0, Step('para', run_in))
 
     return steps
+
+
+def _outline(
+    values: list[str],
+    item_by_position: dict[int, ooxml.BodyItem],
+    positioned: list[tuple[int, str]],
+) -> list[Step]:
+    """Constrói os passos a partir dos parágrafos, e para no primeiro anexo."""
+    items = [
+        item_by_position.get(position) for position, _ in positioned
+    ]
+
+    # O nível base é o do primeiro item de lista: a partir dele é que "mais
+    # profundo" se mede.
+    base_level = next(
+        (item.list_level for item in items if item is not None and item.is_list_item),
+        None,
+    )
+
+    steps: list[Step] = []
+    start_section = items[0].section if items and items[0] else None
+
+    for index, value in enumerate(values):
+        if not value or clean.is_page_number(value):
+            continue
+        item = items[index] if index < len(items) else None
+
+        # E1 — material de apoio. Os baralhos e listas de apoio estão compostos
+        # em várias colunas; as instruções, em uma.
+        if (
+            item is not None
+            and start_section is not None
+            and item.columns > 1
+            and item.section != start_section
+        ):
+            break
+
+        # Um parágrafo que é ao mesmo tempo cabeçalho e item de lista é uma etapa
+        # numerada — `Abrigos para borboletas` no jogo 10 é "1." no Word, com os
+        # materiais de construção por baixo. Se fosse tratado como cabeçalho,
+        # as suas sub-listas (mais profundas) seriam lidas como anexo e o jogo
+        # perdia as instruções todas.
+        if item is not None and item.is_list_item:
+            level = 0 if base_level is None else max(0, item.list_level - base_level)
+            kind = 'ordered' if item.number_format == 'decimal' else 'bullet'
+            _push_unique(steps, Step(kind, value, level))
+            continue
+
+        if item is not None and item.heading_level in (2, 3):
+            # E2 — um `Heading 2` é sempre material de apoio.
+            if item.heading_level == 2:
+                break
+            if not _STAGE_RE.match(value) and _ANNEX_LABEL_RE.match(value):
+                break
+            if not _STAGE_RE.match(value) and _heading_starts_annex(
+                items, index, base_level
+            ):
+                break
+            steps.append(Step('heading', value))
+            continue
+
+        # Texto corrente: `Local: Aldeia…`, `Versão Online: …`, as reflexões
+        # finais. Não é um passo numerado, e é por isso que deixa de ser contado
+        # como um.
+        _push_unique(steps, Step('para', value))
+
+    return steps
+
+
+def _push_unique(steps: list[Step], step: Step) -> None:
+    """Acrescenta um passo, ignorando-o se repetir o texto imediatamente anterior.
+
+    Só o duplicado *consecutivo* se descarta: é o resíduo de cabeçalho de página
+    que o Word deixa entre duas folhas. Um passo repetido mais adiante é
+    conteúdo legítimo — o jogo 25 repete «Ganha a equipa que se lembrar de mais
+    ODS que viu» no fim das duas variantes, e as duas são necessárias.
+    """
+    if steps and steps[-1].text == step.text:
+        return
+    steps.append(step)
+
+
+def _heading_starts_annex(
+    items: list[ooxml.BodyItem | None], index: int, base_level: int | None
+) -> bool:
+    """Um cabeçalho cujos primeiros itens são mais profundos é material de apoio.
+
+    Cobre `Afirmações Para O Jogo`, o único anexo do Capítulo 7 cujo título não
+    acaba em dois-pontos. As etapas reais (`Parte 2: …`) têm os itens no mesmo
+    nível ou mais rasos, porque são uma etapa e não um anexo.
+    """
+    if base_level is None:
+        return False
+    for item in items[index + 1:]:
+        if item is None or not item.is_list_item:
+            # Uma linha de texto entre o cabeçalho e o primeiro item não diz
+            # nada sobre a profundidade; procura-se o primeiro item a sério.
+            continue
+        return item.list_level > base_level
+    return False
 
 
 # ------------------------------------------------------------- alignment
 
 def align_games(
-    editorial: list[Game], docx_games: list[dict]
+    editorial: list[Game],
+    docx_games: list[dict],
+    item_by_position: dict[int, ooxml.BodyItem],
 ) -> tuple[list[Game], list[dict]]:
     """Associa cada jogo editorial ao seu homólogo no Word.
 
@@ -500,7 +766,7 @@ def align_games(
         if not ranked:
             return False
         entry = pool[keys.index(ranked[0])]
-        game.detailed_steps = _instruction_steps(entry['steps'])
+        game.detailed_steps = instruction_steps(entry['steps'], item_by_position)
         unused.remove(entry)
         return True
 
@@ -516,7 +782,9 @@ def align_games(
         pending = [g for g in editorial if g.area == area and not g.detailed_steps]
         spare = [entry for entry in unused if entry.get('area') == area]
         if len(pending) == 1 and len(spare) == 1:
-            pending[0].detailed_steps = _instruction_steps(spare[0]['steps'])
+            pending[0].detailed_steps = instruction_steps(
+                spare[0]['steps'], item_by_position
+            )
             unused.remove(spare[0])
 
     unmatched = [entry for entry in unused if entry['steps']]

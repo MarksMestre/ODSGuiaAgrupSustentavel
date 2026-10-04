@@ -213,6 +213,56 @@ for (const game of games) {
   if (!existsSync(htmlPath)) { sheetIssues.push(`${sheetName}.html em falta`); continue; }
 
   const sheet = readFileSync(mdPath, 'utf8');
+  const html = readFileSync(htmlPath, 'utf8');
+
+  // V5 — o Markdown tem de ser renderizado no `.html`. Um `**` à vista é o
+  // defeito que o editor viu no site publicado.
+  const visibleHtml = html
+    .replace(/<style[\s\S]*?<\/style>/giu, '')
+    .replace(/<script[\s\S]*?<\/script>/giu, '');
+  if (visibleHtml.includes('**')) {
+    sheetIssues.push(`${sheetName}.html: há "**" por renderizar (Markdown não interpretado).`);
+  }
+  if (!visibleHtml.includes('<strong>Formato:</strong>')) {
+    sheetIssues.push(`${sheetName}.html: "Duração e Participantes" não está em negrito.`);
+  }
+
+  // V6 — a ficha usa a paleta do sítio. Os tokens são lidos de `src/styles.css`,
+  // por isso uma alteração do tema não pode deixar a ficha para trás.
+  for (const token of ['--green-800:', '--paper-soft:']) {
+    if (!html.includes(token)) {
+      sheetIssues.push(`${sheetName}.html: falta o token ${token} do sítio (ver src/styles.css).`);
+    }
+  }
+  if (!/@page\s*\{[^}]*16mm\s+14mm/su.test(html)) {
+    sheetIssues.push(`${sheetName}.html: as margens de impressão não são as do sítio (16mm 14mm).`);
+  }
+
+  // V7 — o `.md` e o `.html` têm de concordar sobre as listas. Nem todos os
+  // jogos têm lista no Word (o 27 é uma frase corrida), por isso a verificação
+  // é de paridade e não de presença: uma lista que existe num tem de existir no
+  // outro. É esta paridade que apanha uma serialização a partir do mesmo modelo.
+  const instructionsCellHtml = (() => {
+    const at = html.indexOf('<th scope="row">Instruções</th>');
+    if (at === -1) return null;
+    const rest = html.slice(at);
+    const open = rest.indexOf('<td>');
+    const close = rest.indexOf('</td>', open);
+    return open === -1 || close === -1 ? null : rest.slice(open + 4, close);
+  })();
+  if (instructionsCellHtml !== null) {
+    const sheetRow = sheet.split('\n').find((line) => line.startsWith('| Instruções |'));
+    const cellMarkdown = sheetRow ? sheetRow.slice('| Instruções |'.length, sheetRow.lastIndexOf('|')) : '';
+    const inMarkdown = /<(?:ol|ul)>/u.test(cellMarkdown);
+    const inHtml = /<(?:ol|ul)>/u.test(instructionsCellHtml);
+    if (inMarkdown !== inHtml) {
+      sheetIssues.push(
+        `${sheetName}: as instruções têm listas no `
+        + `${inMarkdown ? '.md' : '.html'} mas não no outro — as duas versões divergiram.`,
+      );
+    }
+  }
+
   let cursor = -1;
   for (const label of templateLabels) {
     const row = `| ${label} |`;
@@ -224,8 +274,58 @@ for (const game of games) {
   if (!sheet.includes(`**Título:** ${game.title}`)) {
     sheetIssues.push(`${sheetName}.md: o título não corresponde ao mapa ("${game.title}")`);
   }
+
+  // V8 — a hierarquia das instruções tem de sobreviver à ficha. O defeito que
+  // se quer apanhar é uma corrida corrida de números ("1. … 2. … 16.") sem
+  // qualquer marca de nível pelo meio, que é o que acontecia antes de as
+  // listas passarem a ser lidas do `w:numPr` do Word. Verifica-se a *forma*,
+  // não o texto: o texto editorial muda legitimamente.
+  const instructionsCell = (() => {
+    const row = sheet.split('\n').find((line) => line.startsWith('| Instruções |'));
+    return row ? row.slice('| Instruções |'.length, row.lastIndexOf('|')) : null;
+  })();
+  if (instructionsCell === null) {
+    sheetIssues.push(`${sheetName}.md: não encontrei a linha "Instruções"`);
+  } else {
+    const markers = instructionsCell.match(/<strong>\d+\.<\/strong>/gu) ?? [];
+    const nested = instructionsCell.match(/<(?:ol|ul)>/gu) ?? [];
+    // Um ficheiro cominstructions numeradas tem de ter marcadores; um com
+    // subníveis tem de ter listas aninhadas. Nenhum dos dois é opcional.
+    if (markers.length > 3 && nested.length === 0) {
+      sheetIssues.push(
+        `${sheetName}.md: as instruções são uma lista corrida de ${markers.length} `
+        + 'números, sem hierarquia.',
+      );
+    }
+  }
+
+  // V10 — `Duração e Participantes` tem de ser três linhas, não uma frase.
+  const durationCell = (() => {
+    const row = sheet.split('\n').find((line) => line.startsWith('| Duração e Participantes |'));
+    return row ? row.slice('| Duração e Participantes |'.length, row.lastIndexOf('|')) : null;
+  })();
+  if (durationCell !== null && game.format && game.participants && game.duration) {
+    const breaks = durationCell.split('<br>').length - 1;
+    if (breaks !== 2) {
+      sheetIssues.push(
+        `${sheetName}.md: "Duração e Participantes" tem ${breaks} quebras, `
+        + 'devia ter 2 (formato, participantes, duração).',
+      );
+    }
+  }
 }
 errors.push(...sheetIssues);
+
+// V9 — o caso mais grave do histórico: o jogo 5 trazia o baralho inteiro
+// (137 parágrafos) dentro das instruções. Limite alto para não travar uma
+// edição legítima, mas muito abaixo dos 13 613 caracteres que chegou a ter.
+const sheet05 = readFileSync(new URL('../source/games/05Game.md', import.meta.url), 'utf8');
+if (sheet05.length > 4000) {
+  errors.push(
+    `source/games/05Game.md tem ${sheet05.length} caracteres; o baralho do jogo `
+    + 'voltou a entrar nas instruções (limite 4000).',
+  );
+}
 
 // O molde nunca é gerado nem alterado.
 if (!existsSync(new URL(`../${config.games.template}`, import.meta.url))) {

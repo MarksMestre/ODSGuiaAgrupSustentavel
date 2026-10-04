@@ -67,9 +67,10 @@ def main() -> int:
         # O pacote não pode conter os dados que vêm dos artefactos: a taxonomia da
         # folha (nomes e descritores dos trilhos) e o mapeamento por jogo. Os
         # nomes de classe CSS, as frases da interface e os dados editoriais de
-        # `content.config.json` (rótulo, faixa etária, cor de cada Secção) ficam
-        # no código de qualquer modo — são constantes do projeto, não conteúdo
-        # buscável.
+        # `content.config.json` (rótulo, branch, cor de cada Secção) ficam no
+        # código de qualquer modo — são constantes do projeto, não conteúdo
+        # buscável. A faixa etária também é uma delas: continua na configuração
+        # e no artefacto de taxonomia, mas deixou de ser renderizada.
         print('== conteúdo construído ==')
         bundle = next((path for path in (REPO / 'dist' / 'assets').glob('*.js')), None)
         if bundle is None:

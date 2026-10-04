@@ -5,48 +5,161 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Peixinho das Desigualdades — Ficha de Jogo</title>
     <style>
+      :root {
+      color-scheme: light;
+      --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-serif: Georgia, "Times New Roman", serif;
+      --font-mono: "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --green-950: #0c2c22;
+      --green-900: #123c2e;
+      --green-800: #174c3a;
+      --green-700: #1f624a;
+      --green-600: #2b795d;
+      --green-100: #dcece4;
+      --green-50: #edf6f1;
+      --amber-700: #8b4d08;
+      --amber-500: #d58a1f;
+      --amber-100: #f9e8c7;
+      --paper: #fbfaf5;
+      --paper-raised: #ffffff;
+      --paper-soft: #f2efe6;
+      --ink: #1d2924;
+      --ink-muted: #53635c;
+      --line: #d8ded9;
+      --line-strong: #b7c3bc;
+      --focus: #b85c00;
+      --danger: #a32828;
+      --shadow-sm: 0 1px 2px rgb(12 44 34 / 8%), 0 3px 10px rgb(12 44 34 / 5%);
+      --shadow-lg: 0 18px 50px rgb(12 44 34 / 18%);
+      --radius-sm: 0.5rem;
+      --radius-md: 0.85rem;
+      --radius-lg: 1.25rem;
+      --header-height: 4.5rem;
+      --sidebar-width: 17.5rem;
+      --content-width: 78rem;
+      --people: #b33b4b;
+      --planet: #247a4d;
+      --prosperity: #9a6500;
+      --peace: #4e5fa8;
+      --partnerships: #6e4a9d;
+      O CNE dá #FDD400 / #3FA535 / #00A0E6 / #EF1013. Essas cores não passam
+      WCAG 1.4.11 (3:1 para elementos gráficos) sobre os fundos do site —
+      #FDD400 dá 1,7:1 — por isso são escurecidas até cumprirem. A cor da Secção
+      entra como barra lateral, marcador e contorno; o texto mantém sempre a cor
+      do tema. A cor original continua em content.config.json. */
+      --progress-1-accent: #8a6f00; /* de #FDD400, escurecida até 4.19:1 */
+      --progress-2-accent: #2f7d43; /* de #3FA535 */
+      --progress-3-accent: #0079b8; /* de #00A0E6 */
+      --progress-4-accent: #c21518; /* de #EF1013 */
+      }
       :root { color-scheme: light; }
+      * { box-sizing: border-box; }
       body {
-        font-family: system-ui, "Segoe UI", Tahoma, Arial, sans-serif;
-        color: #16211c;
-        background: #fff;
+        font-family: var(--font-sans);
+        color: var(--ink);
+        background: var(--paper);
         margin: 0 auto;
         max-width: 46rem;
         padding: 1.5rem;
-        line-height: 1.5;
+        line-height: 1.65;
       }
-      h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
-      .meta { color: #4a5b52; font-size: .9rem; margin: 0 0 1.25rem; }
+      .sheet {
+        --area-color: var(--green-600);
+        padding: clamp(1.1rem, 2.5vw, 1.6rem);
+        border: 1px solid var(--line);
+        border-inline-start: 0.35rem solid var(--area-color);
+        border-radius: var(--radius-md);
+        background: var(--paper-raised);
+        box-shadow: var(--shadow-sm);
+      }
+      .sheet--people { --area-color: var(--people); }
+      .sheet--planet { --area-color: var(--planet); }
+      .sheet--prosperity { --area-color: var(--prosperity); }
+      .sheet--peace { --area-color: var(--peace); }
+      .sheet--partnerships { --area-color: var(--partnerships); }
+      .area-label {
+        margin: 0 0 .2rem;
+        color: var(--ink-muted);
+        font-size: .72rem;
+        font-weight: 850;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0 0 .5rem;
+        color: var(--green-900);
+        font-family: var(--font-serif);
+        font-size: 1.6rem;
+        font-weight: 500;
+        letter-spacing: -.02em;
+        line-height: 1.15;
+      }
+      .meta { color: var(--ink-muted); font-size: .9rem; margin: 0 0 1.25rem; }
       table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; }
-      caption { text-align: left; font-weight: 700; padding-bottom: .35rem; }
-      th, td { border: 1px solid #c3cec8; padding: .5rem .6rem; text-align: left; vertical-align: top; }
-      th { width: 34%; background: #f2f6f4; font-weight: 600; }
-      td ol { margin: 0; padding-left: 1.2rem; }
+      caption { text-align: start; font-weight: 700; padding-bottom: .35rem; }
+      th, td {
+        border: 1px solid var(--line);
+        padding: .5rem .6rem;
+        text-align: start;
+        vertical-align: top;
+      }
+      th { width: 34%; background: var(--paper-soft); font-weight: 600; }
       td p { margin: 0 0 .4rem; }
-      footer { margin-top: 1.5rem; font-size: .8rem; color: #4a5b52; border-top: 1px solid #c3cec8; padding-top: .6rem; }
+      td p:last-child { margin-bottom: 0; }
+      td ol, td ul { margin: .2rem 0; padding-inline-start: 1.35rem; }
+      td ol { list-style: none; }
+      td > ol > li { margin-bottom: .3rem; }
+      .step-number { font-weight: 700; }
+      .step-heading {
+        margin: .8rem 0 .3rem;
+        color: var(--green-900);
+        font-size: 1rem;
+      }
+      .step-heading:first-child { margin-top: 0; }
+      footer {
+        margin-top: 1.5rem;
+        font-size: .8rem;
+        color: var(--ink-muted);
+        border-top: 1px solid var(--line);
+        padding-top: .6rem;
+      }
       @media print {
-        body { padding: 0; font-size: 11pt; }
+        @page { margin: 16mm 14mm; }
+        :root {
+          --paper: #fff;
+          --paper-raised: #fff;
+          --paper-soft: #fff;
+          --ink: #000;
+          --ink-muted: #333;
+          --line: #aaa;
+        }
+        body { padding: 0; font-size: 10.5pt; background: #fff; }
         h1 { font-size: 15pt; }
-        table { break-inside: avoid; }
+        .sheet { box-shadow: none; }
+        table, tr { break-inside: avoid; }
         tr { break-inside: avoid; }
+        * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
       }
     </style>
   </head>
   <body>
-    <h1>Peixinho das Desigualdades</h1>
-    <p class="meta">Área das Pessoas · Jogo 5 · ODS: 5, 10</p>
-    <table>
-      <caption>Ficha do jogo</caption>
-      <tbody>
+    <div class="sheet sheet--people">
+      <p class="area-label">Área das Pessoas</p>
+      <h1>Peixinho das Desigualdades</h1>
+      <p class="meta">Jogo 5 · ODS: 5, 10</p>
+      <table>
+        <caption>Ficha do jogo</caption>
+        <tbody>
       <tr><th scope="row">Nome do Jogo</th><td><p>Peixinho das Desigualdades</p></td></tr>
-      <tr><th scope="row">Objetivos de Desenvolvimento Sustentável (ODS)</th><td><p>**ODS 5, 10**</p></td></tr>
+      <tr><th scope="row">Objetivos de Desenvolvimento Sustentável (ODS)</th><td><p><strong>ODS 5, 10</strong></p></td></tr>
       <tr><th scope="row">Objetivos</th><td><p>Jogo de cartas onde os elementos recolhem quartetos temáticos. Cada carta descreve uma limitação ou contexto de inclusão (ex: autismo, celíaco, refugiado, discalculia, cadeira de rodas, baixos recursos económicos). Ao fechar o quarteto, o grupo lê e responde à questão orientadora de acessibilidade presente na carta.</p></td></tr>
-      <tr><th scope="row">Duração e Participantes</th><td><p>**Formato:** Presencial **Participantes:** Até 8 elementos **Duração:** 90 a 120 minutos</p></td></tr>
+      <tr><th scope="row">Duração e Participantes</th><td><p><strong>Formato:</strong> Presencial<br /><strong>Participantes:</strong> Até 8 elementos<br /><strong>Duração:</strong> 90 a 120 minutos</p></td></tr>
       <tr><th scope="row">Material</th><td><p>Baralho de cartas temático com personagens</p></td></tr>
-      <tr><th scope="row">Instruções</th><td><ol><li>O objetivo do jogo é reunir o máximo de quartetos que conseguir, enquanto se trabalha na diversidade.</li><li>As cartas são baralhadas e distribuídas pelos jogadores. É possível que alguns jogadores recebam mais cartas do que outros (referindo-se a pontos de partida desiguais na vida).</li><li>Um jogador aleatório começa o jogo pedindo a outro jogador específico uma carta de uma categoria da qual possui pelo menos um cartão (tem de pedir a carta exata pelo nome da personagem).</li><li>Caso o jogador tenha a carta, este deve entregá-la ao jogador que a pediu. Caso não tenha, é a sua vez de pedir um cartão.</li><li>Quem conseguir obter um cartão novo pode voltar a pedir uma carta.</li><li>Quando se fizer um “peixinho” devem ser lidas as 4 cartas e alto e as perguntas presentes nos cartões devem ser discutidas.</li><li>O jogo acaba quando todos os quartetos estiverem completos. O jogador que tiver mais quartetos completos é o vencedor do jogo.</li><li>Sara</li><li>André</li><li>Mara</li><li>Jorge</li><li>Eu sou Sara. Estava a começar a duvidar da minha fé e a ter muitas perguntas. Gosto de ir aos escuteiros porque, juntos, trabalhamos e debatemos estes assuntos e sinto-me mais segura da fé.</li><li>Já te sentiste mais afastado da tua fé?</li><li>Religião</li><li>Eu sou do Médio Oriente, onde há uma abordagem cultural completamente diferente em relação aos jogos e &quot;brincar&quot;.</li><li>Gosto quando os escuteiros me envolvem nas suas atividades, para integrar a minha família, porque aprendo coisas de outras culturas. Isso permite também que outras pessoas aprendam sobre a cultura em que cresci. Além disso, fazem-me sentir em casa.</li><li>Estás aberto a aprender novos jogos de outras culturas?</li><li>Minorias Étnicas</li><li>Eu estou numa cadeira de rodas e gosto de jogos difíceis. É por isso que escolhi entrar nos escuteiros. No meu agrupamento adaptaram o terreno, as salas e os barcos para pessoas com mobilidade reduzida. Parece uma tarefa árdua,</li><li>público. Ao mesmo tempo, mais</li><li>acesso a equipamentos e ferramentas.</li><li>A tua sede é adaptada para mim?</li><li>Se não, estavas disposto a torná-la?</li><li>Condição Física</li><li>Eu tenho uma Perturbação do Espectro do Autismo (PEA). Isso</li><li>estrutura organizacional, de uma rotina. Sinto-me muito bem-vindo no grupo de escuteiros porque a cada três meses, fazem uma reunião com os meus pais e isso garante que os dirigentes saibam como lidar com certas situações e possam explicar aos outros escuteiros as minhas condições. Isso faz-me sentir compreendido. Eras capaz de dedicar reuniões a falar sobre como lidar com certas situações?</li><li>Condição Mental</li><li>Ana</li><li>Jéssica</li><li>Catarina</li><li>Carlos</li><li>Sou rapariga e sempre fui muito maria-rapaz, gosto de jogar à bola e de fazer as tarefas que costumam dizer que são de rapaz. Na escola costumavam gozar comigo e chamar-me rapaz. Gosto muito de estar nos escuteiros porque todos aprendemos as mesmas coisas e posso fazer as coisas que gosto sem ninguém gozar comigo.</li><li>Achas que há tarefas para rapazes e outras para raparigas?</li><li>Sou vegetariana há alguns anos. Nos escuteiros sinto-me respeita-da porque há sempre uma opção alimentar completa e nutritiva para mim, sem que a minha alimenta-ção tenha perdas nutricionais.</li><li>Incluías uma ementa vegetariana nos teus acampamentos?</li><li>Sou muito brincalhona e tenho</li><li>audição. Gosto de participar nas atividades escutistas porque as instruções são dadas de forma visual, o que me permite entender facilmente a atividade.</li><li>Conseguias explicar um jogo de forma visual?</li><li>Eu tenho uma perturbação mental. É difícil para mim entender totalmente as regras de um jogo. Eu adoro ser escuteiro porque os dirigentes e os colegas comparti-lham responsabilidades adicionais entre si em relação a mim. Isso permite-me participar nas atividades.</li><li>Conseguias dividir com os colegas o apoio que eu preciso?</li><li>Igualdade de Género</li><li>Simão</li><li>Tenho quinze anos e os meus pais criaram-me com princípios religiosos estritos e eu rezo várias vezes ao dia. Adoro participar nas atividades que o agrupamento dos escuteiros faz com a minha escola, porque levam em consideração e respeitam a minha formação e religião.</li><li>Conseguias adaptar as atividades para que eu pudesse rezar?</li><li>Religião Maria</li><li>Restrições Alimentares</li><li>Hassam</li><li>Eu sou um menino muçulmano, originário da Turquia. Como nas atividades culturais têm atenção e fornecem comida halal - assim como refeições regulares e vegetarianas, isso faz-me sentir muito em casa.</li><li>Nas atividades culturais ou de integração de famílias na comunidade, terias atenção às restrições alimentares das diferentes religiões?</li><li>Religião Miguel</li><li>Teresa</li><li>Um acidente deixou-me com uma perna parcialmente incapacitada. Isso torna-se uma barreira e, às vezes, impede-me de participar em certos jogos e atividades. No meu agrupamento são muito criativos quando se trata de jogos e atividades e isso permite-me participar em tudo.</li><li>Adaptavas as tuas atividades e jogos para que eu pudesse participar?</li><li>Condição Física Tiago</li><li>José</li><li>Fui diagnosticado com Perturbação de</li><li>(PHDA). Os meus pais moram num pequeno apartamento onde quase não há espaço para brincar. Sinto-me em casa nos escuteiros porque há sempre jogos que me permitem movimentar mais durante as atividades. Quando</li><li>exigem mais concentra-se, deixam-me fazer pausas para me acalmar. Isso permite-me livrar do excesso de</li><li>Estavas disposto a fazer dinâmicas e atividades que, apesar de exigirem atenção, também respeitam as pausas que necessito para me concentrar e participar no que me é proposto?</li><li>Condição Mental Oliver</li><li>Venho da Europa de Leste e ainda não falo muito bem português.</li><li>Posso acampar com os escuteiros porque explicam os jogos e atividades mais do que uma vez e de forma visual para que eu perceba.</li><li>Sou rapaz, mas adoro maquilha-gem. É o meu talento. Gosto de fazer arte nos rostos das pessoas e de pintar motivos, assim como maquilhar pessoas para dias especiais.</li><li>Aceitavas-me no teu grupo sem julgares o que eu gosto de fazer?</li><li>sem fôlego quando os jogos são</li><li>de escuteiros estão muito cientes da minha situação. Quando fazemos uma caminhada, todos carregam alternadamente a minha mochila por algum tempo. Se algo</li><li>meu inalador esteja sempre por perto.</li><li>Estavas disposto a adaptar seus hábitos para mim?</li><li>Eu tenho discalculia. Muitas vezes é difícil para mim separar os números. Felizmente, sou muito criativo. Eu sou escuteiro porque garantem que eu sempre tenha um ‘amigo de contagem’. Este revê tudo depois de eu terminar as minhas tarefas que exijam cálculos. Isso dá-me a sensação de poder aprender num ambiente seguro.</li><li>Estarias disposto a dividir as tarefas comigo?</li><li>Manuel</li><li>Tomás</li><li>Ângelo</li><li>Helena</li><li>Sou celíaco e não posso comer muitos alimentos. Nos escuteiros sinto-me à vontade porque têm sempre em atenção as minhas restrições alimentares nos acampamentos e atividades e sinto-me incluído.</li><li>Fazias ementas a contar com as minhas restrições alimentares?</li><li>Joana</li><li>Sou o Tomás. Como o meu pai adoeceu cronicamente de repente, os meus pais e eu</li><li>Felizmente, ainda posso ir aos escuteiros porque me ajudam a ter o mínimo de despesas nas atividades, acampamentos e materiais.</li><li>Estavas disposto a criar um fundo de solidariedade para permitir que eu e outras pessoas com</li><li>pudessem participar?</li><li>Condições Económicas</li><li>Mário</li><li>Eu sou daltónico, o que torna difícil para mim diferenciar entre as cores vermelho e verde. Eu gosto de fazer parte dos escuteiros porque anexam etiquetas de cores a todos os equipamentos. Isso evita que eu</li><li>preciso de encontrar algo. Estarias disposto a anexar etiquetas coloridas em todo o equipamento?</li><li>Condição Física Bruno</li><li>Eu tenho uma Perturbação Obsessivo-Compulsivo (POC). Faço as coisas repetidamente: fecho a porta quatro vezes, aperto os atacadores quatro vezes, aperto a camisa quatro vezes, ... A minha condição atrasa-me um bocado.</li><li>Nos escuteiros compreendem a minha situação e permitem-me levar mais tempo do que os outros para me preparar.</li><li>Estás disposto a dar-me o tempo que eu preciso para fazer as coisas?</li><li>Condição Mental Emília</li><li>Eu sou do Congo e ainda não falo português. No entanto, eu realmente gostaria de ser escuteira. Jogar ajuda-me a aprender o idioma mais facilmen-te. Além disso, se formos acampar a um país onde se fale francês posso ajudar a traduzir as coisas e pedir as informações.</li><li>Estarias disposto a traduzir certas coisas para que a Joana pudesse participar?</li><li>Samia</li><li>Os meus pais estão divorciados e a comunicação entre eles é difícil. Consequentemente, como dão a ambos os meus pais as informa-ções das atividades e custos, os dois têm uma ideia clara sobre as atividades e os custos. Dessa forma, não há discussão e posso facilmente integrar o agrupamen-to sem problema.</li><li>Os dirigentes estavam dispostos a adaptar a comunicação para pais divorciados?</li><li>Situação Familiar Jéssica</li><li>Eu nasci sem o meu braço direito então tenho uma prótese de braço há alguns anos. Tarefas delicadas continuam difíceis de executar, mas eu adoro jogar jogos difíceis. Gosto de vir aos escuteiros porque levam sempre a têm sempre a minha condição em consideração.</li><li>Levavas sempre em consideração as minhas limitações?</li><li>Condição Física Júlio</li><li>assustada em espaços pequenos. Os dirigentes do meu agrupamen-to de escuteiros prestam muita atenção à minha condição.</li><li>tenho uma lanterna ou um amigo quando vamos aventurar-nos em espaços pequenos. Nos locais que visitamos, os dirigentes pensam sempre no facto de que é preciso haver uma escada no edifício, porque tenho ataques de pânico nos elevadores.</li><li>Estavas disposto a adaptar os locais e atividades para o meu benefício?</li><li>Condição Mental Ricardo</li><li>Conheci o teu agrupamento de escuteiros durante uma festa da nossa terra. Eu sou do Líbano,</li><li>festa. Por acaso, começamos a falar um com o outro. Salientei que gostaria de passar por uma reunião para me apresentar e apresentar o meu país ao grupo. Estarias disposto a convidar-me para uma atividade informal?</li><li>Eu sou a Jéssica. Os meus pais faliram e de repente acabaram nas ruas. Felizmente, os dirigentes do meu agrupamento de escuteiros investigaram fundos e associações</li><li>família e para que eu pudesse continuar a participar nas reuniões e atividades.</li><li>Estavas disposto a investigar e divulgar esse tipo de informação aos pais?</li><li>Eu sou escuteiro há muitos anos, mas há algum tempo que não me sinto tão bem no grupo.</li><li>Eventualmente, eu decidi sair. Graças ao meu dirigente, algumas semanas depois voltei. Ele acompanha de forma consistente quem desiste e tenta atender às necessidades de todas as crianças e jovens do grupo.</li><li>Estarias disposto a acompanhar quem desistiu e por que motivo?</li><li>isso, às vezes torna-se difícil participar nos jogos. O meu dirigente fala alto e com calma, adoro ir às reuniões de escuteiros por causa dele. Quando necessário, ele até explica as instruções do jogo com imagens. Estavas disposto a usar imagens e falar de modo que eu te compreendesse sempre?</li><li>Lucas</li><li>Alice</li><li>Situação Familiar</li><li>Duarte</li><li>Rita</li><li>Eu sou Lucas. Desde que os meus pais tiveram um grave acidente de</li><li>Os medicamentos e cadeiras de rodas são muito caros. Não podemos pagar um uniforme, mas o meu agrupamento montou um banco de uniformes em segunda mão para me ajudar a mim e a mais quem não consiga pagar os uniformes. Agora também posso ter um uniforme.</li><li>Estavas disposto a pensar em estratégias para que todos conseguissem ter acesso ao uniforme?</li><li>O meu nome é Alice. A minha família vive na pobreza há gerações. Financeiramente, tenho muito pouca escolha do que posso fazer como passatempo. A minha secção uniu-se para me</li><li>cobrir parte das minhas despesas, assim quando vamos acampar não tenho de pagar tanto.</li><li>Estarias disposto a pensar em estratégias para me ajudar a participar nas atividades todas?</li><li>Eu fui adotado. Várias pessoas perguntam-me porque é que não tenho a mesma cor de pele dos meus pais. Depois de pedir a minha aprovação e dos outros dirigentes, o meu dirigente decide iniciar uma conversa em grupo sobre a adoção.</li><li>Estarias disposto a iniciar conversas em grupo sobre vários tópicos, como adoção?</li><li>Sou muito inteligente e ativa e</li><li>e me dão tarefas e jogos constantes para me manter ocupada e com o cérebro a trabalhar.</li><li>Estavas disposto a deixar-me explicar os jogos e trazer ideias novas para a patrulha e para as reuniões?</li></ol></td></tr>
-      </tbody>
-    </table>
+      <tr><th scope="row">Instruções</th><td><ol><li><span class="step-number">1.</span> O objetivo do jogo é reunir o máximo de quartetos que conseguir, enquanto se trabalha na diversidade.</li><li><span class="step-number">2.</span> As cartas são baralhadas e distribuídas pelos jogadores. É possível que alguns jogadores recebam mais cartas do que outros (referindo-se a pontos de partida desiguais na vida).</li><li><span class="step-number">3.</span> Um jogador aleatório começa o jogo pedindo a outro jogador específico uma carta de uma categoria da qual possui pelo menos um cartão (tem de pedir a carta exata pelo nome da personagem).</li><li><span class="step-number">4.</span> Caso o jogador tenha a carta, este deve entregá-la ao jogador que a pediu. Caso não tenha, é a sua vez de pedir um cartão.</li><li><span class="step-number">5.</span> Quem conseguir obter um cartão novo pode voltar a pedir uma carta.</li><li><span class="step-number">6.</span> Quando se fizer um “peixinho” devem ser lidas as 4 cartas e alto e as perguntas presentes nos cartões devem ser discutidas.</li><li><span class="step-number">7.</span> O jogo acaba quando todos os quartetos estiverem completos. O jogador que tiver mais quartetos completos é o vencedor do jogo.</li></ol></td></tr>
+        </tbody>
+      </table>
 
+    </div>
     <footer>
       Kit Agrupamento Sustentável · Corpo Nacional de Escutas · Compromisso 2030.<br />
       Ficha gerada a partir do conteúdo editorial. Não substitui o Capítulo 7 do guia.

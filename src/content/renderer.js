@@ -6,6 +6,7 @@ import {
   NAV_GROUPS,
   ROUTES,
   VALID_MATH,
+  chapterNavLabel,
   slugify,
 } from './source-map.js';
 import { validateParsedDocument } from './parser.js';
@@ -473,7 +474,11 @@ export function renderProgressSection(group, gameNumber, { open, standalone = fa
   summary.append(element('span', { class: 'progress-section__dot', 'aria-hidden': 'true' }));
   const name = element('span', { class: 'progress-section__name' });
   name.append(element('strong', { text: group.label }));
-  name.append(element('span', { class: 'progress-section__branch', text: ` · ${group.branch} · ${group.ages}` }));
+  // A faixa etária fica em `content.config.json` (é o registo do quadro do
+  // CNE) mas não é mostrada: quem está a preparar a atividade sabe já em que
+  // Secção está, e o número só ocupava espaço. O nome e a branch continuam
+  // visíveis, para que a Secção nunca dependa só da cor.
+  name.append(element('span', { class: 'progress-section__branch', text: ` · ${group.branch}` }));
   summary.append(name);
   summary.append(element('span', {
     class: 'progress-section__count',
@@ -799,8 +804,49 @@ function renderRouteContent(route, routeNodes, idRegistry) {
  * à mão. O grupo dos jogos é expansível: brings as cinco áreas e cada jogo, para
  * que o Capítulo 7 se navegue a partir da barra lateral como qualquer outro.
  */
+/**
+ * O convite no topo da barra lateral.
+ *
+ * Não é um rótulo: é o ponto de entrada. traz o que há para ler (contagens
+ * calculadas, nunca escritas à mão) e um atalho para a pesquisa, que de outra
+ * forma só existe como tecla `/` e portanto é invisível para quem não a sabe.
+ * Vai antes dos grupos de `NAV_GROUPS` porque é interface, não conteúdo.
+ */
+function renderNavHero() {
+  const chapters = NAV_GROUPS
+    .flatMap((group) => group.routes)
+    .filter((routeId) => routeId.startsWith('capitulo-')).length;
+  const games = GAMES.length;
+
+  const section = element('div', { class: 'nav-group nav-hero', dataset: { navGroup: 'explorar' } });
+  const card = element('div', { class: 'nav-hero__card' });
+
+  card.append(element('p', { class: 'nav-hero__eyebrow', text: 'Explore o guia' }));
+
+  const stats = [
+    `${chapters} ${chapters === 1 ? 'capítulo' : 'capítulos'}`,
+    `${games} ${games === 1 ? 'jogo' : 'jogos'}`,
+  ].join(' · ');
+  card.append(element('p', { class: 'nav-hero__stats', text: stats }));
+
+  const search = element('button', {
+    class: 'nav-hero__search',
+    type: 'button',
+    dataset: { navSearch: 'true' },
+  }, [
+    element('span', { class: 'nav-hero__search-icon', 'aria-hidden': 'true', text: '⌕' }),
+    element('span', { text: 'Procurar no guia' }),
+    element('kbd', { 'aria-hidden': 'true', text: '/' }),
+  ]);
+  card.append(search);
+
+  section.append(card);
+  return section;
+}
+
 function renderNavigation(navigationRoot) {
   const fragment = document.createDocumentFragment();
+  fragment.append(renderNavHero());
 
   for (const group of NAV_GROUPS) {
     const section = element('div', { class: 'nav-group', dataset: { navGroup: group.id } });
@@ -831,14 +877,23 @@ function renderNavLink(route) {
     dataset: { route: route.id },
   });
   if (route.id.startsWith('capitulo-')) {
-    const number = route.label.match(/\d+/u)?.[0];
-    if (number) link.append(element('span', { class: 'nav-link__number', text: number }));
+    // O número e o nome saem do cabeçalho editorial do capítulo, não de
+    // `route.label` (que é só `Capítulo N`). O `title` dá o nome inteiro a quem
+    // passa o rato; o texto do DOM já é completo, porque o limite de duas linhas
+    // é só de CSS — leitores de ecrã e a pesquisa continuam a ver a frase toda.
+    const { number, name } = chapterNavLabel(route.id);
+    if (number) {
+      link.append(element('span', { class: 'nav-link__number', text: number, 'aria-hidden': 'true' }));
+    }
     link.append(element('span', {
-      text: route.id === 'capitulo-7'
-        ? 'Jogos e Workshops'
-        : route.label.replace(/^Capítulo \d+:?\s*/u, route.label),
+      class: 'nav-link__name',
+      text: name || route.label,
+      title: name || undefined,
     }));
   } else {
+    // Sem número à esquerda, o nome ocupa a largura toda: a grelha do link tem
+    // duas colunas e o nome sozinho ficava na primeira, de 1.4 rem.
+    link.classList.add('nav-link--plain');
     link.append(element('span', { text: route.label }));
   }
   return link;

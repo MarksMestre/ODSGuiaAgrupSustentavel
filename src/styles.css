@@ -438,20 +438,19 @@ a:hover {
   background: color-mix(in srgb, var(--paper-raised) 94%, var(--green-50));
 }
 
+/* O cabeçalho da barra lateral deixou de ter texto: o "Explore o guia" passou
+   a ser o primeiro grupo de navegação (ver `.nav-hero`). O contentor fica,
+   porque o botão de fechar vive aqui e a armadilha de foco depende dele. */
 .navigation-heading {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 0.55rem 0.8rem;
+  justify-content: flex-end;
+  min-height: 0;
+  padding: 0 0.55rem;
 }
 
-.navigation-heading p {
-  margin: 0;
-  color: var(--ink-muted);
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
+.navigation-heading:has(.navigation-close:not([hidden])) {
+  padding-bottom: 0.8rem;
 }
 
 .navigation-close {
@@ -473,16 +472,22 @@ a:hover {
   scrollbar-width: thin;
 }
 
+/* Os nomes dos capítulos vêm do texto editorial e são longos — o mais longo
+   tem 56 caracteres. Por isso o número é uma etiqueta compacta e o nome fica
+   numa coluna própria que pode passar a duas linhas. O limite é só de CSS: o
+   texto no DOM continua completo, para leitores de ecrã e para a pesquisa. */
 .nav-link {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1.4rem minmax(0, 1fr);
+  gap: 0.55rem;
+  align-items: start;
   min-height: 2.75rem;
-  padding: 0.55rem 0.65rem;
+  padding: 0.5rem 0.65rem;
   border-radius: 0.55rem;
   color: var(--ink-muted);
   font-size: 0.86rem;
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.3;
   text-decoration: none;
 }
 
@@ -498,14 +503,28 @@ a:hover {
 
 .nav-link__number {
   display: grid;
-  flex: 0 0 1.75rem;
-  width: 1.75rem;
-  height: 1.75rem;
-  margin-right: 0.6rem;
   place-items: center;
+  width: 1.4rem;
+  min-height: 1.4rem;
+  margin-top: 0.1rem;
   border: 1px solid currentColor;
-  border-radius: 50%;
+  border-radius: 0.35rem;
   font-size: 0.68rem;
+  line-height: 1;
+}
+
+/* `Início`, `Glossário`, `Bibliografia` não têm número à esquerda, por isso não
+   precisam da grelha de duas colunas. */
+.nav-link--plain {
+  display: block;
+}
+
+.nav-link__name {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
 }
 
 .navigation-note {
@@ -1557,6 +1576,75 @@ tbody tr:last-child > * {
   .activity-card {
     border-color: CanvasText;
   }
+}
+
+/* ------------------------------------------------- convite no topo da barra */
+
+/* Fica deliberadamente distinto da lista de ligações: fundo escuro, texto
+   claro, cantos generosos. É a única coisa na barra lateral que tem presença de
+   convite, e é isso que convida a explorá-la em vez de a ler como índice. */
+.nav-hero__card {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0 0 0.75rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--green-900), var(--green-800));
+  box-shadow: var(--shadow-sm);
+  color: #f7fbf8;
+}
+
+.nav-hero__eyebrow {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.nav-hero__stats {
+  margin: 0;
+  color: var(--green-100);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* O atalho para a pesquisa. É um botão a sério, não um `<div>`: o texto da
+   tecla `/` éaria de outro modo, e sem `type="button"` submeteria um
+   formulário em vez de focar a pesquisa. */
+.nav-hero__search {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.2rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid rgb(255 255 255 / 35%);
+  border-radius: 0.55rem;
+  background: rgb(255 255 255 / 10%);
+  color: #f7fbf8;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: start;
+}
+
+.nav-hero__search:hover {
+  background: rgb(255 255 255 / 18%);
+  border-color: rgb(255 255 255 / 55%);
+}
+
+.nav-hero__search-icon {
+  font-size: 1rem;
+}
+
+.nav-hero__search kbd {
+  margin-inline-start: auto;
+  padding: 0.1rem 0.35rem;
+  border: 1px solid rgb(255 255 255 / 35%);
+  border-radius: 0.3rem;
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 700;
 }
 
 /* ------------------------------------------------------- navegação por grupos */

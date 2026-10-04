@@ -84,11 +84,13 @@ describe('contraste do Progresso Pessoal', () => {
   });
 
   it('as Secções distinguem-se sem depender só da cor', () => {
-    // O nome e a faixa etária são sempre renderizados; a cor é um acento.
+    // O nome e a branch são sempre renderizados; a cor é um acento. A faixa
+    // etária continua válida na configuração — é o registo do quadro do CNE e
+    // alimenta o artefacto de taxonomia — mas já não é mostrada no site.
     for (const meta of progressConfig.progress.sections) {
       expect(meta.label).toMatch(/Secção/u);
-      expect(meta.ages).toMatch(/^\d+–\d+$/u);
       expect(meta.branch).toBeTruthy();
+      expect(meta.ages).toMatch(/^\d+–\d+$/u);
     }
     const branches = progressConfig.progress.sections.map((section) => section.branch);
     expect(new Set(branches).size).toBe(4);

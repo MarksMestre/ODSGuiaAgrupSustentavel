@@ -157,6 +157,21 @@ describe('rotas, tema, gaveta e impressão', () => {
     expect(query('#theme-button').getAttribute('aria-pressed')).toBe(String(document.documentElement.dataset.theme === 'dark'));
   });
 
+  it('leva à pesquisa a partir do convite da barra lateral', () => {
+    const search = query('#document-search');
+    const trigger = navigationRoot.querySelector('[data-nav-search]');
+    expect(trigger).not.toBeNull();
+    expect(trigger.tagName).toBe('BUTTON');
+    // Fecha a gaveta primeiro: com a barra sobreposta, a pesquisa não é
+    // utilizável.
+    query('#menu-button').click();
+    expect(query('#navigation-panel').dataset.open).toBe('true');
+
+    trigger.click();
+    expect(query('#navigation-panel').dataset.open).toBeUndefined();
+    expect(document.activeElement).toBe(search);
+  });
+
   it('mantém e fecha a gaveta com Escape', () => {
     const menu = query('#menu-button');
     menu.click();

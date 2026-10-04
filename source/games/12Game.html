@@ -5,48 +5,161 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Qual o Tamanho da Tua Pegada? — Ficha de Jogo</title>
     <style>
+      :root {
+      color-scheme: light;
+      --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-serif: Georgia, "Times New Roman", serif;
+      --font-mono: "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --green-950: #0c2c22;
+      --green-900: #123c2e;
+      --green-800: #174c3a;
+      --green-700: #1f624a;
+      --green-600: #2b795d;
+      --green-100: #dcece4;
+      --green-50: #edf6f1;
+      --amber-700: #8b4d08;
+      --amber-500: #d58a1f;
+      --amber-100: #f9e8c7;
+      --paper: #fbfaf5;
+      --paper-raised: #ffffff;
+      --paper-soft: #f2efe6;
+      --ink: #1d2924;
+      --ink-muted: #53635c;
+      --line: #d8ded9;
+      --line-strong: #b7c3bc;
+      --focus: #b85c00;
+      --danger: #a32828;
+      --shadow-sm: 0 1px 2px rgb(12 44 34 / 8%), 0 3px 10px rgb(12 44 34 / 5%);
+      --shadow-lg: 0 18px 50px rgb(12 44 34 / 18%);
+      --radius-sm: 0.5rem;
+      --radius-md: 0.85rem;
+      --radius-lg: 1.25rem;
+      --header-height: 4.5rem;
+      --sidebar-width: 17.5rem;
+      --content-width: 78rem;
+      --people: #b33b4b;
+      --planet: #247a4d;
+      --prosperity: #9a6500;
+      --peace: #4e5fa8;
+      --partnerships: #6e4a9d;
+      O CNE dá #FDD400 / #3FA535 / #00A0E6 / #EF1013. Essas cores não passam
+      WCAG 1.4.11 (3:1 para elementos gráficos) sobre os fundos do site —
+      #FDD400 dá 1,7:1 — por isso são escurecidas até cumprirem. A cor da Secção
+      entra como barra lateral, marcador e contorno; o texto mantém sempre a cor
+      do tema. A cor original continua em content.config.json. */
+      --progress-1-accent: #8a6f00; /* de #FDD400, escurecida até 4.19:1 */
+      --progress-2-accent: #2f7d43; /* de #3FA535 */
+      --progress-3-accent: #0079b8; /* de #00A0E6 */
+      --progress-4-accent: #c21518; /* de #EF1013 */
+      }
       :root { color-scheme: light; }
+      * { box-sizing: border-box; }
       body {
-        font-family: system-ui, "Segoe UI", Tahoma, Arial, sans-serif;
-        color: #16211c;
-        background: #fff;
+        font-family: var(--font-sans);
+        color: var(--ink);
+        background: var(--paper);
         margin: 0 auto;
         max-width: 46rem;
         padding: 1.5rem;
-        line-height: 1.5;
+        line-height: 1.65;
       }
-      h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
-      .meta { color: #4a5b52; font-size: .9rem; margin: 0 0 1.25rem; }
+      .sheet {
+        --area-color: var(--green-600);
+        padding: clamp(1.1rem, 2.5vw, 1.6rem);
+        border: 1px solid var(--line);
+        border-inline-start: 0.35rem solid var(--area-color);
+        border-radius: var(--radius-md);
+        background: var(--paper-raised);
+        box-shadow: var(--shadow-sm);
+      }
+      .sheet--people { --area-color: var(--people); }
+      .sheet--planet { --area-color: var(--planet); }
+      .sheet--prosperity { --area-color: var(--prosperity); }
+      .sheet--peace { --area-color: var(--peace); }
+      .sheet--partnerships { --area-color: var(--partnerships); }
+      .area-label {
+        margin: 0 0 .2rem;
+        color: var(--ink-muted);
+        font-size: .72rem;
+        font-weight: 850;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0 0 .5rem;
+        color: var(--green-900);
+        font-family: var(--font-serif);
+        font-size: 1.6rem;
+        font-weight: 500;
+        letter-spacing: -.02em;
+        line-height: 1.15;
+      }
+      .meta { color: var(--ink-muted); font-size: .9rem; margin: 0 0 1.25rem; }
       table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; }
-      caption { text-align: left; font-weight: 700; padding-bottom: .35rem; }
-      th, td { border: 1px solid #c3cec8; padding: .5rem .6rem; text-align: left; vertical-align: top; }
-      th { width: 34%; background: #f2f6f4; font-weight: 600; }
-      td ol { margin: 0; padding-left: 1.2rem; }
+      caption { text-align: start; font-weight: 700; padding-bottom: .35rem; }
+      th, td {
+        border: 1px solid var(--line);
+        padding: .5rem .6rem;
+        text-align: start;
+        vertical-align: top;
+      }
+      th { width: 34%; background: var(--paper-soft); font-weight: 600; }
       td p { margin: 0 0 .4rem; }
-      footer { margin-top: 1.5rem; font-size: .8rem; color: #4a5b52; border-top: 1px solid #c3cec8; padding-top: .6rem; }
+      td p:last-child { margin-bottom: 0; }
+      td ol, td ul { margin: .2rem 0; padding-inline-start: 1.35rem; }
+      td ol { list-style: none; }
+      td > ol > li { margin-bottom: .3rem; }
+      .step-number { font-weight: 700; }
+      .step-heading {
+        margin: .8rem 0 .3rem;
+        color: var(--green-900);
+        font-size: 1rem;
+      }
+      .step-heading:first-child { margin-top: 0; }
+      footer {
+        margin-top: 1.5rem;
+        font-size: .8rem;
+        color: var(--ink-muted);
+        border-top: 1px solid var(--line);
+        padding-top: .6rem;
+      }
       @media print {
-        body { padding: 0; font-size: 11pt; }
+        @page { margin: 16mm 14mm; }
+        :root {
+          --paper: #fff;
+          --paper-raised: #fff;
+          --paper-soft: #fff;
+          --ink: #000;
+          --ink-muted: #333;
+          --line: #aaa;
+        }
+        body { padding: 0; font-size: 10.5pt; background: #fff; }
         h1 { font-size: 15pt; }
-        table { break-inside: avoid; }
+        .sheet { box-shadow: none; }
+        table, tr { break-inside: avoid; }
         tr { break-inside: avoid; }
+        * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
       }
     </style>
   </head>
   <body>
-    <h1>Qual o Tamanho da Tua Pegada?</h1>
-    <p class="meta">Área do Planeta · Jogo 12 · ODS: 12</p>
-    <table>
-      <caption>Ficha do jogo</caption>
-      <tbody>
+    <div class="sheet sheet--planet">
+      <p class="area-label">Área do Planeta</p>
+      <h1>Qual o Tamanho da Tua Pegada?</h1>
+      <p class="meta">Jogo 12 · ODS: 12</p>
+      <table>
+        <caption>Ficha do jogo</caption>
+        <tbody>
       <tr><th scope="row">Nome do Jogo</th><td><p>Qual o Tamanho da Tua Pegada?</p></td></tr>
-      <tr><th scope="row">Objetivos de Desenvolvimento Sustentável (ODS)</th><td><p>**ODS 12**</p></td></tr>
+      <tr><th scope="row">Objetivos de Desenvolvimento Sustentável (ODS)</th><td><p><strong>ODS 12</strong></p></td></tr>
       <tr><th scope="row">Objetivos</th><td><p>Os jovens estimam o número de planetas Terra necessários para suportar o seu estilo de vida atual. De seguida calculam o valor real na plataforma digital e debatem compromissos de compensação e mudança de hábitos alimentares e de mobilidade.</p></td></tr>
-      <tr><th scope="row">Duração e Participantes</th><td><p>**Formato:** Presencial ou Online **Participantes:** Secção completa **Duração:** 60 minutos</p></td></tr>
+      <tr><th scope="row">Duração e Participantes</th><td><p><strong>Formato:</strong> Presencial ou Online<br /><strong>Participantes:</strong> Secção completa<br /><strong>Duração:</strong> 60 minutos</p></td></tr>
       <tr><th scope="row">Material</th><td><p>Post-its e ligação à internet (footprintcalculator.org)</p></td></tr>
-      <tr><th scope="row">Instruções</th><td><ol><li>1ª parte – Cálculo da pegada ecológica</li><li>O animador explica à secção que irão calcular a pegada ecológica de cada um no planeta.</li><li>O animador distribui post-its de uma cor pelos escuteiros.</li><li>Num quadro ou na parede, o animador faz uma escala de 0 a 5 planetas e pede a cada escuteiro para, individualmente, tentar adivinhar quantos planetas precisa para viver com o seu consumo e estilo de vida. Após uma breve reflexão, cada um deve colar o seu post-it na zona correspondente da escala.</li><li>De seguida, o animador pede para, individualmente, cada escuteiro aceder à internet e entrar no website http://www.footprintcalculator.org e preencher o questionário. Existe também a possibilidade de alterar a língua para português no canto superior direito do website.</li><li>2ª parte – Discussão dos resultados</li><li>O animador distribui novamente post-its pela secção, agora de cores diferentes. Repete-se o processo de fixar o post-it na escala de planetas, mas agora utilizando os resultados concretos do questionário.</li><li>Pede-se à secção para refletir sobre os resultados. Quantos planetas são precisos em média para satisfazer as suas necessidades?</li><li>O animador dá azo à discussão sobre as diferenças entre os resultados de cada pessoa. Para os elementos que necessitam de mais planetas, quais serão as práticas que mais contribuem para a pegada ecológica? E os que necessitam de menos, quais são as boas práticas que desenvolvem e que podem partilhar com os outros?</li><li>Por fim, procuram-se alternativas para as práticas que mais contribuem para a pegada ecológica.</li><li>O animador dá espaço à reflexão em secção perguntando: ficaram impressionados com os resultados? Necessitam de mais ou menos planetas do que estariam à espera? Já tinham pensado no impacto que as ações individuais têm sobre o planeta? As práticas que mais contribuem para a pegada ecológica são fáceis de alterar? Como poderemos garantir que, no futuro, os hábitos mais difíceis de alterar sejam mais amigos do ambiente?</li></ol></td></tr>
-      </tbody>
-    </table>
+      <tr><th scope="row">Instruções</th><td><p>1ª parte – Cálculo da pegada ecológica</p><ol><li><span class="step-number">1.</span> O animador explica à secção que irão calcular a pegada ecológica de cada um no planeta.</li><li><span class="step-number">2.</span> O animador distribui post-its de uma cor pelos escuteiros.</li><li><span class="step-number">3.</span> Num quadro ou na parede, o animador faz uma escala de 0 a 5 planetas e pede a cada escuteiro para, individualmente, tentar adivinhar quantos planetas precisa para viver com o seu consumo e estilo de vida. Após uma breve reflexão, cada um deve colar o seu post-it na zona correspondente da escala.</li><li><span class="step-number">4.</span> De seguida, o animador pede para, individualmente, cada escuteiro aceder à internet e entrar no website http://www.footprintcalculator.org e preencher o questionário. Existe também a possibilidade de alterar a língua para português no canto superior direito do website.</li></ol><h4 class="step-heading">2ª parte – Discussão dos resultados</h4><ol><li><span class="step-number">1.</span> O animador distribui novamente post-its pela secção, agora de cores diferentes. Repete-se o processo de fixar o post-it na escala de planetas, mas agora utilizando os resultados concretos do questionário.</li><li><span class="step-number">2.</span> Pede-se à secção para refletir sobre os resultados. Quantos planetas são precisos em média para satisfazer as suas necessidades?</li><li><span class="step-number">3.</span> O animador dá azo à discussão sobre as diferenças entre os resultados de cada pessoa. Para os elementos que necessitam de mais planetas, quais serão as práticas que mais contribuem para a pegada ecológica? E os que necessitam de menos, quais são as boas práticas que desenvolvem e que podem partilhar com os outros?</li><li><span class="step-number">4.</span> Por fim, procuram-se alternativas para as práticas que mais contribuem para a pegada ecológica.</li><li><span class="step-number">5.</span> O animador dá espaço à reflexão em secção perguntando: ficaram impressionados com os resultados? Necessitam de mais ou menos planetas do que estariam à espera? Já tinham pensado no impacto que as ações individuais têm sobre o planeta? As práticas que mais contribuem para a pegada ecológica são fáceis de alterar? Como poderemos garantir que, no futuro, os hábitos mais difíceis de alterar sejam mais amigos do ambiente?</li></ol></td></tr>
+        </tbody>
+      </table>
 
+    </div>
     <footer>
       Kit Agrupamento Sustentável · Corpo Nacional de Escutas · Compromisso 2030.<br />
       Ficha gerada a partir do conteúdo editorial. Não substitui o Capítulo 7 do guia.

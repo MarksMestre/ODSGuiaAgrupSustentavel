@@ -198,15 +198,30 @@ def main(argv: list[str] | None = None) -> int:
         _emit(report, cfg)
         return 1
 
+    nested_rule = cfg.games.get('nestedGameRule', 'extract')
+    if nested_rule not in ('extract', 'ignore'):
+        report.errors.append(
+            f'games.nestedGameRule tem o valor "{nested_rule}"; use "extract" ou "ignore".'
+        )
+        _emit(report, cfg)
+        return 1
+
     if not paths.games_source.exists():
         report.warnings.append(
             f'{paths.games_source.name} não encontrado: as fichas ficam sem os '
             'passos detalhados das instruções.'
         )
         docx_games: list[dict] = []
+        item_by_position: dict = {}
     else:
-        docx_games = games_module.read_games_from_docx(paths.games_source)
-        game_list, unmatched = games_module.align_games(game_list, docx_games)
+        # `read_games_from_docx` devolve as entradas e o mapa de parágrafos, que
+        # `align_games` precisa para ler o nível e o tipo de cada lista.
+        docx_games, item_by_position = games_module.read_games_from_docx(
+            paths.games_source, extract_nested=(nested_rule == 'extract')
+        )
+        game_list, unmatched = games_module.align_games(
+            game_list, docx_games, item_by_position
+        )
         for entry in unmatched:
             report.unmatchedDocx.append(entry['rawTitle'])
 

@@ -466,6 +466,18 @@ export function initInteractions(model, rendered, elements) {
   navigationRoot.addEventListener('click', (event) => {
     if (event.target.closest('a')) closeDrawer({ restoreFocus: false });
   });
+
+  // O atalho para a pesquisa dentro da barra lateral. A tecla `/` já funciona
+  // globalmente; este botão é a mesma acção, tornada visível. Se a barra for
+  // uma gaveta (ecrã estreito), a pesquisa só fica utilizável com a gaveta
+  // fechada, por isso fecha-a sem devolver o foco ao botão que ficou escondido.
+  navigationRoot.addEventListener('click', (event) => {
+    if (!event.target.closest('[data-nav-search]')) return;
+    closeDrawer({ restoreFocus: false });
+    searchInput.focus();
+    searchInput.select();
+  });
+
   cleanups.push(
     () => menuButton.removeEventListener('click', toggleDrawer),
     () => navigationBackdrop.removeEventListener('click', closeDrawer),

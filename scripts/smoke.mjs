@@ -30,6 +30,7 @@ dom.window.matchMedia ??= () => ({
 const { parseDocument, validateParsedDocument } = await import('../src/content/parser.js');
 const { renderApplication } = await import('../src/content/renderer.js');
 const { initInteractions } = await import('../src/content/interactions.js');
+const { CHAPTERS, chapterNavName } = await import('../src/content/source-map.js');
 
 const q = (selector) => document.querySelector(selector);
 const model = parseDocument(readFileSync('file.md', 'utf8'));
@@ -74,9 +75,19 @@ console.log('==================');
 
 check('a fonte não tem erros de parsing', validateParsedDocument(model), []);
 check('onze rotas publicadas', model.routes.length, 11);
-check('a navegação tem cinco grupos',
+check('a navegação tem seis grupos',
   [...document.querySelectorAll('[data-nav-group]')].map((el) => el.dataset.navGroup),
-  ['inicio', 'referencias-rapidas', 'capitulos', 'jogos', 'final']);
+  ['explorar', 'inicio', 'referencias-rapidas', 'capitulos', 'jogos', 'final']);
+check('o convite no topo da barra lateral conta o que há',
+  q('.nav-hero__stats')?.textContent, `${CHAPTERS.length} capítulos · 30 jogos`);
+check('o convite dá acesso à pesquisa',
+  q('.nav-hero__search')?.tagName, 'BUTTON');
+check('a navegação mostra o nome editorial dos capítulos',
+  q('[data-route="capitulo-2"] .nav-link__name')?.textContent,
+  chapterNavName(CHAPTERS[1].heading));
+check('as ligações sem número não ficam numa coluna estreita',
+  [...document.querySelectorAll('#primary-navigation .nav-link:not([data-route^="capitulo-"])')]
+    .filter((a) => !a.classList.contains('nav-link--plain')).length, 0);
 check('a navegação lista os trinta jogos',
   document.querySelectorAll('[data-game-nav]').length, 30);
 check('a navegação lista as cinco áreas',

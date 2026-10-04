@@ -5,48 +5,161 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hotéis para Insetos — Ficha de Jogo</title>
     <style>
+      :root {
+      color-scheme: light;
+      --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-serif: Georgia, "Times New Roman", serif;
+      --font-mono: "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --green-950: #0c2c22;
+      --green-900: #123c2e;
+      --green-800: #174c3a;
+      --green-700: #1f624a;
+      --green-600: #2b795d;
+      --green-100: #dcece4;
+      --green-50: #edf6f1;
+      --amber-700: #8b4d08;
+      --amber-500: #d58a1f;
+      --amber-100: #f9e8c7;
+      --paper: #fbfaf5;
+      --paper-raised: #ffffff;
+      --paper-soft: #f2efe6;
+      --ink: #1d2924;
+      --ink-muted: #53635c;
+      --line: #d8ded9;
+      --line-strong: #b7c3bc;
+      --focus: #b85c00;
+      --danger: #a32828;
+      --shadow-sm: 0 1px 2px rgb(12 44 34 / 8%), 0 3px 10px rgb(12 44 34 / 5%);
+      --shadow-lg: 0 18px 50px rgb(12 44 34 / 18%);
+      --radius-sm: 0.5rem;
+      --radius-md: 0.85rem;
+      --radius-lg: 1.25rem;
+      --header-height: 4.5rem;
+      --sidebar-width: 17.5rem;
+      --content-width: 78rem;
+      --people: #b33b4b;
+      --planet: #247a4d;
+      --prosperity: #9a6500;
+      --peace: #4e5fa8;
+      --partnerships: #6e4a9d;
+      O CNE dá #FDD400 / #3FA535 / #00A0E6 / #EF1013. Essas cores não passam
+      WCAG 1.4.11 (3:1 para elementos gráficos) sobre os fundos do site —
+      #FDD400 dá 1,7:1 — por isso são escurecidas até cumprirem. A cor da Secção
+      entra como barra lateral, marcador e contorno; o texto mantém sempre a cor
+      do tema. A cor original continua em content.config.json. */
+      --progress-1-accent: #8a6f00; /* de #FDD400, escurecida até 4.19:1 */
+      --progress-2-accent: #2f7d43; /* de #3FA535 */
+      --progress-3-accent: #0079b8; /* de #00A0E6 */
+      --progress-4-accent: #c21518; /* de #EF1013 */
+      }
       :root { color-scheme: light; }
+      * { box-sizing: border-box; }
       body {
-        font-family: system-ui, "Segoe UI", Tahoma, Arial, sans-serif;
-        color: #16211c;
-        background: #fff;
+        font-family: var(--font-sans);
+        color: var(--ink);
+        background: var(--paper);
         margin: 0 auto;
         max-width: 46rem;
         padding: 1.5rem;
-        line-height: 1.5;
+        line-height: 1.65;
       }
-      h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
-      .meta { color: #4a5b52; font-size: .9rem; margin: 0 0 1.25rem; }
+      .sheet {
+        --area-color: var(--green-600);
+        padding: clamp(1.1rem, 2.5vw, 1.6rem);
+        border: 1px solid var(--line);
+        border-inline-start: 0.35rem solid var(--area-color);
+        border-radius: var(--radius-md);
+        background: var(--paper-raised);
+        box-shadow: var(--shadow-sm);
+      }
+      .sheet--people { --area-color: var(--people); }
+      .sheet--planet { --area-color: var(--planet); }
+      .sheet--prosperity { --area-color: var(--prosperity); }
+      .sheet--peace { --area-color: var(--peace); }
+      .sheet--partnerships { --area-color: var(--partnerships); }
+      .area-label {
+        margin: 0 0 .2rem;
+        color: var(--ink-muted);
+        font-size: .72rem;
+        font-weight: 850;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0 0 .5rem;
+        color: var(--green-900);
+        font-family: var(--font-serif);
+        font-size: 1.6rem;
+        font-weight: 500;
+        letter-spacing: -.02em;
+        line-height: 1.15;
+      }
+      .meta { color: var(--ink-muted); font-size: .9rem; margin: 0 0 1.25rem; }
       table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; }
-      caption { text-align: left; font-weight: 700; padding-bottom: .35rem; }
-      th, td { border: 1px solid #c3cec8; padding: .5rem .6rem; text-align: left; vertical-align: top; }
-      th { width: 34%; background: #f2f6f4; font-weight: 600; }
-      td ol { margin: 0; padding-left: 1.2rem; }
+      caption { text-align: start; font-weight: 700; padding-bottom: .35rem; }
+      th, td {
+        border: 1px solid var(--line);
+        padding: .5rem .6rem;
+        text-align: start;
+        vertical-align: top;
+      }
+      th { width: 34%; background: var(--paper-soft); font-weight: 600; }
       td p { margin: 0 0 .4rem; }
-      footer { margin-top: 1.5rem; font-size: .8rem; color: #4a5b52; border-top: 1px solid #c3cec8; padding-top: .6rem; }
+      td p:last-child { margin-bottom: 0; }
+      td ol, td ul { margin: .2rem 0; padding-inline-start: 1.35rem; }
+      td ol { list-style: none; }
+      td > ol > li { margin-bottom: .3rem; }
+      .step-number { font-weight: 700; }
+      .step-heading {
+        margin: .8rem 0 .3rem;
+        color: var(--green-900);
+        font-size: 1rem;
+      }
+      .step-heading:first-child { margin-top: 0; }
+      footer {
+        margin-top: 1.5rem;
+        font-size: .8rem;
+        color: var(--ink-muted);
+        border-top: 1px solid var(--line);
+        padding-top: .6rem;
+      }
       @media print {
-        body { padding: 0; font-size: 11pt; }
+        @page { margin: 16mm 14mm; }
+        :root {
+          --paper: #fff;
+          --paper-raised: #fff;
+          --paper-soft: #fff;
+          --ink: #000;
+          --ink-muted: #333;
+          --line: #aaa;
+        }
+        body { padding: 0; font-size: 10.5pt; background: #fff; }
         h1 { font-size: 15pt; }
-        table { break-inside: avoid; }
+        .sheet { box-shadow: none; }
+        table, tr { break-inside: avoid; }
         tr { break-inside: avoid; }
+        * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
       }
     </style>
   </head>
   <body>
-    <h1>Hotéis para Insetos</h1>
-    <p class="meta">Área do Planeta · Jogo 10 · ODS: 4</p>
-    <table>
-      <caption>Ficha do jogo</caption>
-      <tbody>
+    <div class="sheet sheet--planet">
+      <p class="area-label">Área do Planeta</p>
+      <h1>Hotéis para Insetos</h1>
+      <p class="meta">Jogo 10 · ODS: 4</p>
+      <table>
+        <caption>Ficha do jogo</caption>
+        <tbody>
       <tr><th scope="row">Nome do Jogo</th><td><p>Hotéis para Insetos</p></td></tr>
-      <tr><th scope="row">Objetivos de Desenvolvimento Sustentável (ODS)</th><td><p>**ODS 4**</p></td></tr>
+      <tr><th scope="row">Objetivos de Desenvolvimento Sustentável (ODS)</th><td><p><strong>ODS 4</strong></p></td></tr>
       <tr><th scope="row">Objetivos</th><td><p>Construção manual de abrigos de hibernação e nidificação para polinizadores (abelhas solitárias, joaninhas e borboletas), explicando a sua importância para a cadeia alimentar e o equilíbrio dos ecossistemas.</p></td></tr>
-      <tr><th scope="row">Duração e Participantes</th><td><p>**Formato:** Presencial **Participantes:** Individual ou em subunidades **Duração:** 40 a 60 minutos</p></td></tr>
+      <tr><th scope="row">Duração e Participantes</th><td><p><strong>Formato:</strong> Presencial<br /><strong>Participantes:</strong> Individual ou em subunidades<br /><strong>Duração:</strong> 40 a 60 minutos</p></td></tr>
       <tr><th scope="row">Material</th><td><p>Tábuas de madeira reciclada, canas de bambu ocas, pinhas, berbequim, brocas de $2\text{ mm}$ a $10\text{ mm}$, lixa</p></td></tr>
-      <tr><th scope="row">Instruções</th><td><ol><li>No caso de as secções onde o jogo é aplicado a crianças com idade inferior a 10 anos, aconselha-se a que o uso de material de campo, tal como serras e material de difícil manuseamento, fique ao cargo da equipa de animação.</li><li>Abrigos para borboletas</li><li>Corta-se 4 tábuas de madeira de modo a fazer uma caixa retangular (aproximadamente 30 cm altura x 10 cm largura x 20 cm profundidade) que irá encaixar na estrutura exterior previamente construída;</li><li>Na tábua que ficará na frente do hotel, recorta-se duas entradas verticais com as medidas 10 cm altura por 1 cm de largura. As entradas devem estar centradas, com distância de 2 cm da base e do topo.</li><li>Cola-se as tábuas e reforça-se com pregos, exceto uma das paredes laterais que deve ser aparafusada (basta um parafuso em cima e outro em baixo) para que se possa abrir facilmente para a realização dos trabalhos de manutenção;</li><li>No interior coloca-se um ramo seco na vertical, assegurando que fica bem preso e que não tomba;</li><li>Fecha-se a caixa, aparafusando à parede lateral em falta.</li><li>Abrigo para abelhas-solitárias</li><li>Seleciona-se a madeira a utilizar: blocos de madeira maciça e/ou ramos de árvores. Ao escolher ramos de árvores, é necessário assegurar que não estão rachados, já que estas aberturas potenciam o aparecimento de fungos e parasitas;</li><li>Com a ajuda de um berbequim, faz-se furos longitudinais com vários diâmetros (entre 2 e 10 mm) nos troncos ou blocos de madeira;</li><li>Os furos não podem ser feitos na totalidade do comprimento do bloco de madeira ou tronco, já que as abelhas preferem túneis fechados, que devem ter no mínimo 10 cm de comprimento;</li><li>A face com buracos fica virada para o exterior do hotel e deve ser suave, sem lascas ou farpas, tal como o interior dos túneis. Para tal, pode ser necessário utilizar-se uma lima ou lixa para madeira.</li><li>Abrigo para Joaninhas</li><li>Junta-se vários ramos e galhos de árvores ou arbustos, assim como canas de bambu, de vários tamanhos, e ata-se com um cordel;</li><li>Caso as canas de bambu não estejam ocas, é necessário perfurar com um berbequim, tendo em atenção que uma das extremidades tem que ficar fechada;</li><li>Faz-se vários conjuntos semelhantes.</li></ol></td></tr>
-      </tbody>
-    </table>
+      <tr><th scope="row">Instruções</th><td><p>No caso de as secções onde o jogo é aplicado a crianças com idade inferior a 10 anos, aconselha-se a que o uso de material de campo, tal como serras e material de difícil manuseamento, fique ao cargo da equipa de animação.</p><ol><li><span class="step-number">1.</span> Abrigos para borboletas<ul><li>Corta-se 4 tábuas de madeira de modo a fazer uma caixa retangular (aproximadamente 30 cm altura x 10 cm largura x 20 cm profundidade) que irá encaixar na estrutura exterior previamente construída;</li><li>Na tábua que ficará na frente do hotel, recorta-se duas entradas verticais com as medidas 10 cm altura por 1 cm de largura. As entradas devem estar centradas, com distância de 2 cm da base e do topo.</li><li>Cola-se as tábuas e reforça-se com pregos, exceto uma das paredes laterais que deve ser aparafusada (basta um parafuso em cima e outro em baixo) para que se possa abrir facilmente para a realização dos trabalhos de manutenção;</li><li>No interior coloca-se um ramo seco na vertical, assegurando que fica bem preso e que não tomba;</li><li>Fecha-se a caixa, aparafusando à parede lateral em falta.</li></ul></li><li><span class="step-number">2.</span> Abrigo para abelhas-solitárias<ul><li>Seleciona-se a madeira a utilizar: blocos de madeira maciça e/ou ramos de árvores. Ao escolher ramos de árvores, é necessário assegurar que não estão rachados, já que estas aberturas potenciam o aparecimento de fungos e parasitas;</li><li>Com a ajuda de um berbequim, faz-se furos longitudinais com vários diâmetros (entre 2 e 10 mm) nos troncos ou blocos de madeira;</li><li>Os furos não podem ser feitos na totalidade do comprimento do bloco de madeira ou tronco, já que as abelhas preferem túneis fechados, que devem ter no mínimo 10 cm de comprimento;</li><li>A face com buracos fica virada para o exterior do hotel e deve ser suave, sem lascas ou farpas, tal como o interior dos túneis. Para tal, pode ser necessário utilizar-se uma lima ou lixa para madeira.</li></ul></li><li><span class="step-number">3.</span> Abrigo para Joaninhas<ul><li>Junta-se vários ramos e galhos de árvores ou arbustos, assim como canas de bambu, de vários tamanhos, e ata-se com um cordel;</li><li>Caso as canas de bambu não estejam ocas, é necessário perfurar com um berbequim, tendo em atenção que uma das extremidades tem que ficar fechada;</li><li>Faz-se vários conjuntos semelhantes.</li></ul></li></ol></td></tr>
+        </tbody>
+      </table>
 
+    </div>
     <footer>
       Kit Agrupamento Sustentável · Corpo Nacional de Escutas · Compromisso 2030.<br />
       Ficha gerada a partir do conteúdo editorial. Não substitui o Capítulo 7 do guia.

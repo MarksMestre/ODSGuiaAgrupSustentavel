@@ -5,48 +5,161 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Corrida da Saúde — Ficha de Jogo</title>
     <style>
+      :root {
+      color-scheme: light;
+      --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-serif: Georgia, "Times New Roman", serif;
+      --font-mono: "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --green-950: #0c2c22;
+      --green-900: #123c2e;
+      --green-800: #174c3a;
+      --green-700: #1f624a;
+      --green-600: #2b795d;
+      --green-100: #dcece4;
+      --green-50: #edf6f1;
+      --amber-700: #8b4d08;
+      --amber-500: #d58a1f;
+      --amber-100: #f9e8c7;
+      --paper: #fbfaf5;
+      --paper-raised: #ffffff;
+      --paper-soft: #f2efe6;
+      --ink: #1d2924;
+      --ink-muted: #53635c;
+      --line: #d8ded9;
+      --line-strong: #b7c3bc;
+      --focus: #b85c00;
+      --danger: #a32828;
+      --shadow-sm: 0 1px 2px rgb(12 44 34 / 8%), 0 3px 10px rgb(12 44 34 / 5%);
+      --shadow-lg: 0 18px 50px rgb(12 44 34 / 18%);
+      --radius-sm: 0.5rem;
+      --radius-md: 0.85rem;
+      --radius-lg: 1.25rem;
+      --header-height: 4.5rem;
+      --sidebar-width: 17.5rem;
+      --content-width: 78rem;
+      --people: #b33b4b;
+      --planet: #247a4d;
+      --prosperity: #9a6500;
+      --peace: #4e5fa8;
+      --partnerships: #6e4a9d;
+      O CNE dá #FDD400 / #3FA535 / #00A0E6 / #EF1013. Essas cores não passam
+      WCAG 1.4.11 (3:1 para elementos gráficos) sobre os fundos do site —
+      #FDD400 dá 1,7:1 — por isso são escurecidas até cumprirem. A cor da Secção
+      entra como barra lateral, marcador e contorno; o texto mantém sempre a cor
+      do tema. A cor original continua em content.config.json. */
+      --progress-1-accent: #8a6f00; /* de #FDD400, escurecida até 4.19:1 */
+      --progress-2-accent: #2f7d43; /* de #3FA535 */
+      --progress-3-accent: #0079b8; /* de #00A0E6 */
+      --progress-4-accent: #c21518; /* de #EF1013 */
+      }
       :root { color-scheme: light; }
+      * { box-sizing: border-box; }
       body {
-        font-family: system-ui, "Segoe UI", Tahoma, Arial, sans-serif;
-        color: #16211c;
-        background: #fff;
+        font-family: var(--font-sans);
+        color: var(--ink);
+        background: var(--paper);
         margin: 0 auto;
         max-width: 46rem;
         padding: 1.5rem;
-        line-height: 1.5;
+        line-height: 1.65;
       }
-      h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
-      .meta { color: #4a5b52; font-size: .9rem; margin: 0 0 1.25rem; }
+      .sheet {
+        --area-color: var(--green-600);
+        padding: clamp(1.1rem, 2.5vw, 1.6rem);
+        border: 1px solid var(--line);
+        border-inline-start: 0.35rem solid var(--area-color);
+        border-radius: var(--radius-md);
+        background: var(--paper-raised);
+        box-shadow: var(--shadow-sm);
+      }
+      .sheet--people { --area-color: var(--people); }
+      .sheet--planet { --area-color: var(--planet); }
+      .sheet--prosperity { --area-color: var(--prosperity); }
+      .sheet--peace { --area-color: var(--peace); }
+      .sheet--partnerships { --area-color: var(--partnerships); }
+      .area-label {
+        margin: 0 0 .2rem;
+        color: var(--ink-muted);
+        font-size: .72rem;
+        font-weight: 850;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0 0 .5rem;
+        color: var(--green-900);
+        font-family: var(--font-serif);
+        font-size: 1.6rem;
+        font-weight: 500;
+        letter-spacing: -.02em;
+        line-height: 1.15;
+      }
+      .meta { color: var(--ink-muted); font-size: .9rem; margin: 0 0 1.25rem; }
       table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; }
-      caption { text-align: left; font-weight: 700; padding-bottom: .35rem; }
-      th, td { border: 1px solid #c3cec8; padding: .5rem .6rem; text-align: left; vertical-align: top; }
-      th { width: 34%; background: #f2f6f4; font-weight: 600; }
-      td ol { margin: 0; padding-left: 1.2rem; }
+      caption { text-align: start; font-weight: 700; padding-bottom: .35rem; }
+      th, td {
+        border: 1px solid var(--line);
+        padding: .5rem .6rem;
+        text-align: start;
+        vertical-align: top;
+      }
+      th { width: 34%; background: var(--paper-soft); font-weight: 600; }
       td p { margin: 0 0 .4rem; }
-      footer { margin-top: 1.5rem; font-size: .8rem; color: #4a5b52; border-top: 1px solid #c3cec8; padding-top: .6rem; }
+      td p:last-child { margin-bottom: 0; }
+      td ol, td ul { margin: .2rem 0; padding-inline-start: 1.35rem; }
+      td ol { list-style: none; }
+      td > ol > li { margin-bottom: .3rem; }
+      .step-number { font-weight: 700; }
+      .step-heading {
+        margin: .8rem 0 .3rem;
+        color: var(--green-900);
+        font-size: 1rem;
+      }
+      .step-heading:first-child { margin-top: 0; }
+      footer {
+        margin-top: 1.5rem;
+        font-size: .8rem;
+        color: var(--ink-muted);
+        border-top: 1px solid var(--line);
+        padding-top: .6rem;
+      }
       @media print {
-        body { padding: 0; font-size: 11pt; }
+        @page { margin: 16mm 14mm; }
+        :root {
+          --paper: #fff;
+          --paper-raised: #fff;
+          --paper-soft: #fff;
+          --ink: #000;
+          --ink-muted: #333;
+          --line: #aaa;
+        }
+        body { padding: 0; font-size: 10.5pt; background: #fff; }
         h1 { font-size: 15pt; }
-        table { break-inside: avoid; }
+        .sheet { box-shadow: none; }
+        table, tr { break-inside: avoid; }
         tr { break-inside: avoid; }
+        * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
       }
     </style>
   </head>
   <body>
-    <h1>Corrida da Saúde</h1>
-    <p class="meta">Área das Pessoas · Jogo 6 · ODS: 3</p>
-    <table>
-      <caption>Ficha do jogo</caption>
-      <tbody>
+    <div class="sheet sheet--people">
+      <p class="area-label">Área das Pessoas</p>
+      <h1>Corrida da Saúde</h1>
+      <p class="meta">Jogo 6 · ODS: 3</p>
+      <table>
+        <caption>Ficha do jogo</caption>
+        <tbody>
       <tr><th scope="row">Nome do Jogo</th><td><p>Corrida da Saúde</p></td></tr>
-      <tr><th scope="row">Objetivos de Desenvolvimento Sustentável (ODS)</th><td><p>**ODS 3** (Saúde de Qualidade)</p></td></tr>
+      <tr><th scope="row">Objetivos de Desenvolvimento Sustentável (ODS)</th><td><p><strong>ODS 3</strong> (Saúde de Qualidade)</p></td></tr>
       <tr><th scope="row">Objetivos</th><td><p>As patrulhas alinham-se. A cada pergunta médica respondida acertadamente, um elemento avança para o topo da fila até cruzarem a meta. Exemplos de perguntas: tempo mínimo de lavagem das mãos com sabão ($40-60\text{ s}$), dador universal ($\text{O}^-$), osso mais pequeno (estribo).</p></td></tr>
-      <tr><th scope="row">Duração e Participantes</th><td><p>**Formato:** Presencial **Participantes:** Subunidades em estafeta **Duração:** Variável</p></td></tr>
+      <tr><th scope="row">Duração e Participantes</th><td><p><strong>Formato:</strong> Presencial<br /><strong>Participantes:</strong> Subunidades em estafeta<br /><strong>Duração:</strong> Variável</p></td></tr>
       <tr><th scope="row">Material</th><td><p>Cartão de perguntas de suporte básico e anatomia</p></td></tr>
-      <tr><th scope="row">Instruções</th><td><ol><li>Define-se uma distância curta para ser percorrida por cada subunidade.</li><li>Cada equipa forma uma fila na linha de partida.</li><li>O animador faz uma pergunta aleatória (abaixo listada) a cada subunidade de cada vez.</li><li>Por cada resposta certa, a equipa avança uma pessoa, indo do fim da fila para o início, até chegarem à meta.</li><li>Por cada resposta errada, a equipa mantém-se no sítio.</li><li>A equipa que chegar primeiro, ganha.</li><li>Perguntas:</li><li>O que devo aplicar primeiro numa ferida traumática? R: Soro fisiológico.</li><li>Quantos ossos tem o corpo humano? R: 206</li><li>Quanto tempo em média deve demorar a lavagem das mãos com água e sabão?</li><li>R: 40-60 segundos.</li><li>Qual o maior órgão do corpo humano? R: Pele</li><li>Quantos dentes definitivos temos? R: 32</li><li>Qual o maior osso do corpo humano? R: Fémur</li><li>Indica 4 tipos de sangue. R: A+, A-, B+, B-, AB+, AB-, O+, O-</li><li>A que tipo de sangue podemos chamar dador universal? R: O-</li><li>A que tipo de sangue podemos chamar recetor universal? R: AB+</li><li>Quantas porções de fruta deves de comer por dia? R: 3/5</li><li>Com quantos ossos nascemos? R: 270</li><li>Qual o osso mais pequeno do corpo humano? R: Estribo</li><li>Qual é a artéria mais importante do sistema circulatório? R: Aorta</li><li>Qual é o maior pulmão? R: Direito</li><li>Quantas porções de lacticínios devemos de comer por dia? R: Dois/terços	54</li></ol></td></tr>
-      </tbody>
-    </table>
+      <tr><th scope="row">Instruções</th><td><ol><li><span class="step-number">1.</span> Define-se uma distância curta para ser percorrida por cada subunidade.</li><li><span class="step-number">2.</span> Cada equipa forma uma fila na linha de partida.</li><li><span class="step-number">3.</span> O animador faz uma pergunta aleatória (abaixo listada) a cada subunidade de cada vez.</li><li><span class="step-number">4.</span> Por cada resposta certa, a equipa avança uma pessoa, indo do fim da fila para o início, até chegarem à meta.</li><li><span class="step-number">5.</span> Por cada resposta errada, a equipa mantém-se no sítio.</li><li><span class="step-number">6.</span> A equipa que chegar primeiro, ganha.</li></ol></td></tr>
+        </tbody>
+      </table>
 
+    </div>
     <footer>
       Kit Agrupamento Sustentável · Corpo Nacional de Escutas · Compromisso 2030.<br />
       Ficha gerada a partir do conteúdo editorial. Não substitui o Capítulo 7 do guia.

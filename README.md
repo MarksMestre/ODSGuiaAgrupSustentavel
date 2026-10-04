@@ -10,9 +10,11 @@ Não é preciso saber programar.
 2. Faça duplo clique em [`run.cmd`](./run.cmd).
 3. O site abre no browser.
 
-O `run.cmd` instala o que falta, gera as fichas de jogo, valima o conteúdo e abre o site. Se algo correr mal, a mensagem diz o ficheiro e o que fazer; o relatório completo fica em `build/content-report.json`.
+O `run.cmd` instala o que falta, gera as fichas de jogo, valida o conteúdo e abre o site. Se algo correr mal, a mensagem diz o ficheiro e o que fazer; o relatório completo fica em `build/content-report.json`.
 
 Para mudar o Progresso Pessoal, edite [`content.progress.json`](./content.progress.json) com qualquer editor de texto. Os valores válidos estão listados por `npm run progress:keys`.
+
+Dois atalhos no site: a tecla `/` foca a pesquisa a partir de qualquer página, e o botão **Procurar no guia** no topo da barra lateral faz o mesmo. Cada jogo tem uma ficha para impressão, com a mesma identidade visual do site.
 
 ## Fonte de conteúdo
 
@@ -73,6 +75,17 @@ As linhas de cada ficha vêm do molde `source/games/00GameSheetTemplate.docx`,
 lido em tempo de execução: acrescentar uma linha ao molde é suficiente para a
 ficha a ter. A numeração de cada jogo é permanente e vive em
 `content/games-map.json`, por isso reordenar o Word não renumera as fichas.
+
+As **instruções** mantêm a hierarquia do Word: os níveis e o tipo de lista de
+cada passo são lidos do próprio documento (`w:numPr` e `numbering.xml`), pelo
+que as personagens de um jogo aparecem como marcas dentro do passo que as traz,
+e uma «Parte 2» recomeça a numeração. O material de apoio — baralhos de cartas,
+listas de perguntas, listas de recursos — é reconhecido e fica fora das
+instruções; para o incluir, ver `nestedGameRule` em `content.config.json`.
+
+A ficha `.html` para impressão usa as mesmas cores, margens de impressão e tipos
+de letra do sítio: são lidos de `src/styles.css` no momento da geração, para que
+uma alteração de cor no tema não deixe as 60 fichas para trás.
 
 `scripts/content/` tem os módulos do pipeline; `scripts/build_content.py` é o
 único ponto de entrada. `content.config.json` é o único ficheiro a editar para

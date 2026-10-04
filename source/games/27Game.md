@@ -9,6 +9,6 @@
 | Nome do Jogo | O Pacote de Açúcar |
 | Objetivos de Desenvolvimento Sustentável (ODS) | **ODS 11** |
 | Objetivos | Inspirado em dinâmicas de negociação social, as patrulhas partem com um pacote de açúcar e têm de realizar trocas sucessivas por objetos de utilidade crescente junto dos comerciantes e habitantes locais, estabelecendo laços e diálogo comunitário. |
-| Duração e Participantes | **Formato:** Presencial (em contexto de Raid / Jogo de Vila) **Participantes:** Subunidades **Duração:** 2 a 3 horas |
+| Duração e Participantes | **Formato:** Presencial (em contexto de Raid / Jogo de Vila)<br>**Participantes:** Subunidades<br>**Duração:** 2 a 3 horas |
 | Material | 1 pacote de açúcar por equipa |
-| Instruções | Inspirado em dinâmicas de negociação social, as patrulhas partem com um pacote de açúcar e têm de realizar trocas sucessivas por objetos de utilidade crescente junto dos comerciantes e habitantes locais, estabelecendo laços e diálogo comunitário. |
+| Instruções | Entrega-se um pacote de açúcar a cada equipa e diz-se que ao longo da atividade têm de tentar trocar o pacote por outro objeto mais valioso com as pessoas, lojas, restaurantes, etc. que forem encontrando. Ao obter outro objeto, este pode ser trocano. No final, ganha quem tiver o objeto mais valioso. |
